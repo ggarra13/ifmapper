@@ -1,0 +1,4 @@
+ifmapper
+========
+
+Interactive Fiction Mapper
