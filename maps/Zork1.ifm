@@ -1,0 +1,410 @@
+# IFM Map for "Zork 1" by Infocom
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Zork1.ifm,v 1.5 2003/01/11 21:29:21 dchapes Exp $
+#
+# Note:  The task list doesn't work right... it needs some work and I
+#        think there are still a few bugs with IFM v2.0
+
+title "Zork 1";
+
+########################################################################
+map "Above Ground";
+
+room "West of House" tag W_House start;
+	item "mailbox";
+	item "leaflet" hidden;
+room "North of House" tag N_House dir n n e e from W_House;
+room "Behind House" tag E_House dir e e s s;
+	item "window";
+	task "open window" tag O_window;
+room "South of House" tag S_House dir s s w w;
+	link W_House to S_House dir s s;
+
+room "Clearing" tag ClearingE dir e from E_House;
+room "Canyon View" tag Canyon_View dir e se;
+room "Rocky Ledge" dir e go down;
+room "Canyon Bottom" dir e go down;
+room "End of Rainbow" tag End_Rainbow dir n ne;
+	task "open coffin" get sceptre need coffin;
+	item "sceptre" tag sceptre hidden score 4;
+	task "wave sceptre" tag W_sceptre need sceptre get gold;
+	item "pot of gold" tag gold hidden score 10;
+
+room "Forest" tag ForestSE dir s s s s from ClearingE;
+	link S_House to ForestSE dir s e e;
+	link Canyon_View to ForestSE dir w s s s oneway;
+
+room "Forest" tag ForestNE dir n n n from ClearingE;
+room "Forest" tag ForestNEE dir e;
+	link ForestNEE to ForestNE dir n oneway;
+	link ForestNEE to ForestNE dir s oneway;
+
+room "Forest Path" tag Forest_Path dir n from N_House link ForestNE;
+	item "Tree";
+	item "brass bauble" tag bauble hidden score 1;
+room "Up a Tree" dir ne go up;
+	item "bird's nest";
+	item "large egg" tag egg score 5;
+	task "wind up canary" tag W_canary need canary get bauble;
+room "Clearing" tag ClearingN dir n n from Forest_Path;
+	link ClearingN to ForestNE dir e e se oneway;
+	item "leaves";
+
+room "Forest" tag ForestNW dir w w w w w from Forest_Path;
+	link W_House to ForestNW dir w n oneway;
+	link ForestNW to ClearingN dir n ne;
+	link ForestNW to ForestSE dir s s s s s s s;
+
+room "Kitchen" tag Kitchen dir w from E_House go in after O_window score 10;
+	item "table";
+	item "chimney";
+	item "brown sack" tag sack;
+	item "bottle" tag bottle;
+	task "open sack" tag O_sack get garlic
+		note "revleals lunch and garlic";
+	item "lunch" tag lunch hidden;
+	item "garlic glove" tag garlic hidden;
+room "Attic" dir n go up after Light;
+	item "rope" tag rope;
+	item "knife" tag knife;
+room "Living Room" tag Living_Room dir w from Kitchen;
+	item "wooden door";
+	item "trophy case";
+	item "rug";
+	item "sword" tag sword;
+	item "lantern" tag lantern keep;
+	task "turn on lantern" tag Light need lantern;
+	task "move rug" tag M_rug note "reaveals trap door";
+	task "open case" tag O_case;
+	
+	task "open trapdoor" tag O_trapdoor after last;
+	join Living_Room to Cellar tag Trapdoor go down
+		after O_trapdoor oneway;
+
+	# the trapdoor got closed
+	task "open trapdoor" tag O_trapdoor2;
+
+	# I don't bother specifing 'after O_case' for each of these since
+	# I've added enforced opening the case before moving the rug and
+	# going downstairs.
+	task "put painting in case" tag P_painting need painting lose it
+		score 6;
+	task "put coins in case" tag P_coins need coins lose it score 5;
+	task "put chalice in case" tag P_chalice need chalice lose it score 5;
+	task "put bauble in case" tag P_bauble need bauble lose it score 1;
+	task "put canary in case" tag P_canary need canary lose it score 4;
+	task "put egg in case" tag P_egg need egg lose it score 5;
+	task "put coffin in case" tag P_coffin need coffin lose it score 15;
+	task "put sceptre in case" tag P_sceptre need sceptre lose it score 6;
+	task "put pot of gold in case" tag P_gold need gold lose it score 10;
+	task "put figurine in case" tag P_figurine need figurine lose it
+		score 5;
+	task "put torch in case" tag P_torch need torch lose it score 6;
+	task "put bracelet in case" tag P_bracelet need bracelet lose it
+		score 5;
+	task "put diamond in case" tag P_diamond need diamond lose it score 10;
+	task "put skull in case" tag P_skull need skull lose it score 10;
+	task "put jewels in case" tag P_jewels need jewels lose it score 5;
+	task "put trident in case" tag P_trident need trident lose it score 11;
+	task "put emerald in case" tag P_emerald need emerald lose it score 10;
+	task "put scarab in case" tag P_scarab need scarab lose it score 5;
+	task "put bar in case" tag P_platinum need platinum lose it score 5;
+
+	item "ancient parchment" tag parchment hidden;
+	task "examine parchment" tag X_parchment
+		after P_painting P_coffin P_sceptre P_gold P_figurine P_torch
+		P_bracelet P_diamond P_skull P_jewels P_trident P_emerald
+		P_scarab P_coins P_chalice P_bauble P_canary P_egg P_platinum;
+	
+room "Stone Barrow" dir sw from W_House style special after X_parchment;
+room "Inside the Barrow" tag Barrow dir w oneway finish
+	score 13 note "these points were missed from somewhere..."; # XXX
+
+########################################################################
+map "The Great Underground Empire";
+
+room "Cellar" tag Cellar score 25 after Light;
+room "East of Chasm" dir s;
+room "Gallery" dir e;
+	item "painting" tag painting score 4;
+room "Studio" tag Studio dir n;
+join Studio to Kitchen tag StudioKitchen oneway go up
+	leave all except lantern painting;
+
+# Some paths through the maze.
+link Troll_Room to Maze tag Troll_Maze oneway hidden cmd "W.W.U.SW"
+	after Kill_troll length 5; #really length 4
+link Maze to Troll_Room oneway hidden cmd "E.D.S.N.E" length 5;
+link Maze to Troll_Room oneway hidden cmd "D.N.W.S.E" length 5;
+link Maze to GratingRoom oneway hidden cmd "W.U.NE" length 4; #really length 3
+link Maze to GratingRoom oneway hidden cmd "U.S.NE" length 4; #really length 3
+link Maze to Cyclops_Room oneway hidden cmd "E.S.SE" length 3;
+link GratingRoom to Troll_Room oneway hidden cmd "SW.SW.D.N.W.S.E" length 7;
+link GratingRoom to Maze oneway hidden cmd "SW.SW.D.SW" length 4;
+link GratingRoom to Maze oneway hidden cmd "SW.SW.U.N" length 4;
+link GratingRoom to Maze oneway hidden cmd "SW.NW.E.N" length 4;
+link GratingRoom to Maze oneway hidden cmd "SW.D.E.N" length 4;
+link GratingRoom to Cyclops_Room oneway hidden cmd "D.E.D.N.NE.S.SE" length 7;
+link GratingRoom to Cyclops_Room oneway hidden cmd "SW.U.D.N.NE.S.SE" length 7;
+link GratingRoom to Cyclops_Room oneway hidden cmd "NW.E.D.N.NE.S.SE" length 7;
+link Cyclops_Room to Troll_Room oneway hidden cmd "NW.S.D.S.N.E" length 6;
+link Cyclops_Room to Maze oneway hidden cmd "NW.S.W" length 3;
+
+room "Troll Room" tag Troll_Room dir n from Cellar;
+	item "troll";
+	task "kill troll with sword" tag Kill_troll need sword;
+	#item "axe" hidden after last;
+
+room "Maze" tag Maze dir w w style puzzle cmd to "W.W.U.SW" cmd from "D.N.W.S.E" 
+		length 5 after Kill_troll;
+	item "skeleton" note "Do NOT touch!";
+	item "coins" tag coins score 10;
+	item "skeleton key" tag key;
+
+room "Grating Room" tag GratingRoom dir n cmd to "U.S.NE"
+		cmd from "sw.sw.u.n" length 4;
+	join GratingRoom to ClearingN go up after UL_grate;
+	task "unlock grate" tag UL_grate need key;
+
+room "Cyclops Room" tag Cyclops_Room dir s from Maze
+		cmd to "E.S.SE" cmd from "NW.S.W" length 3;
+	item "cyclops";
+	task "say Ulysses or say Odysseus" tag M_cyclops;
+room "Treasure Room" tag TreasureRoom dir s go down
+		style special after M_cyclops score 25;
+	item "silver chalice" tag chalice score 10;
+	task "give egg to thief" tag G_egg need egg drop it until K_thief;
+	task "kill thief with knife" tag K_thief need knife after G_egg
+		get chalice canary;
+	item "golden clockwork canary" tag canary hidden score 6;
+room "Strange Passage" tag Strange_Passage dir e from Cyclops_Room style special
+	after M_cyclops;
+join Strange_Passage to Living_Room go east after M_cyclops;
+
+room "E/W Passage" tag EW_Passage dir e from Troll_Room score 5
+		after Kill_troll;
+room "Round Room" tag Round_Room dir e;
+room "Engravings Cave" dir se from Round_Room;
+	item "engravings";
+room "Dome Room" dir e;
+	task "tie rope to railing" tag Tie_rope need rope drop it;
+room "Torch Room" dir s go down style special after Tie_rope oneway;
+	item "flaming torch" tag torch score 14;
+room "Temple" tag Temple dir s;
+	item "brass bell" tag bell;
+room "Egyption Room" dir e;
+	item "gold coffin" tag coffin score 10;
+room "Altar" tag Altar dir s from Temple;
+	link Altar to CaveS tag Altar_Cave go down oneway leave coffin;
+	item "altar";
+	item "candles" tag candles;
+	item "black book" tag book;
+join Altar to ForestNW hidden oneway cmd "pray";
+
+room "N/S Passage" tag NS_Passage dir n from Round_Room;
+room "Chasm" tag Chasm dir n;
+	link EW_Passage to Chasm dir n go down;
+room "Resevoir South" tag Res_S dir ne;
+room "Deep Canyon" tag Deep_Canyon dir ne s ne from NS_Passage link Res_S;
+
+room "Loud Room" tag Loud_Room dir s s go down link Round_Room;
+	item "platinum bar" tag platinum score 10; #score ?
+	task "\"echo\"" tag Say_Echo get platinum;
+room "Damp Cave" dir e;
+room "White Cliffs Beach" tag Beach1 dir e;
+room "White Cliffs Beach" tag Beach2 dir s;
+
+room "Resevoir" tag Res dir n from Res_S style special after O_dam;
+	item "old trunk of jewels" tag jewels score 15;
+room "Stream" tag Stream style special after O_dam dir w;
+room "Stream View" tag Stream_View style special after O_dam dir s link Res_S;
+room "Resevoir North" dir n from Res;
+	item "air pump" tag air_pump;
+room "Atlantis Room" dir n;
+	item "crystal trident" tag trident score 4;
+room "Cave" tag CaveN dir n go up;
+room "Mirror Room" tag Mirror_RoomN dir n w;
+room "Twisting Passage" dir w s link CaveN;
+room "Cold Passage" dir n from Mirror_RoomN;
+room "Slide Room" tag Slide_Room dir w;
+	join Slide_Room to Cellar tag Slide_Cellar oneway cmd "D";
+room "Mine Entrance" dir n;
+room "Squeaky Room" dir w;
+room "Bat Room" dir n style special need garlic;
+	item "vampire bat";
+	task "Drop garlic glove" tag D_garlic need garlic drop it until end;
+	item "jade figurine" tag figurine score 5;
+room "Shaft Room" dir e after D_garlic;
+	item "basket";
+	task "put torch in basket" tag F_basket1
+		need torch drop it until R_basket;
+	task "put coal in basket" tag F_basket2 need coal lose it;
+	task "lower basket" tag L_basket after F_basket1 F_basket2;
+	task "raise basket" tag R_basket after F_basket3 get diamond;
+	item "diamond" tag diamond hidden;
+room "Smelly Room" dir n;
+room "Gas Room" dir e go down need lantern after F_basket1 leave torch
+		note "Do not bring any flame in here!";
+	item "sapphire bracelet" tag bracelet score 5;
+room "Coal Mine" dir e s s exit e;
+room "Coal Mine" dir ne n exit n;
+room "Coal Mine" dir se e e s w;
+room "Coal Mine" dir sw s exit w;
+room "Ladder Top" dir e e go down;
+room "Ladder Bottom" tag Ladder_Bot dir s go down;
+room "Dead End" dir s;
+	item "coal" tag coal;
+room "Timber Room" tag Timber_Room dir w from Ladder_Bot;
+	item "broken timber";
+room "Drafty Room" dir w style special after L_basket leave all except screwdriver;
+	# These are actually the same as what was put in
+	item "torch" tag torch2;
+	item "coal" tag coal2;
+	task "put torch, diamond in basket" tag F_basket3
+		need diamond1 torch2 lose diamond1 torch2;
+room "Machine Room" dir s;
+	task "open lid";
+	task "put coal in machine" follow last need coal2 lose it;
+	task "close lid" follow last;
+	task "turn switch with screwdriver" follow last need screwdriver;
+	task "open lid" follow last get diamond1;
+	item "diamond" tag diamond1 score 15;# score ?
+
+room "Dam" tag Dam dir e e from Res_S;
+	link Dam to Deep_Canyon dir s;
+	item "bolt";
+	item "bubble";
+	task "turn bolt with wrench" tag O_dam need wrench after P_button;
+room "Dam Lobby" tag Dam_Lobby dir n;
+	item "guide books";
+	item "matchbook" tag matchbook;
+room "Maintenance Room" tag Maint_Room dir n e;
+	link Maint_Room to Dam_Lobby dir s;
+	item "buttons";
+	item "tool chests";
+	item "wrench" tag wrench;
+	item "tube";
+	item "screwdriver" tag screwdriver;
+	#task "press red button" note "lights room";
+	task "press yellow buttons" tag P_button
+		note "allows bolt to turn";
+room "Dam Base" dir e s from Dam;
+	item "folded pile of plastic" note "an inflatable boat";
+	task "inflate boat" tag I_boat need air_pump;
+	task "enter boat and launch" tag Launch after I_boat goto River1;
+room "River" tag River1 dir e style special oneway after Launch;
+room "River" dir s oneway;
+room "River" tag River3 dir s oneway;
+	#link River3 to Beach1 style special after Launch;
+room "River" tag River4 dir s oneway;
+	#link River4 to Beach2 style special after Launch;
+	item "buoy" tag buoy;
+room "River" dir s oneway;
+room "Shore" tag Shore dir e;
+room "Sandy Beach" dir e from River4 oneway link Shore;
+	item "shovel" tag shovel;
+	task "open buoy" need buoy get emerald;
+	item "emerald" tag emerald;
+room "Sandy Cave" dir ne;
+	task "dig sand" need shovel get scarab
+		note "repeat until scarab is revealed";
+	item "scarab" tag scarab hidden score 5;
+room "Aragain Falls" dir s from Shore;
+room "On Rainbow" tag Rainbow dir w
+	style special after W_sceptre;
+join Rainbow to End_Rainbow after W_sceptre oneway; # Is it really oneway?
+
+room "Norrow Passage" dir s s from Round_Room;
+room "Mirror Room" tag Mirror_RoomS dir s s;
+join Mirror_RoomN to Mirror_RoomS tag Mirror cmd "touch mirror";
+
+room "Winding Passage" dir w s;
+room "Cave" tag CaveS dir e e;
+	link CaveS to Mirror_RoomS dir n;
+room "Enterance to Hades" dir e go down;
+	item "gateway";
+	task "ring bell" need bell candles matchbook book
+		drop bell candles
+note "the bell will get hot and will be dropped along with the candles";
+	task "light match" after last need matchbook;
+	task "light candles with match" follow last need matchbook candles;
+	task "read book" tag Remove_Spirits follow last need book;
+	task "put out the candles" after last need candles;
+
+room "Land of the Dead" dir s style special after Remove_Spirits;
+	item "crystal skull" tag skull score 10;
+
+
+########################################################################
+# Hacks
+
+# Force some things to happen is a certain order
+# to help optimize the walkthrough
+
+# leave things upstairs until the second time down.
+join Trapdoor before O_trapdoor2 leave all except lantern;
+task O_trapdoor2 after P_painting;
+join Living_Room to Cellar cmd "D" after O_trapdoor2 oneway;
+
+task P_painting need rope;	# get the rope enroute
+item sword after O_trapdoor2;
+
+task O_sack after W_sceptre;	# don't get the garlic right away
+item egg after UL_grate;	# get the egg on the way by
+
+task Say_Echo after P_scarab;
+
+# These are done the second time through this passage,
+# after opening the dam
+item torch after O_dam;
+item bell after O_dam;
+item book after O_dam;
+item candles after O_dam;
+link Altar_Cave after O_dam;
+# Don't go this way yet either
+link Maze after O_dam;
+link Troll_Maze after O_dam;
+
+# After the dam go to Hades before the resovoir
+link Res after Remove_Spirits;
+link Stream_View after Remove_Spirits;
+
+join Slide_Cellar after R_basket;
+link CaveN after P_diamond;	# Put the diamond in the case first
+item figurine need diamond;	# get this on the way out
+item bracelet need diamond;	# get this on the way out
+
+#link Timber_Room need matchbook candles; #incase the thief takes the lantern
+
+task "" tag end in Barrow;
+
+#link Res after P_skull;
+#link Stream after P_skull;
+#link Stream_View after P_skull;
+
+#join StudioKitchen before P_painting;
+#item sword after P_painting;
+#task P_coins after G_egg;
+#task P_chalice need bauble;
+#task P_canary need bauble;
+#task P_egg need bauble;
+#task P_coffin after W_sceptre;
+#task P_sceptre after W_sceptre;
+
+#task M_cyclops need egg;
+#link TreasureRoom need egg;
+#item torch need matchbook;
+#item bell need matchbook;
+#item jewels after P_skull;
+#item air_pump after P_skull;
+#item trident after P_skull;
+#item figurine need diamond;
+#item bracelet after Use_machine;
+#join Mirror need skull;
+
+# Leave the knife upstairs until after we've given the egg to the thief.
+# That gives him time to open the egg.
+task "Drop knife" in Living_Room need knife drop it until G_egg;
+
+# EOF

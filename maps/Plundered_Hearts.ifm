@@ -1,0 +1,251 @@
+# PLUNDERED HEARTS
+# map, items, and tasks
+#
+# Okay, so this is pretty sloppy, I admit.  But the task list does the game,
+# the maps are good enough, and the item list is eclectic but useful. :)
+# Enjoy the bodice-ripping action (note: no bodices are actually harmed
+# in the production of this game).
+#
+# Russ Smith <superboy@LSH.org>
+#
+# $Id: Plundered_Hearts.ifm,v 1.2 2000/02/05 03:56:42 dchapes Exp $
+
+
+title "Plundered Hearts";
+
+item "reticule";
+item "smelling salts";
+item "banknote";
+item "kid slippers";
+item "linen chemise";
+item "cotton frock";
+
+map "Lafond Deux";
+
+room "Cabin";
+item "coffer" tag coffer;
+item "missive" tag missive;
+task "stand";
+task "wait" get coffer;
+task "wait some more" need coffer give missive;
+task "read missive" need missive need coffer lose coffer;
+task "yes" goto deck;
+
+room "Deck" tag deck dir e nolink;
+task "wait" goto quarters;
+
+map "Helena Louise";
+
+room "Captain's Quarters" tag quarters;
+item "jewelled brooch" tag brooch hidden;
+item "invitation" tag invitation;
+task "stand";
+task "wait a bunch more" give brooch;
+task "open coffer" after last get invitation;
+task "break window with coffer" after last need invitation need coffer score 1;
+task "sit on ledge" need mirror need bottle;
+task "get ladder" after last goto ladder;
+
+room "On the Ladder" tag ladder dir s nolink;
+task "up repeatedly" tag been_to_poop goto poop score 1;
+
+room "Poop" tag poop dir w nolink;
+join poop to ladder go down after been_to_poop;
+join ladder to quarters go north after been_to_poop oneway;
+join quarters to poop go up after been_to_poop oneway;
+
+room "Quarterdeck" dir n;
+item "slab of pork" tag pork;
+task "enter cask" after save_ship;
+task "get pork" follow last give pork;	
+task "cut rope with dagger" follow last need dagger goto lagoon score 1 lose dagger;
+
+room "Main Deck" dir n;
+item "barrels";
+task "put rag in water" tag wet_rag need rag;
+
+room "Forecastle" tag fore dir n;
+item "winch";
+task "pull lever up" score 1;
+
+room "In the Rigging" dir w go up;
+
+room "Crow's Nest" dir w go up;
+
+room "Galley" dir sw from fore go in after save_ship;
+item "dagger" tag dagger;
+
+room "Bowsprit" dir n from fore;
+item "rag" tag rag;
+task "mess around until shirt tears" get rag;
+
+room "Landing" tag landing dir n from quarters exit w;
+task "open cupboard";
+
+room "Sleeping Cupboard" dir n go in;
+item "breeches" tag breeches;
+item "shirt" tag shirt;
+task "get clothes" give breeches give shirt score 1;
+task "remove frock";
+task "wear shirt" after last need shirt;
+task "wear breeches" after last need breeches;
+
+room "Aft Hold" dir e from landing go down;
+
+room "Hold" dir n n exit w;
+task "throw rag on fire" tag save_ship after wet_rag need rag lose rag score 1;
+
+room "Crew's Quarters" dir n;
+item "small bottle" tag bottle score 1;
+item "piece of mirror" tag mirror;
+
+map "Island";
+
+room "Lagoon" tag lagoon;
+task "wait a few times" goto shallows;
+
+room "Shallows" tag shallows dir w nolink;
+task "exit cask" need pork;
+
+room "Beach" dir w;
+task "wait a while" after descend;
+task "yes" follow last;
+task "get pistol" follow last;
+task "load pistol" follow last need horn score 1;
+task "shoot Crulley" follow last need gown finish score 1;
+
+room "Lawn" tag lawn dir n go up;
+
+room "Folly" dir e;
+task "pull slat" tag pull_slat;
+task "get mushy with Jamison" follow last;
+
+room "In the Hedge" dir e after pull_slat;
+
+room "By the House" dir n;
+task "open window" tag open_window;
+join last to library after open_window go west;
+
+room "Forest" tag forest dir w from lawn;
+
+room "Clearning" dir ne;
+join last to bedroom go up;
+
+room "Trade Entrance" dir n from forest;
+join last to kitchen go east;
+
+room "Main Entrance" tag main dir n e;
+
+room "Front Drive" dir n;
+
+map "House";
+
+room "Kitchen" tag kitchen;
+item "garter";
+
+room "Hall" dir s;
+
+room "Foyer" tag foyer after worn_gown dir e;
+task "show invitation to butler" need invitation score 1 lose invitation;
+task "cookie, follow me" tag cookie after ko;
+
+room "Ballroom" after worn_gown after open_trap tag ball dir s from foyer;
+task "dance with Jamison";
+task "open door" tag dance_1 after last;
+task "dance with Lafond" after dance_2 score 1;
+task "wait for butler" tag lafond_time goto foyer follow last;
+task "get all" after descend;
+
+room "Orchestra" dir w;
+
+room "Supper Room" dir e from ball;
+
+room "East Hallway" dir n;
+link last to foyer dir w;
+
+room "Library" tag library dir n after worn_gown;
+task "get hat";
+task "pull treatise" follow last score 1;
+task "push sinistra" tag foo follow last score 1;
+task "get hat" after ko;
+task "pull treatise" follow last;
+task "push sinistra" follow last;
+
+room "Stairwell" tag stairwell dir n after foo before ko;
+link library to last dir n after last;
+
+room "Veranda" dir s from ball after dance_1;
+join lawn to last go north;
+task "wait" tag dance_2 after dance_1;
+
+map "House (Upstairs)";
+
+room "Bedroom" tag bedroom need shirt need breeches;
+item "ball gown" tag gown after free_dad;
+task "undress";
+task "wear gown" follow last tag worn_gown need gown score 1;
+
+room "Upstairs Hall" tag uhall dir n;
+
+room "Parlour" dir n;
+
+room "Stair Landing" dir e from uhall;
+join last to foyer go down;
+
+room "Upstairs Hall" tag uhall2 dir e;
+task "open door" after lafond_time;
+
+room "Lafond's Bedroom" dir n after last oneway score 1;
+task "drink wine";
+task "squeeze bottle in green" after last need bottle;
+task "pour wine in green" after last;
+task "put mirror in moonbeam" after last need mirror score 1;
+task "get spices" after last;
+task "yes" after last;
+task "throw spices at lafond" after last score 1;
+task "south" after last;
+task "give green to butler" after last;
+task "wait a bit" tag ko after last score 1;
+link last to uhall2 dir s after last;
+
+room "Gallery" dir s from uhall2;
+task "untie rope" after ko;
+task "go down with rope" tag descend after free_nick score 1 goto ball;
+
+map "House (underneath)";
+
+room "Bottom of Stairwell" tag b_stairwell;
+join stairwell to last go down;
+
+room "Anteroom" dir s;
+task "squeeze bottle on pork" need bottle need pork;
+task "give pork to crocodile" need pork after last lose pork;
+task "wait a bit" after last score 1;
+
+room "Dungeon" dir s;
+item "rapier" tag rapier after ko;
+task "open trapdoor" tag open_trap;
+task "fight Crulley with rapier" need rapier score 1;
+task "again" need rapier after last;
+task "close trapdoor" after last;
+task "give salts to nicholas" after last score 1;
+task "unlock manacles with brooch" tag free_nick after last need brooch score 1;
+
+room "Corner" dir w;
+task "unlock door with key" need key;
+task "open door" after last;
+
+room "Cell" dir n after last score 1;
+item "father";
+task "father, follow me" tag free_dad;
+
+room "North Passage" tag n_pass dir e from b_stairwell;
+
+room "Guard's Bunkroom" dir e;
+item "powder horn" tag horn;
+item "key" tag key score 1;
+
+room "South Passage" dir s from n_pass;
+
+room "Cell" dir e;
+

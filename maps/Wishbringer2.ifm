@@ -1,0 +1,246 @@
+### Wishbringer
+### IFM rendition v1.0 by Russ Smith <superboy@LSH.org>
+### maps (such as they are), items, tasks
+###
+### WARNING: dumping a -f rec of the tasks is foolish and inane.
+### Wishbringer does not lend itself to recorded play; a human touch
+### is needed to properly apply this as a walkthrough.  Still, it helps. :)
+###
+### $Id: Wishbringer2.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+
+title "Wishbringer";
+
+map "Town";
+
+room "Hilltop" tag hilltop exit s w e;
+task "say sorkin" tag said_sorkin after change score 3;
+
+room "Post Office" tag po dir s score 1;
+item "mysterious envelope" tag envelope hidden score 5;
+task "wait" in po get envelope;
+
+room "Outside Cemetary" dir w from hilltop before change;
+
+room "Creepy Corner" dir w;
+
+room "Spooky Copse" tag copse dir n;
+
+room "Open Grave" tag grave dir e go down;
+item "old bone" tag bone score 1;
+
+map "Underground";
+
+room "Underground" after change need stone;
+join grave to last go n;
+link last to u2 dir e;
+
+room "Underground" dir n;
+task "open stump" tag open_stump;
+join last to hill after open_stump go up;
+
+room "Underground" tag u1 dir e;
+
+room "Grue's Nest" dir e;
+item "bottle" tag bottle;
+item "earthworm" tag earthworm score 3;
+task "put blanket on beast" in last need blanket score 3 lose blanket;
+task "open refrigerator" in last after last get bottle get earthworm;
+
+room "Underground" tag u2 dir s from u1;
+
+room "Outside Cottage" tag oc dir e from hilltop before go_rotary;
+link oc to hilltop dir w after open_hatch hidden;
+task "give bone to poodle" tag give_bone need bone lose bone in last score
+3;
+task "n" tag go_rotary follow give_bone goto rotary_s;
+task "alexis, heel" tag heel after read_note score 5;
+task "open door" tag open_cottage after heel;
+
+room "Cottage" dir e after open_cottage;
+item "steel key" tag steel_key score 3;
+
+room "Rotary South" tag rotary_s dir n from oc after go_rotary;
+item "violet note" hidden tag slip score 3 note "for Crisp";
+task "wait" in last get slip;
+task "unlock door with steel key" need steel_key in last score 3;
+
+room "Rotary East" tag rotary_e dir e n exit n w;
+item "ticket" tag ticket hidden score 3;
+task "give coin to voss" after change in last need coin lose coin give
+ticket;
+
+room "Pleasure Wharf" tag wharf dir e;
+task "wait" tag mailbox_war after open_mailbox;
+
+room "Wharf's End" dir e;
+item "seahorse" tag seahorse;
+task "throw seahorse in water" need seahorse lose seahorse;
+
+room "Video Arcade" dir s from wharf;
+task "put token in machine" in last need token after sorkin score 1 lose
+token;
+task "push joystick west" follow last;
+task "push joystick west" follow last;
+task "push joystick south" follow last;
+task "push joystick south" follow last;
+task "push button" follow last score 5 goto hilltop;
+
+room "Tidal Pool" dir n from wharf before change;
+item "conch shell" tag shell;
+
+room "Lighthouse" dir n;
+task "put hat on pelican" tag sorkin need hat lose hat score 5;
+
+room "Rocky Path" tag path dir w;
+
+room "South of Bridge" tag s_bridge dir w;
+
+room "Bridge" tag bridge dir n;
+
+room "North of Bridge" dir n before change;
+item "small stone" tag stone hidden score 5;
+link last to bridge dir s after open_gate;
+task "open can" tag open_can in last after change need can drop can score 3;
+task "open gate" tag open_gate after last in last;
+task "squeeze can" after open_can after change need can;
+task "get stone" after last give stone;
+
+room "Cliff Bottom" tag cliff dir e;
+item "dead branch" tag branch;
+task "get branch" in last get branch;
+
+room "Steep Trail" dir n go up before change;
+link last to cliff dir s go down oneway after change;
+
+room "Steep Trail" dir w;
+
+room "Steep Trail" dir n n;
+
+room "Steep Trail" dir n go up;
+
+room "Steep Trail" dir e e;
+
+room "Steep Trail" dir s;
+
+room "Cliff Edge" tag edge dir s go up score 1;
+task "open door" tag open_door in last;
+task "knock on door" after wishbringer in last finish;
+
+room "Magick Shoppe" dir w after open_door before change;
+item "metal can" tag can hidden score 3;
+task "wait" tag w4 in last;
+task "wait" tag w5 follow w4;
+task "give envelope to woman" need envelope in last after w5 score 5;
+task "open envelope" in last follow last;
+task "read letter to woman" in last follow last lose envelope score 1;
+task "wait" in last follow last get can;
+task "wait" in last need can;
+task "wait" tag change in last follow last goto edge;
+
+room "River Outlet" tag outlet dir w w w w from s_bridge;
+
+room "Lookout Hill" tag hill dir n go up;
+item "horseshoe" tag horseshoe;
+
+room "Lake Edge" tag lake dir s s from outlet;
+item "silver whistle" tag whistle score 3;
+task "put branch in pit" in last after last need branch drop branch;
+task "get branch" after last score 5;
+task "drop branch" after last;
+task "dig in sand" after last get whistle;
+task "blow whistle" need whistle goto island;
+
+room "Twilight Glen" dir s after change;
+item "umbrella" tag umbrella;
+link last to copse dir e;
+
+room "Rotary West" tag rotary_w dir e e e from lake;
+link last to rotary_s dir s e;
+
+room "Rotary North" tag rotary_n dir n e;
+link last to s_bridge dir n;
+link last to rotary_e dir e s;
+
+room "Park" tag park dir s;
+link park to rotary_w dir w;
+link park to rotary_e dir e;
+link park to rotary_s dir s;
+item "gold coin" tag coin before change score 1;
+item "brass token" tag token after change score 3;
+task "examine fountain" get coin;
+task "examine fountain" tag piranha after change;
+task "drop worm in fountain" after piranha need earthworm get token lose
+earthworm;
+task "wait around" after change goto cell drop all in cell;
+
+map "Miscellany";
+
+room "Jail Cell" tag cell;
+item "thick blanket" tag blanket score 3;
+task "move bunk" in last;
+task "drop all in hole" in last after last drop all in u2;
+join last to u2 after last go down;
+
+room "Police Station" dir e nolink;
+join last to rotary_w go out before change;
+item "piece of chocolate" tag chocolate;
+
+room "Theater Lobby" dir e e nolink;
+join last to rotary_e go out after change;
+task "show ticket to gravedigger" tag shown_ticket in last need ticket lose
+ticket;
+
+room "Inside Theater" dir n after shown_ticket;
+item "pair of 3D glasses" tag glasses score 3;
+task "examine floor" in last get glasses;
+
+room "Church" dir w nolink;
+join last to rotary_n go out;
+item "candle" tag candle after change;
+
+room "Circulation Desk" dir s s nolink;
+join rotary_s to last go in;
+
+room "Museum" dir s;
+task "break cast with broom" in last need broom;
+task "put stone in hole" tag wishbringer after last in last need stone score
+5 goto edge;
+
+room "West of House" dir n n n n nolink;
+join last to path go north after change;
+task "open mailbox" tag open_mailbox;
+
+room "Misty Island" tag island dir w nolink;
+
+room "Throne Room" dir w;
+item "wizard's hat" tag hat hidden score 1;
+task "wait" in last get hat;
+task "wait" need hat;
+task "blow whistle" after last need whistle lose whistle goto lake;
+
+map "The Tower";
+
+room "Vestibule" tag vestibule;
+join hilltop to last after said_sorkin go south;
+task "wait" in last goto torture;
+
+room "Torture Chamber" tag torture dir s w nolink;
+item "white lab coat" tag coat;
+item "rusty key" tag key score 3;
+task "give note to Crisp" in last need slip drop slip get coat;
+task "search coat" need coat get key;
+task "unlock chains with key" need key score 1;
+task "pull lever" after last;
+task "read note" tag read_note need slip after last score 3;
+task "open hatch" tag open_hatch after last;
+
+room "Round Chamber" dir e go up after open_hatch;
+link last to vestibule dir n after open_hatch;
+task "push paintings";
+task "turn crank" tag open_bridge after last score 1;
+
+room "Laboratory" dir e go up;
+item "broom" tag broom;
+task "wear glasses" need glasses in last;
+task "pull first" in last;
+task "pull second" in last after last score 3;

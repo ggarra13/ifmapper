@@ -1,0 +1,134 @@
+# IFM Map for "Cattus Atrox" by David A. Cornelson
+# Based on Release 3 / Serial number 981001
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: atrox.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+title "Cattus Atrox";
+
+########################################################################
+# Starting items
+
+item "napkin" tag napkin;
+
+########################################################################
+map "Streets";
+
+room "Sidewalk" tag Start exit w;
+room "Back Door of Scott's House" dir sw style special after Susan_Drive;
+room "Outside Scott's Apartment" dir n go in;
+room "Scott's Kitchen" dir nw go in;
+	task "wait" cmd "z.z.z.z" goto Living_Room;
+room "Living Room" tag Living_Room dir e;
+	task "get up" follow last;
+	task "listen" follow last;
+	task "listen" follow last;
+	task "wait" cmd "z" 14;
+	task "loosen ropes" follow last;
+	task "free hands" follow last;
+	task "get gun" need gun follow last;
+	task "push Karl" follow last;
+	task "push Scott" follow last;
+	task "push Susan" follow last;
+
+
+room "Sidewalk" dir n from Start;
+room "Sidewalk" dir n;
+room "Sidewalk" dir n;
+room "Driveway" tag Driveway dir n;
+	item "station wagon";
+	item "Karl";
+	task "wait" cmd "z.z.z.z.z.z.z" tag Wait;
+room "Car" dir nw from Driveway go in style special after Wait_Karl;
+	task "x ignition" tag X_ignition get key;
+	item "key" tag key hidden;
+	task "unlock glove box with key" need key;
+	task "open it" follow last get gun;
+	item "gun" tag gun hidden;
+	task "hide gun" need gun;
+
+room "Street" tag Street_A dir e from Driveway after Wait;
+room "Intersection" tag Intersection dir n;
+room "Street" dir n;
+	task "x street";
+	task "open grate" after last;
+	join last to Sewer go down oneway after last;
+	join Ladder to last go up oneway after last;
+
+room "Street" dir e from Intersection;
+room "Street" dir e;
+room "Street" tag Street_B dir e exit e;
+room "Alley" dir s s;
+room "Alley" dir s s;
+room "Back of House" dir w;
+room "Front of House" dir w;
+room "Street" dir w;
+room "Street" dir n;
+room "Street" dir n link Street_A;
+
+room "Street" dir e from Street_B;
+room "Street" dir e link Street_5;
+
+room "Alley" dir n n from Street_B;
+room "Alley" dir n n n;
+room "Alley" dir e e;
+room "Street" dir e;
+room "Street" dir s exit e;
+room "Street" dir s exit e;
+room "Street" tag Street_3 dir s;
+	task "wait for Karl" cmd "z" tag Wait_Karl follow Ask_Susan;
+room "Street" dir s exit e;
+	item "phone";
+	task "call susan";
+	task "ask susan for help" tag Ask_Susan follow last;
+room "Street" tag Street_5 dir s exit e;
+room "Street" dir s exit e;
+room "Street" dir s exit e;
+room "Street" dir s exit e;
+room "Street" dir s;
+	task "wait for Susan" cmd "z" tag Wait_Susan;
+	task "wait for her to drive to Scott's" tag Susan_Drive
+		cmd "z" 9 follow last goto Start;
+
+########################################################################
+map "Sewers";
+
+room "Top of Ladder" tag Ladder;
+room "Sewer" tag Sewer dir w go down;
+	item "iron ladder";
+room "Sewer" dir n;
+room "Sewer" dir n;
+room "Sewer" dir e;
+	item "crowbar" tag crowbar;
+	task "wait" need crowbar;
+	task "kill lion" need crowbar follow last;
+	task "kill lion" need crowbar follow last;
+	task "kill lion" need crowbar follow last;
+room "Sewer" dir e;
+room "Sewer" dir e;
+room "Sewer" dir e;
+room "Sewer" dir e;
+room "Sewer" dir e;
+room "Sewer" tag Sewer_E dir s;
+room "Top of Ladder" dir e go up;
+	task "open grate";
+	join last to Street_3 go up oneway after last;
+	join Street_3 to Sewer_E go down oneway after last;
+
+room "Sewer" dir s from Sewer_E;
+room "Sewer" dir s;
+room "Sewer" dir w;
+room "Sewer" dir w;
+room "Sewer" dir w tag Sewer_S;
+room "Sewer" dir w;
+room "Sewer" dir w;
+room "Sewer" dir w link Sewer;
+
+########################################################################
+# Modify some of the above to help IFM generate a workable walkthrough
+
+task "(just used to force this path)" cmd none in Sewer_S follow Wait_Karl;
+task X_ignition follow last;
+task Wait_Susan need gun;
+
+# EOF

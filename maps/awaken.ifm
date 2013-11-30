@@ -1,0 +1,116 @@
+# IFM Map for "The Awakening" by Dennis Matheson
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+
+# $Id: awaken.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+
+title "The Awakening";
+
+########################################################################
+map "Outside";
+
+room "In the Mud";
+room "Graveyard" dir n go up oneway;
+	item "broken limb";
+room "West Side of Church" tag W_Church dir e;
+	task "" follow kick_dog note "lead the dog around the church...";
+room "North Side of the Church" dir ne;
+	task "" follow last note "still leading the dog...";
+room "East Side of the Church" dir se;
+	task "" tag leading_dog follow last note "still leading the dog...";
+	item "gravel";
+room "Front of the Church" tag S_Church dir sw link W_Church exit s;
+	item "dog";
+	task "kick dog" tag kick_dog;
+	task "" tag lead_dog follow leading_dog note "now the dog is tied up";
+	task "put railing against tree" tag tree_ladder
+		need railing drop it;
+room "Top of Oak Tree" tag Tree_Top dir se go up style special after tree_ladder;
+room "to Belfry" tag j_belfry dir n style puzzle;
+
+room "inside" tag j_church dir n from S_Church after lead_dog style special puzzle;
+
+
+########################################################################
+map "Inside the Church";
+
+room "exit" style puzzle join j_church;
+room "Church Porch" tag Church_Porch dir n after lead_dog score 10;
+	item "railing" tag railing;
+room "Vestibule" tag Vestibule dir n;
+	task "put railing under trap door. climb railing" tag trap_ladder
+		need railing drop it goto Steeple_Chamber score 5;
+	        # The score is for passing through the trap door
+	task "put railing under trap door. climb railing" tag trap_ladder2
+		need railing drop it goto Steeple_Chamber after push_bell;
+room "Sanctuary" tag Sactuary dir n;
+	item "glass shards";
+	item "portrait";
+	task "put railing under painting" tag painting_ladder
+		need railing drop it until look; #optional
+room "Near Painting" tag Painting dir ne go up style special
+		after painting_ladder
+		cmd to "climb railing" cmd from "D";
+	task "look through holes" tag look; #optional
+
+room "Pulpit" dir n from Sactuary;
+	item "podium";
+	task "x podium" note "reveals book";
+	item "book" tag book hidden after last;
+	task "read book" need book;
+room "Small Office" dir n;
+	item "desk";
+	item "bookshelf";
+	item "journal" tag journal;
+	item "robe";
+	item "ashes" tag ashes lost;
+	item "glass shards";
+	task "x shards" note "reveals stopper"; #optional
+	item "stopper" hidden ;#after last;
+	task "search journal" note "indentations" need journal;
+	task "rub ashes on the journal" after last need ashes journal;
+	task "read journal" after last need journal score 5;
+	task "search bookshelf";
+	task "push it" follow last note "reveals grimoire";
+	item "grimoire" tag grimoire hidden after last;
+	task "read grimoire" need grimoire;
+
+room "Steeple Chamber" tag Steeple_Chamber dir e from Vestibule go up
+		style special after trap_ladder;
+	item "door";
+	item "rope";
+	task "tie rope to door" tag tie_rope;
+room "Belfry" tag Belfry dir ne go up before push_bell;
+	item "bell";
+	item "rope";
+	task "push bell" tag push_bell after tie_rope tree_ladder score 10
+		note "make sure the ladder is against the tree first";
+room "to tree" dir s style puzzle join j_belfry;
+
+room "Inner Chamber" dir n from Steeple_Chamber style special after push_bell
+		score 5 exit n s;
+	item "sofa";
+	item "table";
+	item "purple curtain";
+	item "old man";
+	item "oil lantern";
+	item "green bottle" tag green lost;
+	item "blue bottle";
+	item "mirror" hidden;
+	task "N" score 5 note "reveals mirror";
+	task "open mirror" after last; #optional
+	task "look through holes" after last; #optional
+	task "break green bottle" score 10 finish;
+
+
+########################################################################
+# Tweaks to help the solver generate a working walkthrough
+
+# Joins
+join S_Church to Church_Porch hidden cmd to "N" cmd from "S" after lead_dog;
+join Tree_Top to Belfry hidden cmd to "N" cmd from "S";
+
+# No point going up the tree until the rope is tied
+task tree_ladder after tie_rope drop railing until push_bell;
+
+
+# EOF

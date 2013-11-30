@@ -1,0 +1,72 @@
+# IFM Map for "So Far" by Andrew Plotkin
+# Based on Release 6 / Serial number 961218
+#
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: SoFar.ifm,v 1.1 2003/01/11 20:28:03 dchapes Exp $
+#
+
+# Mark the starting location
+room_border_width = 2 in style Start;
+
+title "So Far";
+
+########################################################################
+map "Theater";
+
+room "Lower Theater"		style Start start;
+  task "watch play"		cmd "z" 12 tag watch_play;
+
+room "Theater Near Aisle"	dir w after watch_play;
+
+room "Lower Aisle"		dir w;
+
+room "Halfway Up Aisle"		dir s;
+  task "feel air";
+
+room "Upper Aisle"		dir s;
+
+room "Theater Portico"		dir s exit s;
+
+room "West Portico"		dir w;
+  task "feel air";
+  task "listen"			cmd "listen" 2 follow last;
+  task "x sky"			follow last;
+  task "x shrubs"		tag X_shrubs follow last;
+  task "x doorway"		follow last;
+
+room "Theater Hall, South"	dir n style special;
+
+room "Theater Hall, North"	dir n exit n;
+
+room "Theater Storage"		tag Storage dir w;
+  item "cabinet";
+  task "open cabinet"		note "reveals wooden box";
+  item "wooden box"		hidden;
+  task "look behind the cabinet"	tag LB_cabinet note "reveals shadow";
+
+########################################################################
+map "Road";
+
+room "Abandoned Road"		tag Abandoned_Road;
+  join Storage to Abandoned_Road cmd "enter shadow" oneway after LB_cabinet;
+
+room "Abandoned Road, at Chimney"	tag Chimney dir n;
+  item "brick";
+  task "x chimney"		tag X_chimney;
+
+########################################################################
+map "Field";
+
+room "Field Behind Platform"	tag Field;
+  join Chimney to Field cmd "enter shadow" after X_chimney;
+  item "hay";
+  task "x bales";
+
+room "On the Platform"		dir w;
+
+room "Dusty Yard"		dir sw;
+
+# Not required, just makes the generated walkthrough nicer
+
+# EOF

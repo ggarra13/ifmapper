@@ -1,0 +1,186 @@
+# IFM Map for "Planetfall" by Infocom
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Planetfall.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+title "Planetfall";
+
+########################################################################
+# Maps
+map "Aboard the S.P.S. Feinstein";
+
+room "Deck Nine" tag Deck9 start;
+room "Reactor Lobby" dir e exit s e;
+room "Gangway" dir n from Deck9 go up;
+room "Deck Eight" dir n go up exit n w e;
+
+room "Escape Pod" tag Pod dir w from Deck9 style special;
+
+########################################################################
+map "Complex One (Kalamontee Kompleks)";
+
+room "Escape Pod" tag Pod2;
+	join Pod to Pod2 oneway;
+	item "towel";
+	item "survival kit";
+room "Underwater" dir n go out;
+room "Craig" dir n go up;
+room "Balcony" dir n go up;
+room "Winding Stair" dir n go up;
+room "Courtyard" tag Courtyard dir n go up;
+room "West Wing" dir w;
+room "Plain Hall" dir n from Courtyard link Rec_Cor;
+room "Rec Area" tag RecArea dir n;
+room "Conference Room" dir n style special;
+room "Booth 1" tag Booth1 dir n;
+room "Rec Corridor" tag Rec_Cor dir e from RecArea;
+room "Dorm A" dir s;
+room "SanFac A" dir s;
+room "Dorm B" dir n from Rec_Cor;
+room "SanFac B" dir n;
+room "Mess Corridor" tag Mess_Cor dir e from Rec_Cor;
+	item "padlock";
+room "Storage West" dir n style special;
+room "Mess Hall" dir s from Mess_Cor;
+	item "canteen";
+room "Kitchen" dir s style special;
+room "Dorm Corridor" tag Dorm_Cor dir e from Mess_Cor;
+room "Dorm C" dir s;
+room "SanFac C" dir s;
+room "Dorm D" dir n from Dorm_Cor;
+room "SanFac D" dir n;
+
+room "Corridor Junction" tag Cor_Junction dir e e e from Dorm_Cor;
+room "Admin. Corridor South" tag Admin_Cor_S dir n;
+room "SanFac E" dir e;
+room "Admin. Corridor" tag Admin_Cor dir n from Admin_Cor_S;
+room "Systems Monitors" dir w;
+room "Admin. Corridor North" tag Admin_Cor_N dir n from Admin_Cor style special;
+room "Plan Room" dir e;
+room "Tranportation Supply" dir n from Admin_Cor_N;
+room "Small Office" dir w from Admin_Cor_N;
+room "Large Office" dir w;
+
+room "Mech. Corridor North" tag Mech_Cor_N dir s from Cor_Junction;
+room "Storage East" dir e;
+	item "oil can";
+	item "cardboard box";
+	item "cracked fromitz board";
+	item "B-series megafuse";
+	item "K-series megafuse";
+	item "good bedistor";
+room "Physical Plant" tag Phys_Plant dir w sw from Mech_Cor_N;
+room "Mech. Corridor" tag Mech_Cor dir s s from Mech_Cor_N;
+	link Phys_Plant to Mech_Cor dir se;
+room "Reactor Monitors" tag Reactor_Mon dir e;
+room "Reactor Elevator" dir e style special;
+room "Reactor Access Stairs" dir se from Reactor_Mon go down exit se;
+room "Mech. Corridor South" tag Mech_Cor_S dir s from Mech_Cor;
+room "Tool Room" dir sw;
+	item "pliers";
+	item "flask";
+	item "laser";
+	item "curved bar";
+room "Machine Shop" dir e link Mech_Cor_S;
+room "Robot Room" dir e link Mech_Cor_S;
+	item "multiple-purpose robot";
+
+room "Elevator Lobby" tag Elev_Lobby dir e e e from Cor_Junction;
+room "Booth 2" tag Booth2 dir e join Booth1;
+room "Upper Elevator" tag Upper_Elev dir n from Elev_Lobby style special;
+room "Lower Elevator" tag Lower_Elev dir s from Elev_Lobby style special;
+
+########################################################################
+map "Observation Deck";
+
+room "Upper Elevator" join Upper_Elev;
+room "Tower Core" tag Tower dir s style special;
+room "Comm Room" dir ne;
+room "Helipad" dir e from Tower go up;
+room "Observation Deck" dir sw from Tower;
+
+########################################################################
+map "Kalamontee Station";
+
+room "Lower Elevator" join Lower_Elev;
+room "Waiting Area" dir n style special;
+room "Kalamontee Station" tag Station dir e e e;
+room "Shuttle Car Alfie" tag Alfie dir s;
+room "Alfie Control West" dir w;
+room "Alfie Control East" dir e from Alfie;
+room "Shuttle Car Betty" tag Betty dir n from Station;
+room "Betty Control West" dir w;
+room "Betty Control East" dir e from Betty;
+
+########################################################################
+map "Complex Two (Lawanda Kompleks)";
+
+room "Alfie Control West";
+room "Shuttle Car Alfie" tag Alfie2 dir e join Alfie;
+room "Alfie Control East" dir e;
+room "Lawanda Platform" tag Platform dir n from Alfie2;
+room "Shuttle Car Betty" tag Betty2 dir n join Betty;
+room "Betty Control West" dir w;
+room "Betty Control East" dir e from Betty2;
+
+room "Escalator" dir e e from Platform;
+room "Fork" tag Fork dir e;
+room "Systems Corridor West" tag Sys_Cor_W dir ne;
+room "Infirmary" dir nw;
+	item "red spool";
+	item "medicine";
+	item "medicine bottle";
+room "Repair Room" dir n from Sys_Cor_W exit n;
+	item "broken robot";
+room "Systems Corridor" tag Sys_Cor dir e from Sys_Cor_W;
+room "Planetary Defense" dir n;
+room "Systems Corridor East" tag Sys_Cor_E dir e from Sys_Cor;
+room "Planerary Course Control" dir n;
+room "Physical Plant" dir e from Sys_Cor_E;
+room "Library Lobby" tag Lib_Lobby dir s from Sys_Cor_E;
+	item "green spool";
+room "Library" dir w;
+room "Booth 3" tag Booth3 dir e from Lib_Lobby join Booth1 Booth2;
+room "Project Corridor East" tag Proj_Cor_E dir s from Lib_Lobby;
+room "Computer Room" dir s link Lab;
+	item "print-out";
+room "Miniaturization Booth" tag Mini_Booth dir s;
+room "Project Corridor" tag Proj_Cor dir w from Proj_Cor_E;
+room "ProjCon Office" dir s;
+room "Cryo Elevator" tag Cryo_Elev dir s style special;
+room "Project Corridor West" tag Proj_Cor_W dir w from Proj_Cor link Fork;
+room "SanFac F" dir w;
+
+room "Main Lab" tag Lab dir e from Proj_Cor_E;
+room "Lab Storage" dir s;
+	item "new battery";
+	item "lab uniform";
+room "Radiation Lock West" dir ne e from Lab;
+room "Radiation Lock East" dir e;
+room "Radiation Lan" dir e;
+	item "brown spool";
+	item "portable lamp";
+room "Bio Lock West" dir se e from Lab;
+room "Bio Lock East" dir e;
+room "Bio Lab" dir e style special puzzle;
+	item "miniturization access card";
+room "Lab Office" dir e style special;
+room "Auxiliary Booth" tag Aux_Booth dir s;
+
+########################################################################
+map "Station 384";
+
+room "Station 384" tag Station384;
+	join Mini_Booth to Station384 oneway;
+	join Station384 to Aux_Booth oneway;
+room "Strip Near Station" dir e;
+room "Middle of Strip" dir n;
+room "Strip Near Relay" dir n;
+
+########################################################################
+map "Cryogenics";
+
+room "Cryo Elevator" join Cryo_Elev;
+room "Cryo Anteroom" dir n exit n;
+
+# EOF

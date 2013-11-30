@@ -1,0 +1,154 @@
+########################################################################
+# IFM map for "Windhall Chronicles" by Jeff Cassidy and C.E.Forman
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: windhall.ifm,v 1.1 1998/09/18 12:37:51 dchapes Exp $
+#
+# Status: No tasks, map not yet complete, item notes
+########################################################################
+
+title "Windhall Chronicles";
+
+########################################################################
+
+room "Central Windhall"		tag Central;
+
+room "Sir Gunther's House"	dir w;
+  item "Sir Gunther";
+  item "basket";
+
+room "Baezil's Bakery"		dir e from Central;
+  item "Baezil";
+  item "habba nuts"		note "Give them to squirrel";
+  item "dough"			note "Shape it into tube and roll";
+
+room "Northern Windhall"	dir n from Central tag Northern;
+
+room "Creston's Shop"		dir w;
+  item "Creston";
+  item "potion";
+
+room "Kytan's Trading Post"	dir n from Northern tag Kytan;
+  item "Kytan";
+  item "lamp";
+
+room "Southern Windhall"	dir s from Central tag Southern;
+
+room "Borthur's Smithy"		dir w;
+  item "Borthur"		note "Ask him for money";
+  item "hammer";
+  item "piece of metal";
+
+room "Mielon and Idah's House"	dir e from Southern;
+  item "Mielon";
+  item "Idah"			note "Ask her for twine";
+  item "twine";
+  item "laundry";
+
+room "Old Cellar"		dir n from Kytan go d tag Cellar;
+
+room "Stack of Crates"		dir sw;
+  item "loose crate";
+  item "wine bottle";
+
+room "Rocky Cavern"		dir w from Cellar;
+
+room "Cave Entrance"		dir sw;
+
+room "Old Cave"			dir s;
+  item "evil lord";
+
+room "West of Swamp"		dir e from Northern tag W_Swamp;
+
+room "Shallow Swamp"		dir e tag Shallows;
+
+room "Deep Swamp"		dir se;
+
+room "Swampy Grasslands"	dir s tag Grass;
+  item "blue stone"		hidden;
+
+room "Lyndra Lake 1"		dir e tag LL1;
+
+room "Ivy Coast 3"		dir n link Grass tag IC3;
+  item "pelican";
+  item "worm";
+
+room "South of Lake"		dir se from Grass link LL1;
+
+room "Lyndra Lake 2"		dir ne;
+
+room "Ivy Coast 2"		dir n from IC3 tag IC2;
+
+room "Ivy Coast 1"		dir n tag IC1;
+  item "skeleton";
+
+room "Mires"			dir e from Shallows;
+  item "mire cat";
+
+room "Near Lyndra River"	dir ne from W_Swamp;
+
+room "River Bridge"		dir ne link IC1;
+
+room "Small Hollow"		dir ne;
+  item "Denvil";
+  item "wild flowers";
+
+room "North of Forest"		dir s from Southern tag N_Forest;
+
+room "Forest Path"		dir se tag Path;
+
+room "Grassy Glen"		dir e tag Glen;
+
+room "Forest Bend"		dir s from Path tag Bend;
+
+room "Forest of Ansalon"	dir e tag Forest;
+  item "squirrel"		note "Give it the nuts";
+  item "green stone";
+
+room "Cliffs of Mydar 2"	dir se tag CM2;
+  item "elven bowman";
+
+room "South of Forest"		dir s from Forest link CM2 tag S_Forest;
+
+room "Small Glen"		dir se;
+  item "pedestal";
+
+room "Rocky Plains"		dir sw from Bend tag Plains;
+
+room "Giant Tree"		dir e from Glen tag Tree;
+
+room "Nook"			dir n go up;
+  item "nest";
+  item "eggs";
+
+room "Small Field"		dir e from Tree;
+  item "dead tree";
+
+room "Abandoned Shed"		dir e;
+
+room "Cliffs of Mydar 1"	dir sw link CM2 Tree;
+
+room "Foothills"		dir nw from Plains;
+  item "quarterstaff";
+
+room "Small Plateau"		dir s;
+
+room "Mountain Base"		dir s link Plains;
+  item "broken rock";
+
+room "Mountain Path"		dir sw;
+
+room "Turning Path"		dir e;
+  item "ogre";
+  item "werewolf";
+
+room "Rolling Hills"		dir sw from N_Forest;
+
+room "Winding Path"		dir nw;
+
+room "Steep Incline"		dir s;
+
+room "Rocky Hill"		dir s;
+  item "displacer beast";
+
+########################################################################

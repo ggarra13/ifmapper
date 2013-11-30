@@ -1,0 +1,98 @@
+# IFM Map for "A Change in the Weather" by Andrew Plotkin
+# Based on Release 6 / Serial number 960613
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: weather.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+#
+# Note: the recording output of IFM v2.0 ("-t -f rec") of this file was
+#       verified to work with the above mentioned release of the game
+#       with two excpetions (a) you must make sure the fox is around
+#       before throwing the spade shaft and (b) wait repeatedly before
+#       sleeping.
+
+########################################################################
+title "A Change in the Weather";
+
+room "Edge Of Meadow" exit w;
+	task "W" after Wake finish;
+room "Stream Bank" tag Stream_Bank dir e;
+	task "fill bucket" tag Fill_bucket need bucket;
+	task "Drop torn bag" tag Drop_torn need torn_bag drop it;
+	task "Drop dirty bag" tag Drop_dirty need dirty_bag2 drop it;
+	task "wait" follow last note "until the fox 'yips'";
+	task "dig spot" after last;
+	task "again" follow last;
+	task "again" follow last note "until the beam erodes";
+	task "wedge branch under bridge" follow last need branch drop it;
+	task "dig spot" after last;
+	task "again" follow last;
+	task "again" tag Wake follow last note "until you awaken"
+		goto Small_Cave ;# give blanket;
+room "Rocky Outlook" tag Outlook dir ne;
+	item "spade" tag spade;
+	task "pour water on mud" need bucket after Fill_bucket get spade
+		note "allows us to get the spade out";
+room "Steep Face" tag Steep_Face dir se;
+	item "bush";
+	item "tree";
+	task "wedge spade in crack" tag Wedge_spade need spade lose it;
+	item "dirty canvas bag" tag dirty_bag2 hidden after Throw_dirty;
+	item "branch" tag branch hidden after Push_boulder;
+room "Wildflowers" dir sw w link Stream_Bank exit w se;
+	item "tin bucket" tag bucket;
+	task "get glint" give bucket ;#note "turns out to be a tin bucket";
+
+room "Near Top of Hill" dir e se from Outlook exit w;
+	item "boulder";
+	task "examine boulder" note "reveals cave";
+	task "move boulder with spade" tag Move_boulder after last need spade
+		give spade_shaft drop spade until Push_boulder;
+	item "spade shaft" tag spade_shaft hidden;
+	task "throw shaft" need spade_shaft # drop it
+		note "do this only when the fox is around";
+	task "again" follow last need spade_shaft lose it get steel_key
+		note "the fox returns a key this time";
+	item "steel key" tag steel_key hidden;
+	task "push boulder south" tag Push_boulder after sleep
+		note "or another direction";
+room "Small Cave" tag Small_Cave dir e
+		style special after Move_boulder
+		cmd "enter cave" cmd from "W";
+	item "blanket" tag blanket;
+	task "wait";
+	task "again" follow last note "until it's dark and raining";
+	task "sleep" tag sleep follow last give blanket;
+
+room "Edge of Bluff" tag Edge_of_Bluff dir s from Steep_Face exit se sw e
+		before Push_boulder;
+	link Steep_Face to Edge_of_Bluff after Wedge_spade hidden;
+	task "unlock door with key" tag UL_door need steel_key follow sleep;
+	task "throw dirty bag across gap" tag Throw_dirty
+		need dirty_bag lose it;
+room "In a Small Shed" style special after UL_door dir e;
+	item "torn canvas bag" tag torn_bag
+		note "you can only see this when there is a lighting strike";
+	item "dirty canvas bag" tag dirty_bag
+		note "you can only see this when there is a lighting strike";
+	
+
+
+########################################################################
+# Modify some of the above to help IFM generate a workable walkthrough
+
+# leave the blanket where it will stay dry
+link Small_Cave leave blanket;
+
+# drop the bag before pushing the boulder
+task Push_boulder after Drop_torn;
+
+# only get one bag at a time...
+item dirty_bag after Push_boulder;
+
+# get the branch when we get the dirty bag
+#item branch after Throw_dirty;
+# but...  to make the walkthrough output save a turn
+task "Get branch, dirty bag" after Throw_dirty give branch dirty_bag2
+	in Steep_Face;
+
+# EOF

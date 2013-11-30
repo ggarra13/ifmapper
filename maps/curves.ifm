@@ -1,0 +1,529 @@
+# IFM Map for "Dangerous Curves" by Irene Callaci
+# Based on Release 9 / Serial number 010613
+#
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: curves.ifm,v 1.2 2003/01/11 21:29:21 dchapes Exp $
+#
+
+# XXX
+room_width = 0.90;
+room_height = 0.80;
+
+# Mark the starting location
+room_border_width = 2 in style Start;
+
+# This style is used for connecting rooms between different map sections
+style Connection;
+  room_shadow_xoff = 0;
+  room_shadow_yoff = 0;
+  ps.room_border_dashed = 1;
+  tk.room_border_colour = "grey";
+  tk.room_colour = "grey90";
+endstyle Connection;
+
+
+title "Dangerous Curves";
+
+########################################################################
+# Starting items
+item "trenchcoat"		keep;
+item "key ring"			keep;
+item "apartment key"		keep;
+item "car key"			tag car_key keep;
+item "office key"		keep;
+item "wallet"			tag wallet keep;
+
+
+########################################################################
+# Tasks that can be done anywhere
+task "get wallet"		tag G_wallet need wallet;
+task "open it"			follow last;
+task "get money from wallet"	tag Bills follow last;
+
+task "wait until 11 am"		tag w11am cmd "";
+task "wait until 2 pm"		tag w2pm after last;
+task "wait until 3 pm"		tag w3pm cmd "" after last;
+task "wait until 5 pm"		tag w5pm cmd "" after last;
+task "wait until 6 pm"		tag w6pm after last;
+task "wait until 7 pm"		tag w7pm cmd "" after last;
+task "wait until 8 pm"		tag w8pm after last;
+task "wait until 12 pm"		tag w12pm cmd "" after last;
+task "wait until 2 am"		tag w2am cmd "" after last;
+
+
+########################################################################
+map "City";
+
+room "Northwest Corner of Main and First"	tag NW_Main_First;
+  item "Ford";
+  task "get in car";
+  task "start car"		tag start1 follow last need car_key;
+
+room "Southwest Corner of Main and First"	tag SW_Main_First dir s;
+
+room "Southeast Corner of Main and First"	tag SE_Main_First dir e;
+
+room "Northeast Corner of Main and First"	tag NE_Main_First dir n;
+link last to NW_Main_First;
+
+room "Outside the Post Office"	tag Outside_Post_Office dir n n;
+
+room "Outside the Service Station"	tag Outside_Service_Station dir n;
+
+room "Outside the Hospital"	tag Outside_Hospital dir n;
+  task "remove trenchcoat";
+  task "wear surgical scrubs"	tag W_scrubs follow last need scrubes;
+  task "remove surgical scrubs" tag R_scrubs;
+  task "wear trenchcoat"	follow last;
+
+
+room "Outside Earl's Pawn and Loan"	tag Outside_Earl
+				dir w w from NW_Main_First;
+room "Outside the Tribune"	tag Outside_Tribune dir w w;
+room "Outside the Bank"		tag Outside_Bank dir w exit w;
+
+room "Kincaid Driveway"		dir w w sw style special after start2 oneway;
+  task "exit car"		tag stop2;
+  task "enter car";
+  task "start it"		tag start3 follow last need car_key;
+  link last to Outside_Theater	dir e style special after last oneway;
+
+room "Kincaid Mansion Portico"	dir n after stop2;
+  task "knock"			tag knock_Kincaid;
+
+room "Foyer"			dir n after knock_Kincaid;
+room "Drawing Room"		tag Kincaid_Drawing_Room dir e exit n;
+
+
+room "Outside Lenny's Bar"	tag Outside_Lenny dir w w from SW_Main_First;
+room "Outside The Hole"		tag Outside_Hole dir w;
+room "Entrance to the Alley"	tag Alley_Entrance dir w
+				link Outside_Tribune;
+# 11 am to 12 pm
+room "Outside the Bijou Theater" tag Outside_Theater dir w
+				link Outside_Bank;
+  item "youth";
+  link last to Theater_Lobby	hidden after Bills before w12pm
+  				cmd to "buy ticket" cmd to "s" cmd from "n";
+
+
+room "Outside the Drugstore"	tag Outside_Drugstore
+				dir s s s from SW_Main_First;
+  task "pick lock"		tag pick_drugstore need lockpicks;
+
+
+room "Outside Chez Maxine"	tag Outside_Maxine dir s se
+					style special after start1 oneway;
+  task "turn off car"		tag stop1 follow start1;
+  task "exit car"		follow last;
+  task "give keys to attendant" tag use_valet give valet_ticket
+  				after last w6pm;# lose car_key;
+  item "valet ticket"		tag valet_ticket hidden;
+  task "give ticket to attendant" need valet_ticket lose it
+  				safe after verify_alibi;# give car_key;
+  task "give attendant one-dollar bill" after last;
+  task "enter car"		tag start2 after last;
+  link last to Outside_Courthouse dir n
+  				style special after last before w7pm oneway;
+
+room "Inside Chez Maxine"	dir w style special need valet_ticket;
+  task "ask proprietor about Jessica"	tag verify_alibi score 5;
+
+
+room "Outside the Police Department"	tag Outside_Police
+				dir s s from SE_Main_First;
+room "Outside the Courthouse"	tag Outside_Courthouse dir s;
+
+
+room "Outside the Vacant Lot"	tag Outside_Lot dir e e from SE_Main_First;
+room "Vacant Lot"		dir s;
+
+
+room "Outside the Library"	tag Outside_Library dir n n n from NW_Main_First
+				link Outside_Service_Station;
+
+# Sunday 10 am, Wednesday 7 pm
+room "Outside the Church"	tag Outside_Church dir n link Outside_Hospital;
+
+
+room "Alley"			dir s s from Alley_Entrance;
+room "Behind The Hole"		dir e;
+  task "x garbage";
+  item "lipstick"		tag lipstick hidden after last score 5;
+room "Behind Lenny's Bar"	dir e;
+room "Behind Rosie's Diner"	dir e;
+  item "newspaper page"		tag newspaper;
+  task "read newspaper"		need newspaper;
+
+
+room "Freemont Office Building"		style Connection
+				dir nw from NW_Main_First nopath;
+
+# 9 am - ?
+room "City Hall"		style Connection
+				dir se from SE_Main_First nopath;
+
+room "Police Department"	style Connection
+				dir e from Outside_Police nopath;
+
+room "The Palms"		style Connection
+				dir ne s ne from NE_Main_First nopath;
+  link last to Outside_Lot	nopath;
+
+room "Hospital"			style Connection
+				dir ne from Outside_Hospital nopath;
+
+
+# 6 am to midnight
+room "Inside Rosie's Diner"	dir sw from SW_Main_First before w12pm;
+  item "Flo";
+  task "ask Flo about Walter"	tag Flo_Walter
+  				note "freeway argument with mayor";
+  task "ask Flo about freeway"	after last score 5;
+  task "ask Flo about argument"	after last score 5;
+  task "ask Flo about mayor"	after Flo_Walter;
+  task "ask Flo about the Jaguar";
+
+# 10 am - 6 pm
+room "Inside Earl's Pawn and Loan"	dir n from Outside_Earl before w6pm;
+  item "lockpicks"		tag lockpicks keep;
+  #task "how much are the lockpicks";
+  task "buy lockpicks"		get lockpicks after Bills;
+
+# 11 am - 2 am
+room "Inside Lenny's Bar"	tag Lennys dir s from Outside_Lenny
+				after w11am before w2am;
+  task "examine table";
+  item "cards"			hidden after last;
+  task "get cards"		after last note "8:00 pm";
+  task "ask Lenny about cards"	after last;
+  task "ply teller with booze"	after last w8pm score 3;
+  task "ask Lenny about Larry"	after last;
+  task "tell Frank about land"	after w8pm lookup_land;
+
+# 2pm - 2am
+room "Inside The Hole"		dir s from Outside_Hole after w2pm before w2am;
+  task "wait for stripper to finish"	tag w_stripper;
+  task "ask stripper about the Jaguar"	note "Larry";
+  task "show lipstick to stripper"	need lipstick score 5;
+  task "show Marlboro butt to stripper"	need butt2;
+  task "accuse stripper"	after last;
+
+# 9 am - 6 pm
+room "Inside the Tribune"	dir n from Outside_Tribune before w6pm;
+  item "Frank Thibodeaux";
+  task "ask Frank about Walter";
+  task "ask Frank about Jessica";
+  task "ask Frank about Jessica's boyfriend";
+  task "ask Frank about the Jaguar";
+  task "ask Frank about Jessica's alibi";
+  task "ask Frank about the mayor";
+  task "ask Frank about freeway"	note "he gets a stack of newspapers";
+  # XXX unsure of the actual number of papers to read
+  task "read newspaper stack"	cmd "read newspaper stack" 5
+  				tag mayor_freeway follow last score 5;
+
+# Mon -- Fri 10:00 am to 3:00 pm
+room "Inside First National Bank"	dir n from Outside_Bank before w3pm;
+
+room "Lobby of the Bijou Theater"	tag Theater_Lobby
+				dir s s from Outside_Theater style special nopath;
+  link last to Outside_Theater	hidden oneway;
+room "Bijou Theater, In the Aisle"	tag Theater_Aisle dir s;
+room "Bijou Theater, West Side"		dir w;
+room "Bijou Theater, East Side"		dir e from Theater_Aisle;
+  task "sit"			note "informant arrives";
+  task "yes"			follow last;
+
+room "In the Drugstore"		dir w from Outside_Drugstore
+				style special after pick_drugstore;
+
+# 9 am - 5 pm
+room "Inside the Courthouse"	dir e from Outside_Courthouse before w5pm;
+room "Hall of Records"		dir s;
+
+# 9 am - 6 pm
+room "Inside the Library"	dir w from Outside_Library before w6pm;
+  task "ask librarian about Jaguar" tag librarian;
+  task "ask librarian about Larry";
+
+# 9 am - 5 pm
+room "Inside the Post Office"	dir e from Outside_Post_Office before w5pm;
+  item "clerk";
+
+room "Narthex of the Church"	dir nw from Outside_Church;
+room "Church Sanctuary, In the Aisle"	tag Church_Aisle dir w;
+  task "ask priest about the Jaguar";
+room "In the Pews, North Side"	dir n;
+room "In the Pews, South Side"	dir s from Church_Aisle;
+
+# 6 am - 6pm
+room "Inside the Service Stations"	dir e from Outside_Service_Station
+				before w6pm;
+  item "Jaguar";
+  task "ask mechanic about the Jaguar";
+  task "ask mechanic about the Larry";
+  task "ask mechanic about brakes"	note "having brung in car";
+  task "get in car"		follow last note "hide in the car";
+  task "wait"			note "for him to leave";
+  task "out"			note "climbs into Jaguar";
+  task "search Jaguar"		follow last;
+  item "Marlboro cigarette butt" tag butt2 hidden after last;
+  task "wait"			after last need butt2 note "for him to leave";
+  task "out"			follow last note "climbs back into Ford"
+  				score 5;
+
+
+########################################################################
+map "Freemont Office Building";
+
+room "to street"		style Connection;
+
+room "Lobby"			tag F_Lobby dir nw nopath;
+  join last to NW_Main_First	go se hidden;
+  item "directory";
+	# 202 -- Bernice Van Osterhaut Telephone Answering Service
+	# 301 -- Liberty Bail Bonds
+	# 304 -- Masquerade Costumes and Theatrical Supplies
+	# 401 -- Pearl Institute for Youth and Beauty
+	# 507 -- Sunland Realty
+  item "reception desk";
+
+room "Second Floor Stairwell"	tag Fr_2nd_Floor dir n go up;
+room "Third Floor Stairwell"	tag Fr_3rd_Floor dir n n go up;
+room "Fourth Floor Stairwell"	tag Fr_4th_Floor dir n n go up;
+room "Fifth Floor Stairwell"	tag Fr_5th_Floor dir n n go up;
+room "Basement"			dir s from F_Lobby go down;
+
+# Unoccupied offices have signs:  For rent, call LA66034
+room "Outside Room 201"		dir w from Fr_2nd_Floor exit s;
+room "Outside Room 202"		tag O202 dir w;
+room "Outside Room 203"		dir w exit s;
+room "Outside Room 204"		dir w exit n;
+room "Outside Room 205"		dir w exit s;
+room "Outside Room 206"		dir w exit n;
+room "Outside Room 207"		dir w exit s;
+room "Outside Room 208"		dir w exit n;
+room "Outside Room 209"		dir w exit s;
+room "Outside Room 210"		dir w exit n;
+
+room "Outside Room 301"		tag O301 dir w from Fr_3rd_Floor exit s;
+room "Outside Room 302"		dir w exit n;
+room "Outside Room 303"		dir w exit s;
+room "Outside Room 304"		tag O304 dir w exit n;
+  task "pick lock"		tag pick_304 need lockpicks;
+room "Outside Room 305"		dir w exit s;
+room "Outside Room 306"		dir w exit n;
+room "Outside Room 307"		dir w exit s;
+room "Outside Room 308"		dir w exit n;
+room "Outside Room 309"		dir w exit s;
+room "Outside Room 310"		dir w exit n;
+
+room "Outside Room 401"		tag O401 dir w from Fr_4th_Floor;
+room "Outside Room 402"		dir w exit n;
+room "Outside Room 403"		dir w exit s;
+room "Outside Room 404"		dir w exit n;
+room "Outside Room 405"		dir w exit s;
+room "Outside Room 406"		dir w exit n;
+room "Outside Room 407"		dir w exit s;
+room "Outside Room 408"		dir w exit n;
+room "Outside Room 409"		dir w exit s;
+room "Outside Room 410"		dir w exit n;
+
+room "Outside Room 501"		dir w from Fr_5th_Floor;
+room "Outside Room 502"		dir w exit n;
+room "Outside Room 503"		dir w exit s;
+room "Outside Room 504"		dir w exit n;
+room "Outside Room 505"		dir w exit s;
+room "Outside Room 506"		dir w exit n;
+room "Outside Room 507"		tag O507 dir w exit s;
+  task "pick lock"		tag pick_507 need lockpicks after w6pm;
+room "Outside Room 508"		dir w exit n;
+room "Outside Room 509"		dir w exit s;
+room "Outside Room 510"		dir w exit n;
+
+
+# 202 -- Bernice Van Osterhaut Telephone Answering Service
+room "Inside Room 202"		dir n from O202;
+  item "switchboard";
+
+# 301 -- Liberty Bail Bonds
+# external sign: 9 am to 6 pm Mon-Sat, After Hours Call LA61197
+room "Inside Room 301"		dir s from O301;
+
+# external sign: 10 am - 8 pm Mon thru Sat
+# 304 -- Masquerade Costumes and Theatrical Supplies
+room "Inside Room 304"		dir n from O304 style special after pick_304;
+  item "uniform";
+  task "examine uniform";
+  item "surgical scrubs"	tag scrubes hidden after last;
+
+room "Inside Room 401"		tag Office dir s from O401 style Start start;
+  #item "swivel chair";
+  #item "wing chair";
+  #item "desk";
+  item "telephone";
+  item "ashtray";
+  item "pencil"			tag pencil;
+  item "money"			tag money score 2 keep
+  				after Ask_alibi Ask_Walter Ask_Jag;
+  item "Chesterfield cigarette butt"	tag butt1 score 3;
+  task "ask Jessica about the Jaguar"	tag Ask_Jag;
+  task "ask Jessica about Walter"	tag Ask_Walter;
+  task "ask Jessica about alibi"	tag Ask_alibi;
+  task "ask Jessica about Chez Maxine"	after last;
+  task "ask her about hospital"	note "room 714";
+  task "x desk"			tag X_desk;
+  task "open middle drawer"	after last note "reveals notepad";
+  item "notepad"		tag notepad hidden;# after last;
+  task "get notepad and pencil"	after last give notepad pencil;
+
+# 507 -- Sunland Realty
+# external sign: 10 am to 6 pm Mon-Sat
+room "Inside Room 507"		dir s from O507 before w6pm;
+  link last to O507		after pick_507 hidden;
+  item "cabinet"		note "has 4 drawers";
+  #task "ask woman about Walter";
+  task "x cabinet"		after w6pm;
+  task "open third drawer"	after last;
+  task "look in third drawer for Carlotta" tag lookup_land after last score 5
+		note "4855, 4856, 4868, 4870, 5374, 5375, 5377, 5380, 5384";
+  task "open top drawer"	after last;
+  task "look in top drawer for 4855" after last;
+  task "look in top drawer for 4856" after last;
+  task "look in top drawer for 4868" after last;
+  task "look in top drawer for 4870" after last;
+  task "open second drawer"	after last;
+  task "look in second drawer for 5374" after last;
+  task "look in second drawer for 5375" after last;
+  task "look in second drawer for 5377" after last;
+  task "look in second drawer for 5380" after last;
+  task "look in second drawer for 5384" after last;
+
+
+########################################################################
+map "City Hall";
+
+room "to street"		style Connection;
+
+room "Inside City Hall"		dir se nopath exit s;
+  join last to SE_Main_First	go nw hidden;
+  task "show receptionist scrap of paper"	need paper;
+  task "ask receptionist about Carlotta"	after X_paper score 5;
+  task "ask receptionist about Larry";
+
+
+########################################################################
+map "The Palms Apartments";
+
+room "to street"		style Connection;
+
+room "The Palms Apartments"	dir ne nopath;
+  join last to NE_Main_First	go sw hidden;
+  join last to Outside_Lot	go s hidden;
+
+room "Living Room"		tag Apt_Living_Room dir n;
+  item "lamp";
+  item "sofa";
+  task "turn on lamp";
+
+room "Hall"			tag Apt_Hall dir n;
+room "Bedroom"			dir w;
+  item "bed";
+  item "dresser";
+  item "chair";
+
+room "Bathroom"			dir e from Apt_Hall;
+room "Kitchen"			dir e from Apt_Living_Room;
+
+########################################################################
+map "Police Department";
+
+room "to street"		style Connection;
+
+room "Inside the Police Department"	dir e nopath exit e;
+  join last to Outside_Police	go w hidden;
+  task "ask cop about Walter";
+  task "ask cop about Jessica";
+  task "ask cop about Jag";
+  task "ask cop about Jessica's boyfriend";
+  task "ask cop about Jessica's alibi";
+  task "ask cop about Larry"	note "mayor's secretary bailed him out";
+
+########################################################################
+map "Hospital";
+room "to street"		style Connection;
+
+room "Hospital Lobby"		tag Hospital_Lobby dir ne nopath exit e;
+  join last to Outside_Hospital	go sw hidden;
+
+room "Hospital Second Floor"	dir n go up
+				style special after W_scrubs before R_scrubs
+				score 5;
+room "Hospital Third Floor"	dir n go up exit n w e;
+room "Hospital Fourth Floor"	dir n go up exit n w e;
+room "Hospital Fifth Floor"	dir n go up exit n w e;
+room "Hospital Sixth Floor"	dir n go up exit n w e;
+room "Hospital Seventh Floor"	tag Hospital_7 dir nw go up exit n w e;
+room "Hospital Eighth Floor"	dir ne go up exit n w e;
+room "Hospital Basement"	dir s from Hospital_Lobby go down;
+
+room "Outside Room 740"		dir w from Hospital_7 exit s;
+room "Outside Room 739"		dir w exit n;
+room "Outside Room 738"		dir w exit s;
+room "Outside Room 737"		dir w exit n;
+room "Outside Room 736"		dir w exit s w;
+
+room "Outside Room 701"		dir n from Hospital_7 exit w;
+room "Outside Room 702"		dir n exit e;
+room "Outside Room 703"		dir n exit w;
+room "Outside Room 704"		dir n exit e;
+room "Outside Room 705"		dir n exit w;
+room "Outside Room 706"		dir n exit e;
+room "Outside Room 707"		dir n exit w;
+room "Outside Room 708"		dir n exit e;
+room "Outside Room 709"		dir n exit w;
+room "Outside Room 710"		dir n exit e;
+room "Northeast Junction"	dir n;
+room "Outside Room 711"		dir w exit s;
+room "Outside Room 712"		dir w exit n;
+room "Outside Room 713"		dir w exit s;
+room "Outside Room 714"		tag HO_714 dir w exit n;
+room "Outside Room 715"		dir w exit s w;
+
+room "Inside Room 714"		dir n from HO_714;
+  item "Walter's clothes";
+  task "examine clothes"	give paper score 5;
+  item "scrape of paper"	tag paper hidden keep;
+  task "examine paper"		tag X_paper need paper
+  				note "Carlotta Maldonado -- LA63140";
+
+
+########################################################################
+# Adjustments required for a proper walkthrough
+
+# Don't leave the office without taking the money
+link Office	need money;
+
+# Driving to Chez Maxine's requires waiting until 6 pm which is after
+# the pawn shop, Tribune, Library and service station close.
+task start1	need lockpicks butt2 after mayor_freeway librarian;
+
+########################################################################
+# Not required, just makes the generated walkthrough nicer/shorter, etc
+
+task w2pm	in Outside_Hole;
+task w6pm	in Outside_Maxine;
+task w8pm	in Lennys;
+
+# Go to "The Hole" before Chez Maxine (time consideration)
+task start1	after w_stripper;
+
+# Don't muck around until after Jessica leaves
+task X_desk		need money;
+task G_wallet		need money;
+
+link Office to O401	hidden before w11am;
+
+# EOF

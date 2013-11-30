@@ -1,0 +1,136 @@
+# IFM Map for "Zork 3" by Infocom
+# Based on Release ? / Serial numbe ?
+#
+# This file written by David Ripton <dripton@ripton.net>  2002-10/06
+#
+# $Id: Zork3.ifm,v 1.2 2003/01/11 21:37:37 dchapes Exp $
+#
+# A few tasks, but woefully incomplete because I didn't know
+# how to handle things like random appearance of characters
+# and the earthquake.   Better than nothing, though.
+
+room "Endless Stair" tag ES;
+item "lamp" in ES tag lamp;
+room "Junction" dir s from ES tag J;
+item "sword" in J tag sword;
+room "Damp Passage" dir e 2 from J tag DP;
+room "Barren Area" dir w 2 from J tag BA;
+room "Cliff" dir w from BA tag C;
+item "bread" in C tag bread;
+room "Hairpin Loop" dir nw 2 from BA tag HL;
+room "Cliff Base" dir sw 2 from HL tag CB;
+room "Flathead Ocean" dir s 3 from CB tag FO;
+item "sailor" in FO tag sailor;
+task "Say hello sailor" in FO tag say_hello_sailor;
+item "vial" hidden in FO after last tag vial;
+room "Cliff Ledge" dir w from C go down tag CL;
+item "chest" in CL tag chest;
+link CL to CB dir w go down tag CL_CB;
+room "Dead End" dir e 2 from DP tag DE;
+room "Engravings Room" dir ne from DP tag ER;
+item "old man" in ER;
+link ER to DE dir se tag ER_DE;
+room "Creepy Crawl" dir s 2 from J tag CC;
+room "Tight Squeeze" dir e from CC tag TS;
+room "Crystal Grotto" dir e 2 from TS tag CG;
+room "Royal Hall" dir s from CG tag RH;
+room "Great Door" dir s from RH tag GD;
+room "Foggy Room" dir s from CC tag FR;
+room "Lake Shore" dir s from FR tag LS;
+room "Aqueduct View" dir se from LS tag AV;
+room "Land of Shadow (east)" dir w 2 from FR tag LS2;
+link LS2 to CC dir e ne tag LS2_CC;
+room "Land of Shadow (wall)" dir nw from LS2 tag LS3;
+link LS3 to BA dir n ne tag LS3_BA;
+room "Land of Shadow (south)" dir s sw from LS2 tag LS4;
+room "Land of Shadow (ceiling)" dir w from LS2 tag LS5;
+link LS5 to LS3 dir n tag LS5_LS3;
+room "Land of Shadow (hills)" dir s from LS5 tag LS6;
+link LS2 to LS6 dir sw tag LS2_LS6;
+link LS4 to LS6 dir n tag LS4_LS6;
+room "Land of Shadow (breeze)" dir nw from LS4 tag LS7;
+link LS7 to LS6 dir e tag LS7_LS6;
+link LS7 to FO dir w nw tag LS7_FO;
+room "Land of Shadow (dips)" dir n from LS7 tag LS8;
+link LS8 to FO dir w tag LS8_FO;
+room "Land of Shadow (cliff)" dir w from LS3 tag LS9;
+link LS9 to FO dir w sw tag LS9_FO;
+link LS9 to LS8 dir s tag LS9_LS8;
+link LS8 to LS5 dir e tag LS8_LS5;
+link LS5 to LS7 dir sw tag LS5_LS7;
+link LS5 to LS9 dir nw tag LS5_LS9;
+link LS9 to C dir n ne tag LS9_C;
+room "On the Lake" dir s from LS cmd "enter lake" leave all tag OL;
+room "Underwater" dir nw from OL go down tag U;
+item "amulet" in U;
+room "Southern Shore" dir s from OL tag SS;
+link SS to OL cmd "enter lake" leave all tag SS_OL;
+room "Dark" dir s from SS need repellent tag D;
+room "Dark" dir s from D tag D2;
+room "Key Room" dir e from D2 tag KR;
+item "key" in KR tag key;
+# Need key before earthquake
+room "Aqueduct" dir e from KR go down tag A;
+room "High Arch" dir n 2 from A tag HA;
+room "Water Slide" dir n 2 from HA tag WS2;
+link WS2 to DP dir n oneway tag WS_DP;
+room "Western Shore" dir w from OL tag WS;
+link WS to OL cmd "enter lake" leave all tag WS_OL;
+room "Scenic Vista" dir s 2 from WS tag SV;
+item "torch" in SV;
+room "Timber Room" dir s 2 from SV nolink tag TR;
+join SV to TR cmd "touch table 1" tag SV_TR;
+item "broken timber" in TR tag timber;
+room "Ladder Bottom" dir e from TR tag LB;
+room "Ladder Top" dir e from LB go up tag LT;
+room "Dead End" dir s from LB tag DE2;
+item "coal" in DE2 tag coal;
+room "Dark" dir w from TR tag D3;
+room "Room 8" dir nw from SV nolink tag R8;
+join SV to R8 cmd "touch table 2" tag SV_R8;
+item "grue repellent" in R8 tag repellent;
+join SV to DP cmd "touch table 3" oneway tag SV_DP;
+# instant death
+room "Sacrificial Altar" dir w from SV nolink tag SA;
+join SV to SA cmd "touch table 4" tag SV_SA;
+# hidden until earthquake
+room "Museum Entrance" dir e from GD exit e tag ME;
+room "Royal Puzzle Entrance" dir s from ME tag RPE;
+item "warning note" in RPE;
+room "Room in a Puzzle" dir se from RPE go down oneway tag RP;
+item "book" in RP tag book;
+room "Side Room" dir w s from RPE exit e tag SR;
+room "Technology Museum" dir n from ME tag TM;
+item "golden machine" in TM;
+item "grey machine" in TM;
+item "black machine" in TM;
+# Start in 948
+# Go back to 776
+room "Jewel Room" dir e from ME tag JR;
+item "sceptre" in JR tag sceptre;
+item "knife" in JR tag knife;
+item "ring" in JR tag ring;
+task "Wake old man" need bread in ER tag wake;
+task "Give bread to old_man" need bread drop it in ER after wake tag give_bread;
+task "Open secret door" after give_bread in ER tag open_secret_door;
+room "Button Room" dir n from ER after last tag BR;
+room "Beam Room" dir n from BR tag BR2;
+task "Block beam with sword" in BR2 need sword drop it tag block_beam;
+task "Push button" in BR after last tag push_button;
+room "Hallway" dir n from BR2 tag H;
+room "Inside Mirror" dir n from H after push_button tag IM;
+task "Tie chest to rope" need chest drop it in CL;
+room "Hallway" dir n from IM tag H2;
+room "Hallway" dir n from H2 tag H3;
+room "Hallway" dir n from H3 tag H4;
+room "Dungeon Entrance" dir n from H4 tag DE3;
+# knock on door
+room "Narrow Corridor" dir n from DE3 tag NC;
+room "South Corridor" dir n from NC tag SC;
+room "East Corridor" dir e n 2 from SC tag EC;
+room "West Corridor" dir w n 2 from SC tag WC;
+room "North Corridor" dir n e from WC tag NC2;
+link EC to NC2 dir n w tag EC_NC2;
+room "Parapet" dir n from NC2 tag P;
+room "Prison Cell" dir s from NC2 tag PC;
+room "Treasury of Zork" dir s from PC;

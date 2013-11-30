@@ -1,0 +1,150 @@
+# IFM Map for bse.z5
+#	"BSE" is by Chris Smith.
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+# $Id: bse.ifm,v 1.3 2000/10/27 17:22:45 dchapes Exp $
+
+title "BSE";
+item "faxed note" tag fax;
+item "remote control" tag remote;
+
+
+########################################################################
+map "BSE";
+
+room "Country Lane" tag Lane start exit n s ne;
+	item "car";
+	item "wooden gate";
+	task "put watch battery from pistol in remote" tag Fix_remote
+		need remote pistol score 2;
+	task "push remote" tag P_remote after Fix_remote score 2;
+	task "open boot" tag O_car after P_remote get briefcase coat key_ring;
+	item "briefcase" tag briefcase hidden;
+	item "coat" tag coat hidden keep;
+	item "key ring" tag key_ring hidden;
+	task "put watch battery back in pistol" after O_car need remote pistol;
+	task "wear coat" tag W_coat need coat;
+	task "unlock briefcase" tag UL_briefcase need briefcase key_ring;
+	task "open briefcase" get jar typed_note need briefcase;
+	item "jar" tag jar hidden;
+	item "typed note" tag typed_note hidden;
+	task "put jar, pistol in pockets" need jar pistol;
+
+room "The Green Calf" dir n nw exit se;
+	item "Tom";
+	item "Dick";
+	item "Harry";
+	task "ask Tom about cows";
+	task "ask Dick about BSE";
+	task "Ask Harry about devil";
+	task "x note" tag X_fax need fax note "'Red-Chevette'";
+	task "Dick, red-chevette" after last score 2 give beer;
+	item "can of beer" tag beer hidden;
+	task "Harry, red-chevette" note "mentions Mr. Robertson";
+	task "ask Tom about beer" need beer;
+	task "open can.get can and shake it" need beer score 2 get brass_key
+		note "the brass key falls out";
+	item "brass key" tag brass_key hidden;
+
+
+room "Garden" dir s from Lane exit n e;
+	item "flower bed";
+	item "garden fork" tag fork;
+	task "search bed" get pistol score 1 note "reveals toy pistol";
+	item "toy pistol" tag pistol hidden;
+
+room "Farmyard" tag Farmyard dir ne from Lane exit sw n e;
+	item "farm gate";
+	item "leaflet" tag leaflet;
+	item "chickens";
+	task "x leaflet" tag X_leaflet;
+	task "consult leaflet about country code" after X_leaflet;
+	task "consult leaflet about weather forecasting" after X_leaflet;
+	task "consult leaflet about sheep varieties" tag leaflet_sheep
+		after X_leaflet;
+	task "consult leaflet about mountain sheep" after leaflet_sheep;
+	task "consult leaflet about Fliglot" after leaflet_sheep;
+
+room "Barn" tag Barn dir e;
+	item "haystack";
+	item "tractor";
+	task "unlock tractor with key" tag UL_tractor need brass_key score 1;
+	task "open tractor. search it" after UL_tractor score 1 get envelope
+		note "reveals beige envelope";
+	item "beige envelope" tag envelope hidden;
+	task "climb tractor" tag C_tractor;
+
+
+room "Hall" tag Hall dir n from Farmyard exit n e w s;
+	item "welly  rack";
+	item "sou'wester" tag hat keep;
+	task "Get sou'wester" tag Reveal_socket give hat note "reveals socket";
+	task "wear hat" tag W_hat need hat; #in any
+	task "put kettle on welly rack" need kettle drop it
+		after Reveal_socket;
+	task "plug in kettle" after last score 2;
+	task "turn kettle on" tag On_kettle after last;
+	task "wait for kettle to steam" follow last;
+	task "steam envelope" follow last need envelope score 3 get postcard
+		note "reveals a postcard";
+	item "postcard" tag postcard hidden;
+
+room "Farmhouse Kitchen" dir e exit w;
+	item "rubber glove" tag glove;
+	item "kettle" tag kettle lost;
+
+room "Lounge" tag Lounge dir w from Hall exit e;
+	item "hearth-rug";
+	item "dog";
+	task "push yellow button" need pistol score 3 note "dog leaves";
+	task "roll rug" follow last score 2 note "reveals trapdoor";
+	task "x trapdoor" follow last note "six holes";
+	task "open trapdoor with fork" tag O_trapdoor need fork follow last
+		score 3;
+
+room "Underground Passage" dir nw go down after O_trapdoor exit se nw;
+	item "enormous door";
+	task "x dial. x card" need postcard;
+	task "spell out Denzil on dial" tag UL_door after last score 5;
+	
+room "Lab Six" dir nw n after UL_door exit s;
+	item "wooden pinboard";
+	item "sci-fi gadget";
+	task "turn on gadget" tag Try_gadget;
+	task "reverse glove" tag Rev_glove need glove score 4 in any;
+	task "put glove on pad" after last need glove score 3;
+	task "turn on gadget" after last;
+	task "put jar in bay" after last need jar drop it;
+	task "Sharon, scan jar" after last score 2;
+	task "open jar" after last need jar;
+	task "pour liquid into pistol" tag Load_pistol after last need jar
+		score 2;
+
+room "Ledge" dir e se s from Barn go up after C_tractor score 2 exit w;
+	item "rope ladder";
+	task "unroll ladder" tag Unroll_ladder;
+room "Haystack" dir w after W_hat W_coat exit nw n ne w e sw s se;
+	item "beer";
+room "Haystack" dir nw exit nw n ne w e sw s se;
+	item "jar";
+room "Altar Chamber" dir sw score 5;
+	item "cross";
+	item "small note";
+	item "pictogram";
+	task "shoot pistol at note" after Load_pistol need pistol
+		note "if you miss then try again";
+	task "read note" tag Read_note follow last;
+	task "wait for demon to roar" follow last;
+	task "shoot pistol at demon" follow last score 5;
+
+task "escape" in Farmyard follow last score 8 finish;
+
+########################################################################
+# Tweaks to help the solver generate a working walkthrough
+
+# Force things to happen in a convient order order
+link Hall need envelope;
+link Lounge need postcard;
+task C_tractor after Load_pistol;
+task Rev_glove after Try_gadget;
+
+# EOF

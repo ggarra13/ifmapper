@@ -1,0 +1,104 @@
+# IFM Map for "Spacestation" by David Ledgard
+# Based on Release 1 / Serial number 9808xx
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: space_st.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+title "Spacestation";
+
+########################################################################
+# Starting items
+item "chronometer";
+item "patrol uniform";
+item "box of radioactive isotopes";
+
+########################################################################
+room "Scooter";
+	task "wait for landing" cmd "z.z.z";
+	task "stand" tag Stand after last;
+	item "toolbox" tag toolbox after last;
+	task "close hatch" after Free_Fussbudget;
+	task "sit" follow last;
+	task "push button" follow last score 3 finish;
+room "Docking Port" after Stand dir s go out;
+room "Main Hallway, Sector M" tag Hall_M dir s go down;
+room "Main Hallway, Sector L" tag Hall_L dir w exit n;
+	#task "give bracelet to Fussbudget" need id_bracelet lose it
+	#	after Free_Fussbudget;
+	#task "Fussbudget, give me the bracelet" after last give id_bracelet;
+	task "wear bracelet" need id_bracelet;
+room "Store Room" after last need id_bracelet style special dir n
+		score 3;
+	item "adapter plug" tag adapter;
+	item "mondoweed fruits" tag fruit;
+	#task "give fruit to Fussbudget" after Free_Fussbudget in any
+	#	need fruit lose it;
+room "Director's Office" tag Directors_Office dir s from Hall_L;
+	item "file cabinet";
+	item "desk";
+	item "electrical outlet";
+	item "portable computer";
+	item "slip of paper";
+	task "read paper" tag Read_paper note "password is 133";
+	#task "unlock cabinet" need key;
+	#task "open it" follow last;
+	task "plug computer into adapter" tag Plug_comp need adapter;
+	task "plug adapter into outlet" tag Plug_adapter need adapter lose it;
+	task "turn on computer" tag On_comp;
+	task "type 133" tag Password
+		after Read_paper Plug_comp Plug_adapter On_comp
+		score 3;
+	task "type 7" after Password note "reactor goes critical at 6900";
+	task "type 11" after Password;
+
+room "Main Hallway, Sector K" tag Hall_K dir w from Hall_L exit w;
+room "Briefing Room" dir n;
+	item "conference table";
+	item "chairs";
+	item "photograph";
+
+room "Station Control" dir s from Hall_K;
+	#task "examine monitors";
+
+room "Main Hallway, Sector N" tag Hall_N dir e from Hall_M exit e;
+	item "key" tag key;
+	task "unlock toolbox" need toolbox key in any;
+	task "open it" tag O_toolbox need toolbox follow last
+		in any give id_bracelet hacksaw nutrient_paste;
+	item "identity bracelet" tag id_bracelet hidden;
+	item "hacksaw" tag hacksaw hidden;
+	item "tube of nutrient paste" tag nutrient_paste hidden;
+	task "eat nutrient paste" need nutrient_paste lose it in any;
+room "Sick Bay" dir n;
+	item "Thoosian Fussbudget";
+	task "wake Fussbudget" tag Wake_Fussbudget;
+	task "cut bar with hacksaw" need hacksaw;
+	task "again" need hacksaw follow last;
+	task "free the fussbudget" tag Free_Fussbudget cmd none
+		after Wake_Fussbudget last score 3;
+
+room "Observation Lounge" dir s from Hall_N go down;
+	item "AstroCola Dispenser";
+	task "examine pocket" in any give coin;
+	item "coin" tag coin hidden;
+	task "put coin in slot" need coin lose it;
+	task "push standard button" after last score 3 ;# get can;
+	item "cola can" tag can;
+
+########################################################################
+# Modify some of the above to help IFM generate a better walkthrough
+
+# Don't bother going into the office until we have the adapter
+#link Directors_Office need adapter;
+task Read_paper need adapter;
+task On_comp need adapter;
+
+# Since we use `give' instead of `get' when opening the toolbox,
+# we need to keep it so that we carry the items around with us.
+item toolbox keep;
+
+# Don't bother dropping the key or hacksaw
+item key keep;
+item hacksaw keep;
+
+# EOF

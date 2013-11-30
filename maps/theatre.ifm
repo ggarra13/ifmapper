@@ -1,0 +1,182 @@
+# IFM Map for "Theatre" by Brendon Wyber
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: theatre.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+title "Theatre";
+
+########################################################################
+map "Main Areas";
+
+room "Outside the Theatre" start exit w e;
+room "Theatre Lobby" tag Lobby dir n;
+	item "posters";
+room "to Staircase Landing" tag JoinLobby dir n go up style puzzle;
+room "Cloakroom" dir ne from Lobby;
+	item "hooks";
+room "to Secret Stairway" tag JoinCloak dir s go down style puzzle special;
+
+room "Manager's Office" tag Office dir nw from Lobby;
+	item "desk";
+	item "papers";
+	item "metal safe";
+room "Basement" dir sw go down;
+	item "boxes";
+	item "barrels";
+	item "electrical panel";
+	item "loose page";
+	item "pager";
+
+room "Sealed Up Ticket Booth" dir s from Office style special;
+
+room "Cramped Hallway" tag Cramped_Hall dir n from Office;
+	item "boxes of junk";
+	item "loose page";
+room "Narrow Hallway" dir n;
+	item "boxes";
+	item "carpet rolls";
+	item "body" hidden;
+room "End of Hallway" dir n style special exit w;
+	item "boxes";
+	item "loose page";
+room "Alley Courtyard" dir n ne;
+	item "rubish bin";
+
+
+room "Tight Stairway" dir w from Cramped_Hall;
+room "Centre of Long Corridor" tag CCor dir w;
+room "Costume Room" dir w;
+	item "costumes";
+	item "gas mask";
+	item "mannequins";
+room "South End of Long Corridor" tag SCor dir s from CCor;
+room "Prop Room" tag Prop_Room dir s s s;
+room "Music Room" dir w from SCor;
+	item "piano";
+	item "sheet of music";
+
+room "North End of Long Corridor" tag NCor dir n from CCor;
+room "Sick Bay" dir n;
+	item "bed";
+	item "letter";
+	item "glass vial";
+	item "medical cabinet";
+room "Guest Star Room" tag Guest_Room dir w from NCor;
+	item "four-poster bed";
+	item "fireplace";
+room "Theatre Roof" dir nw go up;
+	item "crow";
+room "to Streat Balcony" tag JoinRoof dir sw go down style puzzle special;
+room "Sealedoff Office" dir sw from Guest_Room go down;
+	item "fireplace";
+	item "coffin";
+room "Boiler Room" dir s go down;
+	item "boiler";
+	item "coal bin";
+	item "wooden chest";
+
+
+room "Southern End of Attic" dir w from Prop_Room go up style special;
+	item "two loose pages";
+room "Attic Above Theatre" dir n;
+	item "winch";
+room "Attic Observatory" dir n;
+	item "window";
+	item "telescope";
+
+########################################################################
+map "Second Floor";
+
+room "to Theatre Lobby" join JoinLobby style puzzle;
+room "Staircase Landing" tag Landing dir n go up;
+	item "huge portrait";
+room "Secret Gallery" dir n style special;
+	item "pictures";
+	item "loose page";
+	item "camera";
+room "Western Landing" tag WLanding dir w from Landing;
+room "Southern Landing" dir s se;
+	item "heavy curtains";
+room "Eastern Landing" tag ELanding dir ne n link Landing;
+
+room "Western Theatre Aisle" tag WAisle dir n n from WLanding;
+room "Eastern Theatre Aisle" tag EAisle dir e e link ELanding;
+room "Stage" tag Stage dir n nw style special;
+	link WAisle to Stage dir n style special;
+	item "spiders";
+	item "cobwebs";
+room "Back Stage" dir n;
+	item "ropes";
+	item "loose page";
+room "Up the Ropes" dir n go up;
+room "Dressing Room" dir w;
+	item "scuff marks";
+	item "old locker";
+
+room "Orchestra Pit" dir s from Stage;
+room "Pit Cupboards" dir e e;
+room "Dark Place" dir e style special;
+room "Under the Stage" dir nw;
+	item "small items";
+	item "loose page";
+
+room "Eastern Stairway" dir e from ELanding;
+room "Eastern Balcony" dir n;# go up;
+room "Western Balcony" dir w nw sw w style special;
+	item "bricked-up doorway";
+room "Back Wall" dir nw;
+	item "loose page";
+room "Wall with Large Hole" dir s;
+room "Secret Library" tag Library dir w;
+	item "bookcases";
+	item "books";
+room "Reading Recess" dir n;
+	item "two loose pages";
+room "South End of the Library" dir s from Library;
+	item "bookcases";
+	item "ropes";
+	item "nest";
+	item "slug";
+room "Street Balcony" dir w style special;
+room "to Theatre Roof" dir n go up style puzzle join JoinRoof;
+
+########################################################################
+map "Secret Underground";
+
+room "to Cloak Room" join JoinCloak style puzzle;
+room "Secret Stairway" dir s go down;
+	item "loose page";
+room "Underground Passage" dir s go down;
+	item "iron door";
+room "Above the Pit" dir e style special;
+	item "pit";
+	item "loose page";
+room "Inside Pit" dir s go in style special;
+room "Tunnel Junction" tag Junction dir e;
+	item "loose page";
+room "Mine Shaft" dir sw exit nw n w e sw s se;
+room "Deep in the Mines" dir s go down;
+	item "large cage";
+	item "goblin creature";
+
+room "Western End of Sewer" dir se from Junction;
+	item "sluice gate";
+room "Centre of Sewer" tag Sewer dir e;
+room "Metal Platform" dir n;
+	item "rusty lever";
+room "Eastern End of Sewer" dir e from Sewer;
+room "Rats Nest" dir se;
+	item "rats";
+room "Witch's Lair" dir se;
+	item "cauldron";
+	item "statue";
+	item "dager";
+	item "loose page";
+
+room "Old Hallway" dir ne from Junction;
+room "Ceremony Room" dir ne oneway;
+room "Outside the Burning Mansion" dir e e style special oneway exit s;
+room "" dir n;
+room "Wine Cellar" dir se go down;
+
+# EOF

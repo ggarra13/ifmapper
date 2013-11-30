@@ -1,0 +1,93 @@
+# IFM Map for library.z5
+#	"All QUiet on the Library Front" is by Michael S. Phillips
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+# $Id: library.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+
+title "All Quiet on the Library Front";
+item "ID card" tag id;
+
+########################################################################
+map "Library";
+room "Lobby" tag Lobby start exit w nw n e;
+	item "circulation desk";
+	item "security gates";
+	#item "card catalog";
+	item "attendant" tag Alan;
+	task "examine attendant. read tag" tag X_Alan
+		note "his name is Alan";
+	task "ask Alan about novel" tag Q_novel
+		note "he lost \"Debt of Honor\"";
+	task "ask him about Nelson" tag Q_Nelson follow last;
+	task "ask him about librarian" tag Q_librarian follow last;
+	task "ask Alan about key" tag Q_key2 after Q_key;
+	task "give him ID card" tag G_id follow last need id lose it
+		give key score 5;
+	item "key" tag key hidden;
+	task "give attendant key" tag G_key after L_door
+		need key lose it give id2;
+	item "ID card" tag id2 hidden;
+	task "give Alan novel" tag G_novel need novel lose it
+		after Q_novel score 2
+		note "he gets distracted";
+
+room "Ground Floor Stacks" dir w w exit n e;
+	item "shelves";
+	item "ancient desk";
+	item "reference librarian" tag Marion;
+	task "examine shelves. examine magazines" tag X_mags;
+	task "xyzzy" after last score 1;
+	task "examine librarian. read tag" tag X_Marion
+		note "her name is Marion";
+	task "ask Marion about Graham Nelson" tag Q_Nelson2 after Q_librarian;
+	task "ask her about rare books room" tag Q_rare_books follow last;
+	task "ask her about key" tag Q_key follow last;
+	task "give Encyclopedia Frobozzica to Marion" need frobozzica
+		lose it score 2;
+
+room "Ground Floor Stairwell" dir n exit s;
+	item "damaged picture";
+	task "smell. look under stairs" give herring score 1;
+	item "red herring" tag herring hidden;
+
+room "Second Floor Stairwell" dir w w go up exit s;
+	item "painting";
+	task "examine painting";
+	task "give herring to grue" tag G_herring need herring lose it
+		after last score 2;
+
+room "Second Floor Stacks" tag Second_Floor dir s exit n e;
+	item "shelves";
+	item "wooden door" tag door;
+	task "search shelves" tag XX_shelves after Q_novel give novel score 5;
+	item "\"Debt of Honor\"" tag novel hidden;
+	task "unlock/open door" tag UL_door need key;
+	task "close/lock door" tag L_door need key
+		note "otherwise Alan won't give you back your id card";
+
+room "Computer Lab" dir e;
+	item "computers";
+	item "printers";
+	item "technician";
+	task "ask technician about security gates" tag Q_gates score 2
+		note "he then leaves";
+	task "examine printers" after last give frobozzica;
+	item "Encyclopedia Frobozzica" tag frobozzica hidden score 5;
+
+room "Rare Books Room" dir s from Second_Floor style special after UL_door exit n;
+	item "biography of Graham Nelson" tag bio score 5;
+
+room "Duplicating Services" tag Dup_Serv dir nw from Lobby;
+	item "copier";
+	item "technician";
+	task "examine technician" tag X_tech note "semi-amusing result";
+
+room "Exit" tag Exit dir e from Lobby need bio finish;
+
+########################################################################
+# Tweaks to help the solver out
+
+task UL_door need frobozzica;
+task L_door need bio;
+link Dup_Serv need bio;
+link Exit after X_tech;
+# EOF

@@ -1,0 +1,150 @@
+# IFM Map for "Zork 2" by Infocom
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Zork2.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+#
+# Note:  not finished or updated to use IFM v2.0 features
+
+title "Zork 2";
+
+########################################################################
+map "Main Area";
+
+room "Inside the Barrow" start;
+	item "lamp" tag lamp keep;
+	item "sword" tag sword keep;
+room "Narrow Tunnel" dir s;
+room "Foot Bridge" dir s;
+room "Great Cavern" dir s sw;
+room "Shallow Ford" dir sw s;
+	task "turn on lamp" tag On_lamp need lamp;
+	task "fill pot" tag Fill_pot need teapot;
+room "Dark Tunnel" tag Dark_Tunnel dir s sw after On_lamp;
+room "Path Near Stream" tag Path_Near_Stream dir sw se sw;
+room "Carousel Room" tag Carousel dir sw style puzzle exit nw n ne w e sw s se
+	note "The exits are random";
+
+room "North End of Garden" tag N_Garden dir se s from Dark_Tunnel;
+	item "unicorn";
+	item "gold key" tag gold_key;
+room "Gazebo" dir e go in;
+	item "matchbook" tag matchbook;
+	item "china teapot" tag teapot;
+	item "place mat" tag mat lost;
+	item "newspaper" tag newspaper;
+	item "letter opener" tag opener;
+room "Formal Garden" dir s from N_Garden link Path_Near_Stream exit s;
+room "Topiary" dir s link Carousel;
+
+room "Cobwebby Corridor" tag Cobwebby dir sw sw from Carousel
+		after Robot_triangle; #not really
+	item "black string";
+room "Lava Tube" tag Lava_Tube dir n;
+room "Volcano View" dir n w go up;
+room "Ice Room" dir sw w n n n n n se from Lava_Tube go down link Cool_R;
+
+room "Cool Room" tag Cool_R dir nw nw from Carousel
+		after Robot_triangle; #not really
+room "Stone Bridge" dir n;
+room "Dragon Room" tag Dragon_R dir n exit w s e n;
+	item "red dragon";
+room "Fresco Room" dir w w;
+room "Bank Entrance" tag Bank_Ent dir w w exit nw ne e;
+room "West Teller's Room" tag W_Teller_R dir nw n n exit n w s;
+room "West Viewing Room" tag W_Viewing_R dir n nw oneway;
+	link W_Viewing_R to Bank_Ent dir s s s s s oneway;
+
+room "East Teller's Room" tag E_Teller_R dir ne n n from Bank_Ent exit n e s;
+room "East Viewing Room" tag E_Viewing_R dir n ne oneway;
+	link E_Viewing_R to Bank_Ent dir s s s sw s s oneway;
+room "Safety Depository" tag Safety_Deposit dir e sw w from E_Teller_R;
+	link Safety_Deposit to W_Teller_R dir w nw;
+	item "curtain of light";
+	item "stone cube";
+	item "paper" note "... valuables are completely safe ... advanced magic
+		technology ... impossible to take valuables from the depository
+		... either teller's ...  Many customers faint ... teller pops
+		in ... seems to walk through ... walls ...";
+	link Safety_Deposit to W_Viewing_R dir n nw n style special oneway;
+	link Safety_Deposit to E_Viewing_R dir n ne n style special oneway;
+room "Chairman's Office" dir s;
+	item "portrait" tag portrait;
+room "Small Room" dir n n from Safety_Deposit style special need portrait oneway; #?
+
+room "End of Ledge" dir e s from Dragon_R;
+room "Ledge in Ravine" tag Ravine_Ledge dir e;
+room "Tiny Room" dir n go up;
+	item "wooden door";
+	item "rusty iron key" tag iron_key hidden;
+	task "open lid";
+	task "put mat under door" need mat
+		after last; #not really
+	task "put opener in hole" after last need opener get iron_key;
+	task "Get opener" after last need opener note "to unblock the hole";
+	task "unlock door with key" after last need iron_key;
+	task "open door" tag O_wooden_door after last;
+room "Dreary Room" dir n after O_wooden_door;
+	item "blue crystal sphere";
+
+room "Deep Ford" dir s from Ravine_Ledge go down link Marble_Hall;
+	#task "fill pot" tag Fill_pot need teapot;
+room "Marble Hall" tag Marble_Hall dir n from Carousel exit n s
+		after Robot_triangle; #not really
+	item "brick";
+
+room "Guarded Room" dir sw s from Cobwebby exit s;
+	item "door";
+	item "lizard";
+
+
+room "Menhir Room" dir s from Carousel exit sw s
+		after Robot_triangle; #not really
+	item "large menhir";
+room "Stairway" dir s;
+room "Oddly-angled Room" dir s go down exit nw n ne w e sw s se;
+
+
+room "Riddle Room" dir se from Carousel exit e;
+	item "door" note "Riddle: what is tall as a house, round as a cup, and
+		all the king's hourses can't draw it up?";
+	task "say \"a well\"" tag Ans_Riddle;
+room "Pearl Room" dir e style special after Ans_Riddle;
+	item "pearl necklace" tag pearl_necklace;
+room "Circular Room" tag Circular_R dir e;
+	item "wooden bucket";
+	task "enter bucket.pour water into bucket" after Fill_pot need teapot
+		goto Top_of_Well;
+
+########################################################################
+map "Top of Well";
+
+room "Top of Well" tag Top_of_Well;# dir e e style special;
+	task "enter bucket.fill pot" tag Fill_pot2 need teapot goto Circular_R;
+room "Tea Room" tag Tea_R dir e;
+	item "cakes" tag cakes note "four: green, red, orange, blue" lost;
+	task "eat green cake" tag Eat_green need cakes;
+	task "eat blue cake" tag Eat_blue need cakes
+		need candies; #not really
+room "Low Room" dir nw nw
+		after Eat_blue; #not really
+	item "green paper";
+	item "robot";
+	task "robot, e" tag Robot_to_Machine_R;
+room "Machine Room" dir e e;
+	item "buttons" note "three: round, triangular, and square";
+	task "robot, press triangle button" tag Robot_triangle
+		after Robot_to_Machine_R
+		note "if you did it you'd be electrocuted";
+	task "robot, s" tag Robot_to_Closet after Robot_triangle;
+room "Dingy Closet" dir s;
+	item "red crystal sphere" tag sphere;
+	task "Get sphere" after Robot_to_Closet
+		note "you're traped";
+	task "robot, lift cage" after last;
+	task "Get sphere" after last give sphere;
+
+room "Pool Room" dir e from Tea_R style special after Eat_green;
+	item "glass flask";
+	task "put red cake in pool" need cakes get candies
+		note "absorbs water and revelas candies";
+	item "candies" tag candies hidden;

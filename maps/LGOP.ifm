@@ -1,0 +1,705 @@
+########################################################################
+# IFM map for "Leather Goddesses of Phobos" by Infocom.
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# lgop.ifm,v 1.7 1999/04/22 07:47:30 g_hutchi Exp
+# $Id: LGOP.ifm,v 1.2 2003/01/11 21:29:21 dchapes Exp $
+#
+# Status: Map and tasks complete.  Requires IFM version 4 or greater.
+#
+# With minor customizations, the recording output will play back to give
+# a transcript.  See the end of this file for details.
+########################################################################
+
+title "Leather Goddesses of Phobos";
+
+########################################################################
+
+map "Upper Sandusky";
+
+  item "flashlight"			tag flash keep;
+  item "comic book";
+  item "overalls";
+
+room "Joe's Bar"			tag Bar;
+
+room "Gents' Room"			dir nw;
+  item "stool"				tag stool;
+  item "pizza"				hidden note "Scratch 'n' Sniff #1";
+  task "Relieve yourself"		cmd "pee";
+  task "Wait for abduction"		after last goto Cell drop all in Cell
+					cmd "wait" 2;
+
+room "Ladies' Room"			dir ne from Bar;
+
+########################################################################
+
+map "Phobos";
+
+room "Cell"				tag Cell;
+  item "blanket"			tag blanket;
+  item "painting"			tag painting
+					note "pussy (but is it art?)";
+  item "tray"				tag tray hidden;
+  item "chocolate"			hidden note "Scratch 'n' Sniff #2"
+					tag chocolate;
+  item "rule book"			hidden tag rulebook;
+  task "Open cell door";
+  join Cell to Palace			oneway cmd "enter circle"
+					after break_ceiling;
+
+room "End of Hallway"			dir s after last tag Hall;
+  item "sign";
+  task "Open narrow cell door";
+
+room "Other Cell"			dir s after last;
+  item "Trent";
+  item "crumpled paper";
+  task "Collect Trent"			tag get_trent cmd none;
+
+room "Other End of Hallway"		dir e from Hall;
+
+room "\"Examination\" Room"		dir w from Hall;
+
+room "Basement"				dir se from Hall go down tag Basement;
+
+room "Observation Room"			dir nw from Hall go up tag Observe;
+
+room "Closet"				dir n after last tag Closet;
+  item "black circle"; 
+  item "basket"				tag basket keep;
+  task "Turn on flash"			need flash;
+  task "Stand on Trent"			after last get_trent give basket;
+  task "Turn off flash"			after last need flash;
+
+room "Roof"				dir nw from Observe go up tag Roof;
+  item "black circle";
+  join Roof to Desert			oneway cmd "enter circle";
+
+room "Cramped Space"			dir n from Cell nolink tag Cramped;
+  item "black circle"; 
+  task "Fall through ceiling"		cmd "wait" goto Cell
+					tag break_ceiling;
+  link Cramped to Cell			oneway go down;
+
+room "Boudoir"				tag Boudoir dir e 3 from Cell
+					nolink;
+  item "divan";
+  task "Lounge about on divan"		cmd "wait" 2 goto Plaza;
+
+room "Plaza"				tag Plaza dir s go down oneway;
+  task "Give Trent the ingredients"	tag build_machine finish
+					need blender hose cotton angle
+					headlight mouse photo phone_book;
+
+########################################################################
+
+map "Jungles of Venus";
+
+room "Jungle"				tag Jungle;
+  join Closet to Jungle			oneway cmd "enter circle";
+  item "venus flytrap";
+  task "Attract flytrap"		after set_trap tag bait cmd none;
+
+room "Fork, Of Sorts"			dir e;
+  item "hole";
+  task "Drop trellis"			need trellis lose it;
+  task "Enter hole"			after last;
+  task "Stand on Trent"			after last;
+  task "Get trellis"			after last;
+  task "Cover hole with it"		after last;
+  task "Cover trellis with leaves"	after last need leaves lose it
+					tag set_trap;
+  task "Capture venus flytrap"		after bait cmd "wait" 4 tag capture;
+
+room "Clearing"				dir e tag Clearing;
+  item "can of black stain"		tag can;
+
+room "Front Door"			dir ne n tag F_Door;
+
+room "Rocky Clifftop"			dir e 2 tag Clifftop exit n;
+  item "black circle";
+
+room "Vizicomm Booth"			dir nw tag Booth;
+  task "Pull knob";
+  task "Open box"			after last;
+  item "coin"				hidden tag coin_10 after last
+					note "Ten Marsmids";
+
+room "Back Door"			dir nw n 2 ne e from Clearing
+					tag B_Door;
+  item "salesmen";
+  task "Offer flash to salesman"	need flash lose it;
+  item "odd machine"			hidden after last tag machine;
+
+link B_Door to Clifftop			dir e e;
+
+room "Looks Can Be Deceiving"		dir n from F_Door tag House oneway
+					cmd "knock on door";
+  item "mad scientist";
+  link B_Door to House			oneway cmd "knock on door";
+
+room "Laboratory"			dir w s go down oneway tag Lab;
+  item "cages";
+  item "gorillas";
+  item "rubber hose"			tag hose;
+  item "black circle";
+  join Lab to Booth			oneway cmd "enter circle";
+  task "Put chocolate in cage"		need chocolate drop it;
+  task "Wait to be experimented on"	follow last cmd "wait" 4;
+  task "Make love to gorilla"		follow last;
+  task "Eat chocolate"			after last need chocolate lose it;
+  task "Open cage"			after last;
+  task "Get out of cage"		after last need hose;
+  task "Drop hose"			follow last;
+  task "Untie straps"			follow last;
+  task "Press switch"			follow last;
+  task "Stand up"			follow last;
+  task "Get hose"			follow last;
+
+room "Spawning Ground"			dir w from Jungle after capture
+					tag Spawn;
+  item "jar of ointment"		tag ointment;
+  item "black circle";
+  join Spawn to Hold			oneway cmd "enter circle";
+
+########################################################################
+
+map "Canals of Mars";
+
+room "Royal Docks"			tag Docks;
+  join Clifftop to Docks		oneway cmd "enter circle";
+  task "Enter barge"			goto Barge;
+  item "barge";
+  task "Put raft in canal"		need raft drop it tag goto_canalview;
+  task "Enter raft"			follow last;
+  task "Paddle to Donald Dock"		follow last cmd "wait" 6;
+  task "Grab dock"			follow last goto Donald;
+
+room "Throne Room"			dir s;
+  item "King Mitre";
+  item "different-looking angle"; 
+  task "Open compartment"		need machine;
+  task "Put jar in compartment"		follow last need ointment;
+  task "Close compartment"		follow last;
+  task "Turn machine on"		follow last;
+  task "Open compartment"		follow last;
+  task "Get jar"			follow last;
+  task "Apply cream to angle"		follow last;
+  item "angle"				hidden after last tag angle;
+
+room "Ruin"				dir s; 
+
+room "Martian Desert"			dir s exit e w tag Desert;
+
+room "Yet Another Ruin"			dir e tag Frog_ruin;
+  item "large green frog";
+  task "Put balm on lips"		need balm lose it;
+  task "Put pin on nose"		need pin follow last;
+  task "Drop everything"		cmd "drop all" follow last;
+  task "Cover ears with hands"		follow last;
+  task "Close eyes"			follow last;
+  task "Kiss frog"			follow last;
+  task "Retrieve everything"		cmd "get all" give blender follow last;
+  task "Remove balm"			follow last;
+  task "Remove pin"			follow last;
+  item "blender"			hidden tag blender;
+
+room "Martian Dessert"			dir e se;
+  item "mirage";
+
+room "Oasis"				dir se e tag Oasis;
+  item "water";
+  item "bunny rabbit"			tag bunny;
+  item "white circle";
+  task "Pour stain on circle"		need can tag pour_stain;
+
+room "Wattz-Upp Dock"			dir e 2 tag Wattz_Upp;
+
+room "Another Ruin"			dir w from Desert tag Circle_ruin;
+  item "black circle";
+  join Circle_ruin to Basement		oneway cmd "enter circle";
+
+room "Hickory & Dickory Dock"		dir nw n 2;
+  task "Show painting to mouse"		need painting tag show_painting;
+  task "Get mouse"			follow last give mouse;
+  item "marsmouse"			tag mouse;
+
+room "Martian Canal"			style Canal dir n from Docks
+					tag Barge nopath;
+  task "Press orange button"		tag go1;
+
+room "Martian Canal"			style Canal dir e oneway after go1
+					cmd "press purple button";
+
+room "Martian Canal"			style Canal dir e oneway cmd "wait";
+
+room "Martian Canal"			style Canal dir e oneway cmd "wait";
+
+room "Martian Canal"			style Canal dir e oneway cmd "wait"
+					tag Baby_stop;
+  task "Press purple button";
+  task "Press orange button"		after last tag stop1;
+  task "Press orange button"		need balm tag go2;
+
+room "Baby Dock"			dir n after stop1
+					cmd to "Leave barge"
+					cmd from "Enter barge";
+
+room "Among the Dunes"			dir n tag Dunes;
+  item "dead alien";
+  item "lip balm"			tag balm;
+  item "coded message"; 
+  task "Read message"			need last;
+
+room "Martian Canal"			style Canal dir e from Baby_stop
+					oneway after go2 tag Donald_stop
+					cmd "press purple button";
+  task "Press purple button";
+  task "Press orange button"		after last tag stop2;
+  task "Press orange button"		tag go3;
+
+room "Donald Dock"			dir s after last tag Donald nopath;
+
+room "Dunetop"				dir s;
+
+room "Canalview Mall"			dir e tag Mall;
+  task "Open tube"			need tube;
+  task "Get circle"			need tube after last;
+  task "Drop circle"			after last;
+  task "Enter circle"			after last goto Boudoir;
+
+room "Exit Shop"			dir s;
+  task "Buy exit"			need coin_1;
+  task "Give coin to man"		after last need coin_1 lose it;
+  task "Rake dust"			after last need rake give tube;
+  item "tube"				hidden tag tube;
+
+room "Abandoned Dock"			dir e tag Abandoned;
+
+room "Martian Canal"			style Canal dir e from Donald_stop
+					oneway after go3
+					cmd "press purple button";
+
+room "Martian Canal"			style Canal dir e oneway cmd "wait";
+
+room "Martian Canal"			style Canal dir e s 3 oneway cmd "wait"
+					tag Nice_stop;
+  link Nice_stop to Abandoned		nopath;
+  task "Press orange button";
+  task "Press purple button"		after last tag stop3;
+  task "Press orange button"; 
+  task "Put raft in canal"		follow last need raft
+					drop it in Wattz_Upp;
+  task "Press purple button"		after last tag release_barge;
+  task "Enter raft"			after last;
+  task "Drift downstream"		after last cmd "wait" 3;
+  task "Grab dock"			after last goto Wattz_Upp;
+
+room "Now THIS Is My Kind of Dock"	dir e after stop3 tag THIS
+					cmd to "Leave barge"
+					cmd from "Enter barge";
+
+room "Main Hall of Palace"		dir e tag Palace;
+
+room "Audience Chamber"			dir ne tag Chamber exit s w;
+  item "Sultan";
+  task "Accept Sultan's riddle"		cmd "yes" tag accept_riddle;
+  task "Get the right answer"		cmd "say \"riddle\"" after last;
+  task "Ask for correct wife"		after last tag ask_number cmd "w";
+
+room "Harem"				dir w after last;
+  task "Wait"				goto Inner;
+
+room "Inner Harem"			dir w oneway tag Inner;
+  item "concubine";
+  task "Make love to wife";
+  task "Ask her to kiss your kneecaps"	cmd "wife, kiss my kneecaps"
+					after last;
+  item "torch"				hidden after last;
+  item "secret map"			hidden after last;
+  join Inner to A1			go down oneway;
+
+room "Oriental Garden"			dir s from Chamber link Palace
+					tag Oriental;
+  item "well";
+  join Oriental to Icy_stop		after release_barge oneway go down;
+
+room "Base of Tower"			dir se;
+
+room "Minaret"				dir n go up tag Minaret;
+  item "black circle";
+  join Minaret to Cramped		oneway cmd "enter circle";
+
+room "Laundry Room"			dir s from Palace tag Laundry;
+  item "pin"				tag pin;
+
+room "Martian Canal"			style Canal dir s 3 from Nice_stop
+					oneway nopath tag Wattz_stop exit s;
+
+link Wattz_stop to Wattz_Upp;
+
+########################################################################
+
+map "South Pole";
+
+room "Martian Canal"			style Canal tag Icy_stop;
+
+room "Icy Dock"				dir s
+					cmd to "leave barge"
+					cmd from "enter barge";
+
+room "Edge of Polar Ice Cap"		dir s exit s se tag Edge;
+
+room "Penguin Park"			dir se exit w nw se tag Park;
+  item "penguins";
+  task "Give coin to penguin"		need coin_10 lose it give coin_1;
+  item "coin"				hidden tag coin_1 note "One Marsmid";
+
+room "Gypsy Camp"			dir se tag Camp exit s;
+
+room "Inside the Tent"			dir n;
+  item "baby robot"			tag baby;
+  task "Cover baby with blanket"	need baby blanket lose blanket;
+  task "Put baby in basket"		after last need baby basket lose baby
+					tag put_baby;
+
+room "South Pole"			dir s from Camp;
+  item "igloo";
+  task "Put basket on stoop"		after put_baby need basket lose it;
+  task "Wait for collection"		after last cmd "wait" 2;
+  task "Open door"			after last;
+
+room "Orphanage Foyer"			dir s go in after last;
+  item "cotton balls"			tag cotton;
+
+room "Allusion Room"			dir w from Park link Edge tag Allusion;
+  item "black circle";
+  join Allusion to Wattz_Upp		oneway cmd "enter circle";
+
+########################################################################
+
+map "Cleveland";
+
+room "Cleveland"			tag Cleveland exit s;
+  join Oasis to Cleveland		oneway after pour_stain
+					cmd "enter circle";
+
+room "Lawn"				dir s;
+  item "wooden rake"			tag rake;
+  item "canvas sack"			tag sack keep;
+  item "leaves"				tag leaves hidden;
+  task "Get sack"			give sack leaves;
+  task "Open sack"			after last;
+
+room "Teensy-Weensy House"		dir ne from Cleveland tag Teensy;
+
+room "Bedroom"				dir n go up tag Bedroom;
+  item "bed";
+  item "sheet"				tag sheet;
+  task "Rip sheet"			need sheet;
+  task "Tie strips together"		after last;
+  task "Tie rope to bed"		after last;
+  task "Put rope through window"	after last;
+  task "Wait for Trent"			after last cmd "wait" 2;
+  task "Untie rope"			after last;
+  item "headlight"			tag headlight hidden after last;
+
+room "Garden"				dir e from Teensy tag Garden;
+  item "flowers";
+  item "trellis"			tag trellis;
+  item "black circle"			hidden;
+  task "Move sod"			tag move_sod; 
+  join Garden to Hall			oneway after last cmd "enter circle";
+
+########################################################################
+
+map "Rings of Saturn";
+
+room "Hold"				tag Hold exit s sw;
+  item "sword"				tag sword;
+
+room "Stable"				tag Stable dir s exit w;
+  item "stallion";
+  task "Gallop down corridor"		goto Hatch tag ride_horse
+					cmd "ride horse" cmd "w"
+					cmd "dismount";
+
+room "Long Corridor"			dir w link Hold;
+
+room "Long Corridor"			dir w;
+
+room "Long Corridor"			dir w tag Alcove;
+  item "black circle";
+
+room "At Main Hatch"			dir w 2 tag Hatch;
+  item "therma suit"			tag suit;
+  task "Wear suit"			need suit;
+  task "Open hatch"			after last tag open_hatch;
+  task "Close hatch"			after Elysia;
+  task "Remove suit"			after last need suit;
+  task "Gallop down corridor"		after last goto Stable cmd "ride horse"
+					cmd "e" cmd "dismount";
+
+room "In Space"				dir n after open_hatch;
+  item "Thorbast";
+  item "Elysia";
+  task "Disarm Thorbast"		tag disarm_thorbast need sword;
+  item "sword"				hidden after last tag his_sword;
+  task "Give Thorbast his sword"	after last need his_sword lose it;
+  task "Kill monster with sword"	after last need sword;
+  task "Untie woman"			after last;
+
+room "Space Yacht"			dir n after last tag Yacht;
+  task "Accept reward"			give photo cmd none;
+  item "photo"				hidden tag photo;
+  task "Open door";
+
+room "Private Cabin"			dir e after last;
+  task "Make love to Elysia"		tag Elysia goto Yacht cmd none;
+
+########################################################################
+
+map "Catacombs (Lower Level)";
+
+room "Catacombs"			tag A1;
+
+room "Catacombs"			tag A2 dir nw ne;
+
+room "Catacombs"			tag A3 dir n e 2 s e;
+
+room "Catacombs"			tag A4 dir e from A1;
+
+link A3 to A4				dir ne nw w 2;
+
+link A2 to A3				dir se e 2;
+
+room "Catacombs"			tag A5 dir sw 2 from A1;
+
+room "Catacombs"			tag A6 dir nw 2 n exit e;
+
+join A6 to B1				go down;
+
+room "Forgotten Storehouse"		tag A7 dir nw sw se;
+  item "phone book"			tag phone_book;
+
+room "Catacombs"			tag A8 dir e s 4 w 6 from A4;
+
+room "Catacombs"			tag A9 dir ne w nw;
+
+room "Catacombs"			tag A10 dir s 2;
+
+link A9 to A10				dir ne se;
+
+room "Catacombs"			tag A11 dir se 2 from A8 exit n;
+
+join A11 to B7				go down;
+
+link A10 to A11				dir se 3;
+
+room "Catacombs"			tag A12 dir se s 3 sw w 3 from A5;
+
+room "Catacombs"			tag A13 dir s e 5 n;
+
+room "Catacombs"			tag A14 dir se 2 e 6 n 2 w from A12
+					exit s;
+
+join A14 to B17				go down;
+
+room "Catacombs"			tag A15 dir ne 3 se sw from A13;
+
+room "Catacombs"			tag A16 dir nw 2 ne 2 nw from A14;
+
+link A15 to A16				dir se n 5;
+
+link A13 to A15				dir n 2 e 2;
+
+link A16 to A16				dir sw nw ne;
+
+########################################################################
+
+map "Catacombs (Very Lower Level)";
+
+room "Catacombs"			tag B1 exit e;
+
+room "Catacombs"			tag B2 dir ne e 5 s;
+
+link B2 to B2				dir e s 2 w 3;
+
+room "Catacombs"			tag B3 dir se sw from B1;
+
+room "Catacombs"			tag B4 dir e;
+
+room "Catacombs"			tag B5 dir w 2 n 2 from B3;
+
+link B5 to B4				dir ne 2 e;
+
+room "Catacombs"			tag B6 dir sw from B4;
+
+link B5 to B6				dir w s 3;
+
+room "Catacombs"			tag B7 dir sw se 3 from B6 exit n;
+
+room "Catacombs"			tag B8 dir sw 2;
+
+link B8 to B8				dir se w 2 n;
+
+room "Burial Chamber"			tag B9 dir nw 2 from B8 nolink;
+  item "raft"				tag raft;
+
+room "Catacombs"			tag B10 dir n 2 se 4 ne 2;
+
+room "Catacombs"			tag B11 dir ne 2;
+
+link B10 to B11				dir s e 2; 
+
+room "Catacombs"			tag B12 dir e 2 from B11;
+
+room "Catacombs"			tag B13 dir nw 2 w 2;
+
+room "Ladder Room"			tag B14 dir n w 2 s se 2;
+  item "ladder";
+  join B14 to Laundry			go up oneway;
+
+room "Catacombs"			tag B15 dir ne se e 2 from B13;
+
+room "Catacombs"			tag B16 dir s e 2 s 2 w 2 s 3;
+
+room "Catacombs"			tag B17 dir w 2 exit s;
+
+link B12 to B16				dir sw s 2;
+
+link B15 to B17				dir se 2;
+
+########################################################################
+
+# Getting through the catacombs (a right royal pain in the ass!).
+
+# Some of the connections have caved in (this list probably isn't all of
+# them, but it's enough to stop the solver taking the wrong path).
+link A4 nopath style Blocked;
+link A5 nopath style Blocked;
+link A10 nopath style Blocked;
+link A11 nopath style Blocked;
+link B4 nopath style Blocked;
+
+# Need to avoid nasties.
+task "Avoid nasties" in A3  cmd "clap";
+task "Avoid nasties" in A8  cmd "clap" cmd "hop";
+task "Avoid nasties" in A10 cmd "clap" cmd "say \"kweepa\"";
+task "Avoid nasties" in B7  cmd "clap" cmd "hop";
+task "Avoid nasties" in B4  cmd "clap" cmd "say \"kweepa\"";
+task "Avoid nasties" in B3  cmd "hop" cmd "clap";
+task "Avoid nasties" in A6  cmd "clap";
+task "Avoid nasties" in A7  cmd "say \"kweepa\"" cmd "hop" cmd "clap";
+
+task "Visit storehouse" in A7 tag A7 cmd none;
+
+task "Avoid nasties" in A6  after A7 cmd "clap";
+task "Avoid nasties" in A12 after A7 cmd "hop" cmd "clap";
+task "Avoid nasties" in A14 after A7 cmd "say \"kweepa\"";
+task "Avoid nasties" in B17 after A7 cmd "clap";
+task "Avoid nasties" in B15 after A7 cmd "hop";
+task "Avoid nasties" in B13 after A7 cmd "clap" cmd "say \"kweepa\"";
+task "Avoid nasties" in B11 after A7 cmd "hop" cmd "clap";
+task "Avoid nasties" in B9  after A7 cmd "clap" cmd "say \"kweepa\"" cmd "hop";
+
+task "Visit burial chamber" in B9 after A7 tag B9 cmd none;
+
+task "Avoid nasties" in B10 after B9 cmd "clap";
+task "Avoid nasties" in B12 after B9 cmd "hop" cmd "clap" cmd "say \"kweepa\"";
+task "Avoid nasties" in B13 after B9 cmd "clap" cmd "hop";
+
+task "Escape from catacombs!" in Laundry after B9 cmd none;
+
+########################################################################
+
+# Display styles.
+
+# Martian canal.
+style Canal;
+  ps.room_colour = "grey70";
+  tk.room_colour = "light blue";
+endstyle; 
+
+# Catacombs links that are blocked.
+style Blocked;
+  ps.link_dashed = 1;
+  tk.link_colour = "red";
+endstyle;
+
+########################################################################
+
+# Miscellaneous game tweaks.
+
+# Play the game in lewd mode (be sure to disable this if you're not
+# 18 yet).  8-)
+task "Be lewd" in Bar cmd "lewd" cmd "18";
+
+# Make sure various paths are open before risking the catacombs.
+task accept_riddle after break_ceiling move_sod pour_stain;
+
+# Need to be prepared before visiting Canalview Mall (solver chooses the
+# Wrong Thing).
+task goto_canalview need coin_1;
+
+# Don't get the mouse before visiting South Pole (you have to empty the
+# basket, and the mouse runs away, and you can't catch it again, and...
+# well, it's all just best avoided!).
+task show_painting need cotton;
+
+########################################################################
+
+# Inventory management tasks.
+
+# Periodically put stuff in the basket.
+task "Put all in basket" need basket in Teensy;
+task "Put all in basket" need basket in Dunes;
+task "Put all in basket" need basket in Spawn;
+
+# Transfer stuff to sack when the basket is needed for other things.
+task "Move everything to sack" need sack in Camp
+  cmd "empty basket" cmd "put all in sack"
+  cmd "get all" cmd "put all in sack";
+
+# Don't drop space stuff until back on solid ground (it just floats back
+# into your hands).
+task "Drop space stuff" in Oasis need sword lose it cmd "drop sword";
+
+########################################################################
+
+# There are several random elements in the game, which will probably need
+# to be customized to get a valid recording file.  Remember that when
+# playing back the recording you need to fix the random seed to a specific
+# value -- dumb-frotz can do this via the -s option.
+
+# Disarming Thorbast requires a random number of attempts.  Change the
+# repeat count as required.
+task disarm_thorbast cmd "kill thorbast with sword" 4;
+
+# Spaceship black circle goes to a random place -- change 2nd tag to the
+# tag name of wherever it goes to in your play-through.
+join Alcove to Oasis oneway cmd "enter circle";
+
+# The number of the concubine on the secret message (reversed).
+task ask_number cmd "ask for 4749";
+
+# Building the attack machine (ingredient order is random, apparently,
+# though I've never seen it change).
+task build_machine
+  cmd "give blender"
+  cmd "give hose"
+  cmd "give cotton balls"
+  cmd "give angle"
+  cmd "give headlight"
+  cmd "give mouse"
+  cmd "give photo"
+  cmd "give phone book";
+
+########################################################################
+
+# Things still missing:
+#
+# Simpler solution to the flytrap problem.
+# The rest of the scratch 'n' sniff points.
+# Playing the game from the female perspective.

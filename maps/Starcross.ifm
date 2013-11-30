@@ -1,0 +1,170 @@
+# IFM Map for "Starcross" by Infocom
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Starcross.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+title "Starcross";
+
+########################################################################
+map "Outer Region";
+
+room "Garage";
+room "Room on Ring Four" tag Ring4Room dir n n oneway;
+room "Blue Hall 4" tag Blue4 dir w w;
+room "Blue Hall 5" tag Blue5 dir s s s s;
+room "Yellow Hall 5" tag Yellow5 dir w w w;
+room "Green Hall 5" tag Green5 dir w w w w;
+room "Red Hall 5" tag Red5 dir w w w;
+
+room "Red Hall 4" tag Red4 dir n n n n from Red5;
+room "Red Hall 3" tag Red3 dir n n n;
+room "Red Hall 2" tag Red2 dir n n n;
+room "Red Hall 1" tag Red1 dir n n n n;
+
+room "Green Hall 1" tag Green1 dir e e e from Red1;
+room "Green Hall 2" tag Green2 dir s s s s link Red2;
+
+room "Yellow Hall 2" tag Yellow2 dir e e e e from Green2;
+room "Yellow Hall 3" tag Yellow3 dir s s s;
+room "Yellow Hall 4" tag Yellow4 dir s s s link Blue4;
+room "Yellow Hall 1" tag Yellow1 dir n n n n from Yellow2;
+
+room "Blue Hall 1" tag Blue1 dir e e e from Yellow1;
+room "Blue Hall 2" tag Blue2 dir e e e from Yellow2;
+room "Blue Hall 3" tag Blue3 dir s s s link Yellow3;
+
+room "to Red Airlock" tag JoinRedAirlock dir se from Red3 go down style puzzle;
+
+room "Room on Ring One" dir e e from Green1 link Yellow1;
+room "Computer Room" dir s s;
+
+room "Outskirts of Village 1" dir e from Red3;
+room "Village Center" dir e;
+room "In the Warren" dir e;
+room "Center of Waren" dir s style special;
+room "to Green Airlock" tag JoinGreenAirlock dir se go down style puzzle;
+
+room "Outskirts of Village 2" dir s s from Green2;
+room "Outskirts of Village 3" dir w w w from Yellow3;
+
+room "Outskirts of Village 5" tag Village5 dir n n n from Green5;
+room "Outskirts of Village 4" dir w w w from Yellow4;
+room "Village Suburbs" dir w link Village5;
+room "Outskirts of Village 6" dir w link Red4;
+
+room "to Yellow Airlock" tag JoinYellowAirlock dir se from Yellow3 go down
+		style puzzle;
+
+room "Yellow Hall 4.5" dir s s from Yellow4 link Yellow5;
+room "Laboratory" dir e;
+	item "blue disk";
+	item "red disk";
+
+room "Blue Hall 1.5" dir s s from Blue1 link Blue2;
+room "Observatory" dir w;
+
+room "Room on Ring Two" tag Ring2Room dir e e from Blue2;
+room "Zoo" tag Zoo dir n;
+room "Broken Cage" dir w;
+room "Inside Grue Cage" dir n;
+room "Nesting Cage" dir e from Zoo;
+	item "red rod";
+
+room "to Grasland 1" tag JoinGrassland dir ne from Blue3 go up style puzzle;
+room "to Blue Airlock" tag JoinBlueAirlock dir se from Blue3 go down style puzzle;
+
+room "Melted Spot" dir s s from Blue3 link Blue4;
+room "Weapons Deck" dir w;
+	item "ray gun";
+
+room "to Red Hall" tag JoinRB1 dir e e e from Blue1 style puzzle;
+room "to Red Hall" tag JoinRB2 dir e from Ring2Room style puzzle;
+room "to Red Hall" tag JoinRB3 dir e e e from Blue3 style puzzle;
+room "to Red Hall" tag JoinRB4 dir e from Ring4Room style puzzle;
+room "to Red Hall" tag JoinRB5 dir e e e from Blue5 style puzzle;
+
+room "to Blue Hall" dir w from Red1 style puzzle join JoinRB1;
+room "to Blue Hall" dir w from Red2 style puzzle join JoinRB2;
+room "to Blue Hall" dir w from Red3 style puzzle join JoinRB3;
+room "to Blue Hall" dir w from Red4 style puzzle join JoinRB4;
+room "to Blue Hall" dir w from Red5 style puzzle join JoinRB5;
+
+########################################################################
+map "Inner Region";
+
+room "to Blue Hall 3" style puzzle join JoinGrassland;
+room "Grassland 1" tag Grass1 dir ne go up exit w;
+room "Metal Floor 1" tag Metal1 dir n n exit w;
+room "Fore End 1" dir n n exit w;
+room "Fore End 2" dir e exit e;
+room "Metal Floor 2" dir s s link Metal1 exit e;
+room "Grassland 2" tag Grass2 dir s s link Grass1 exit e;
+
+room "Thin Forest 1" tag Forest1 dir s s from Grass1 exit w;
+room "Dense Forest" dir s s exit w;
+room "Base of Tree" tag TreeBase dir e exit e;
+room "Thin Forest 2" dir n n link Forest1 exit e link Grass2;
+
+room "Repair Room" dir sw from Forest1 go down;
+	item "metal & ceramic square";
+
+room "Up a Tree" dir ne from TreeBase go up;
+room "Top of Tree" dir e go up;
+room "Drive Bubble Entrance" tag BubbleEnt dir e e go up style special;
+room "Drive Bubble" dir s go in style special;
+
+room "On Drive Bubble" dir e from BubbleEnt go up;
+room "Floating in Air 1" dir n n style special;
+room "Floating in Air 2" dir n n style special;
+room "Floating in Air 3" dir n n style special;
+room "On Control Bubble" dir n style special;
+room "Control Bubble Entrance" dir w go down;
+room "Control Bubble" dir n go in;
+
+########################################################################
+map "M.C.S. Starcross and Red Airlock";
+
+room "to Red Hall 3" style puzzle join JoinRedAirlock;
+room "Red Airlock" dir s go down;
+room "Red Dock" dir s go down style special;
+room "Airlock" dir s s go down style special;
+
+room "Bridge" tag Bridge dir s go in;
+room "Storage" dir e;
+	item "space suit";
+	item "safty line";
+room "Living Quarters" dir w from Bridge start;
+	item "tape library";
+
+########################################################################
+map "Green Airlock";
+
+room "to Warren" style puzzle join JoinGreenAirlock;
+room "Green Airlock" dir s go down style special;
+room "Green Dock" dir s go down;
+room "Umbilical" dir w;
+room "Cargo Hold" tag CargoHold dir w;
+	item "visor fragment";
+room "Control Room" dir n;
+room "Guard Room" dir s from CargoHold;
+
+########################################################################
+map "Yellow Airlock";
+
+room "to Yellow Hall 3" style puzzle join JoinYellowAirlock;
+room "Yellow Airlock" dir s go down;
+	item "metal basket";
+room "Yellow Dock" dir s go down style special;
+room "Among Debris" dir w;
+	item "pink rod";
+
+########################################################################
+map "Blue Airlock";
+
+room "to Blue Hall 3" style puzzle join JoinBlueAirlock;
+room "Blue Airlock" dir s go down;
+room "Blue Dock" dir s go down;
+room "Bubbles" dir s s;
+room "Spherical Ship" dir s;
+
+# EOF

@@ -1,0 +1,5 @@
+
+- Make internationalization recognize the OS language directly.
+- Do Printing
+- Add Undo (at least for delete)
+- Add configurable hotkeys and mouse

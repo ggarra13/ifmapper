@@ -1,0 +1,50 @@
+# IFM Map for "Ralph" by Miron Schmidt
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+
+# $Id: Ralph.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+
+title "Ralph";
+
+########################################################################
+
+room "Hut" start;
+	item "teddy";
+room "Lawn" tag NLawn dir e;
+	item "Christopher Robin";
+	task "bark" tag Bark2 after Bark1 note "scares cat to the north";
+	task "give ball to boy" need ball lose it get ball2
+		note "He throws it to the north";
+	task "" tag Carry_pipe need pipe note "need to carry pipe here";
+room "Front of House" tag House dir e;
+	item "pipe" tag pipe hidden;
+	task "scratch at small door" tag Scratch_door get pipe;
+	task "scratch at small door" after last Carry_pipe Dig_garden
+		score 10 finish;
+
+room "Lawn" tag SLawn dir s from NLawn link House;
+	item "cat";
+	task "bark" tag Bark1 note "scares cat to the north";
+room "Ruined Shed" tag Shed dir e link NLawn link House;
+	item "glass-fibre" tag fibre;
+
+room "Under a Tree" dir n from NLawn link House;
+	item "squash ball" tag ball;
+	task "block hollow with fibre" tag Block_hollow need fibre lose it
+		note "otherwise the cat will hide in the hollow";
+	task "bark" after Block_hollow Bark2 get ball
+		score 10
+		note "scares the cat up the tree unlodging the ball";
+	item "ball" tag ball2 hidden; #really the same ball
+	task "throw ball over fence" need ball2 lose it;
+	task "wait. again" tag O_fence follow last
+		note "until the boy opens the fence";
+room "Herb Garden" dir w style special after O_fence score 10;
+	task "dig" tag Dig_garden;
+
+########################################################################
+# Tweaks to help the solver.
+
+task Bark1 after Block_hollow;
+task Scratch_door after Dig_garden;
+
+# EOF

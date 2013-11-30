@@ -1,0 +1,219 @@
+# IFM Map for "Varicella" by Adam Cadre
+# Based on Version 1.14 (31 August 1999) / Serial number 9339
+#
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: vgame.ifm,v 1.3 2003/01/11 20:32:36 dchapes Exp $
+#
+
+# Mark the starting location
+room_border_width = 2 in style Start;
+
+
+title "Varicella";
+
+########################################################################
+# Starting items
+item "letter";
+item "master key"		keep note "also records information";
+# Clothing
+item "shirt";
+item "doublet";
+item "jerkin";
+item "hose";
+item "knee-breeches";
+item "cloak";
+item "shoes";
+item "hat";
+
+
+########################################################################
+map "Palazzo del Piemonte, Bottom Level";
+
+room "Salon"			tag Salon style Start start
+				note "view of western gardens";
+
+room "Western Ballroom"		tag W_Ballroom dir e;
+
+room "Northwest Tower Antechamber"	tag NW_ante_low dir n;
+room "Dining Hall"		tag Dining_Hall dir e;
+  item "armor";
+
+room "Northeast Tower Antechamber"	tag NE_ante_low dir e;
+room "Eastern Ballroom"		tag E_Ballroom dir s;
+  item "fresco";
+
+room "Southeast Tower Antechamber"	tag SE_ante_low dir s;
+room "Grand Foyer"		tag Foyer dir w exit s;
+
+room "Southwest Tower Antechamber"	tag SW_ante_low dir w link W_Ballroom;
+
+room "Palace Kitchen"		dir n from Dining_Hall exit n;
+  item "refrigerator";
+  item "guard";
+  item "chef";
+
+room "Palace Courtyard"		dir e from W_Ballroom link E_Ballroom;
+  item "Prince Louis";
+
+room "Palace Chapel"		dir e from E_Ballroom;
+  item "guard";
+room "Christ Minister's Quarters"	dir s;
+  item "cot";
+  item "desk";
+  item "crucifix";
+  item "math textbook";
+  item "history textbook";
+
+
+room "Northwest Tower, Bottom Level"	tag NW_lower dir nw from NW_ante_low;
+room "Northeast Tower, Bottom Level"	tag NE_lower dir ne from NE_ante_low;
+room "Southwest Tower, Bottom Level"	tag SW_lower dir sw from SW_ante_low;
+room "Southeast Tower, Bottom Level"	tag SE_lower dir se from SE_ante_low;
+
+########################################################################
+map "Palazzo del Piemonte, Middle Level";
+
+room "Northwest Tower, Middle Level"	tag NW_middle;
+  join NW_lower to NW_middle	go up;
+
+room "Northwest Tower Antechamber"	tag NW_ante_mid dir se;
+room "Throne Room"		tag Throne dir e exit n e;
+  item "throne";
+  item "phone";
+  item "guard";
+
+room "Northeast Tower Antechamber"	tag NE_ante_mid dir e;
+room "Eastern Hall"		tag E_Hall dir s;
+  item "guard";
+  item "turkey leg";
+  item "cooler";
+  item "balcony";
+
+room "Southeast Tower Antechamber"	tag SE_ante_mid dir s;
+room "Southern Hall"		tag S_Hall dir w;
+  item "carpet";
+  item "guard";
+
+room "Southwest Tower Antechamber"	tag SW_ante_mid dir w;
+
+room "Western Hall"		tag W_Hall dir n link NW_ante_mid;
+  item "carpet";
+  item "guard";
+  item "balcony";
+
+
+room "Royal Quarters"		dir n from Throne
+				note "view of nothern gardens";
+  item "medical rigging";
+
+room "Coffers Minister's Quarters"	dir e from E_Hall;
+  item "plastic dinosaur";
+  item "toy robot";
+  item "perpetual motion toy";
+  item "Newton's cradle";
+  item "malachite obelisk";
+  item "old coin";
+  item "pin board";
+  item "magnetic sculpture";
+  item "mini rock garden";
+  item "mini foam basketball";
+  item "mini basketball hoop";
+  item "mini pool table";
+
+room "Interior Minister's Quarters"	dir s from S_Hall;
+  item "desk";
+  item "test tube rack";
+  item "yellowish vial"		hidden;
+  item "pinkish vial"		hidden;
+
+room "War Minister's Quarters"	dir w from W_Hall;
+
+
+room "Northeast Tower, Middle Level"	tag NE_middle dir ne from NE_ante_mid;
+  join NE_lower to NE_middle	go up;
+room "Southwest Tower, Middle Level"	tag SW_middle dir sw from SW_ante_mid;
+  join SW_lower to SW_middle	go up;
+room "Southeast Tower, Middle Level"	tag SE_middle dir se from SE_ante_mid;
+  join SE_lower to SE_middle	go up;
+
+########################################################################
+map "Palazzo del Piemonte, Upper Level";
+
+room "Northwest Tower, Top Level"	tag NW_top;
+  join NW_middle to NW_top		go up;
+  item "sleeping guard";
+room "Palace Minister's Quarters" dir nw;
+  item "bed";
+  item "dresser";
+  item "hair oil";
+  item "hand lotion";
+  item "oil painting";
+  item "panel"			hidden;
+  item "white cable"		hidden;
+  item "black cable"		hidden;
+  item "money"			hidden;
+  item "dagger"			hidden;
+# Surveillance dial settings:
+#  0 Grand Foyer
+#  1 Throne Room
+#  2 Palace Chapel
+#  3 Courtyard
+#  4 Dining Hall
+#  5 Salon
+#  6 Palace Kitchen
+#  7 Western Ballroom
+#  8 Eastern Ballroom
+#  9 Western Hall
+# 10 Eastern Hall
+# 11 Southern Hall
+# 12 Western Balcony
+# 13 Eastern Balcony
+# 14 Royal Quarters
+# 15 War Minister's Quarters (disabled)
+# 16 Coffers Minister's Quarters
+# 17 Christ Minister's Quarters
+# 18 Interior Minister's Quarters
+# 19 Prince Louis' Quarters
+# 20 Miss Sierra's Quarters
+# 21 Palace Asylum
+# 22 NW Tower Antechamber, Lower level
+# 23 NW Tower Antechamber, Upper level
+# 24 NW Tower, Bottom level
+# 25 NW Tower, Middle level
+# 26 NW Tower, Top level
+# 27 NE Tower Antechamber, Lower level
+# 28 NE Tower Antechamber, Upper level
+# 29 NE Tower, Bottom level
+# 30 NE Tower, Middle level
+# 31 NE Tower, Top level
+# 32 SW Tower Antechamber, Lower level
+# 33 SW Tower Antechamber, Upper level
+# 34 SW Tower, Bottom level
+# 35 SW Tower, Middle level
+# 36 SW Tower, Top level
+# 37 SE Tower Antechamber, Lower level
+# 38 SE Tower Antechamber, Upper level
+# 39 SE Tower, Bottom level
+# 40 SE Tower, Middle level
+# 41 SE Tower, Top level
+# 42 Northern Gardens
+# 43 Western Gardens
+# 44 Eastern Gardens
+# 45 Southern Gardens
+
+
+room "Northeast Tower, Top Level"	tag NE_top dir e 4 from NW_top nolink;
+  join NE_middle to NE_top	go up;
+room "Miss Sierra's Quarters"	dir ne;
+
+room "Southwest Tower, Top Level"	tag SW_top dir s 4 from NW_top nolink;
+  join SW_middle to SW_top	go up;
+  item "guard";
+room "Prince Louis's Quarters"	dir sw from SW_top;
+
+room "Southeast Tower, Top Level"	tag SE_top dir s 4 from NE_top nolink;
+  join SE_middle to SE_top	go up;
+room "Palace Asylum"		dir se;
+
+# EOF

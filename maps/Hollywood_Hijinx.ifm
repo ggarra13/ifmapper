@@ -1,0 +1,149 @@
+########################################################################
+# IFM map for "Hollywood Hijinx" by Infocom
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: Hollywood_Hijinx.ifm,v 1.2 2003/01/11 21:29:21 dchapes Exp $
+#
+# Status: map incomplete, no tasks, item notes
+########################################################################
+
+title "Hollywood Hijinx";
+
+########################################################################
+
+map "Outside the House";
+
+room "South Junction"		tag S_Junc;
+  item "statue"			note "Turn it W, E, N to open door";
+
+room "Front Porch"		dir n tag Porch;
+  item "yellowed paper"		note "Contains maze map";
+  item "business card";
+
+room "Southwest Junction"	dir w w n n from S_Junc tag SW_Junc;
+
+room "Patio"			dir e e tag Patio;
+  item "orange punch card"	note "Feed it to computer";
+
+room "Southeast Junction"	dir e e n n from S_Junc link Patio tag SE_Junc;
+
+room "Garden, South"		dir n from Patio tag G_South;
+
+room "Garden, East"		dir ne;
+
+room "Garden, North"		dir nw tag G_North;
+  item "pond";
+
+room "Garden, West"		dir sw link G_South;
+  item "shovel"			note "Dig for treasure in maze";
+
+room "Entrance to Hedge Maze"	dir n from G_North tag EHM;
+
+room "Hedge Maze"		dir n;
+
+room "Northwest Junction"	dir w w from EHM link SW_Junc;
+
+room "Cannon Emplacement"	dir n n e e tag Cannon;
+  item "cannon";
+  item "cannonball"		note "Fire it from cannon";
+
+room "Northeast Junction"	dir e e s s link EHM SE_Junc tag NE_Junc;
+
+room "Cliff"			dir n from Cannon go down;
+  item "ladder";
+  item "hatch";
+
+########################################################################
+
+map "The Ground Floor";
+
+room "Foyer"			join Porch tag Foyer;
+
+room "Hallway"			dir e;
+  item "painting";
+  item "green punch card"	note "Feed it to computer" hidden;
+  item "wall safe"		hidden;
+  item "cheese grater"		note "Treasure" hidden;
+
+room "Parlour"			dir e;
+  item "piano";
+  item "violet punch card"	note "Feed it to computer" hidden;
+
+room "Living Room"		dir w w from Foyer tag L_Room;
+  item "statuettes"		note "Encode safe combination";
+  item "rug";
+  item "phone";
+
+room "Fireplace"		dir w;
+  item "loose brick";
+  item "indigo punch card"	note "Feed it to computer" hidden;
+
+room "Dining Room"		dir n n from L_Room tag D_Room;
+  item "thin paper"		note "Contains maze map";
+
+room "Game Room"		dir e e link Foyer;
+  item "scale model";
+
+room "Short Hall"		dir e tag Hall;
+
+room "Men's Room"		dir s;
+
+room "Ladies' Room"		dir n from Hall;
+
+room "Screening Room"		dir e from Hall;
+  item "yellow punch card"	note "Feed it to computer";
+
+room "Projection Booth"		dir s;
+  item "projectors";
+  item "film";
+  item "slide";
+
+room "Kitchen"			dir w from D_Room;
+
+room "Cellar"			dir s go down tag Cellar;
+  item "computer"		note "Feed it the punch cards";
+
+room "Closet"			dir nw from Foyer go in tag Closet;
+  item "pegs";
+  item "bucket";
+  item "skis"			note "Ski over broken steps";
+
+link Cellar to Closet		style special;
+
+########################################################################
+
+map "On the Beach";
+
+room "Top Landing"		join NE_Junc;
+
+room "Middle of Beach Stairs"	dir n;
+
+room "Bottom Landing"		dir n tag Landing;
+
+room "Beach"			dir n go down;
+  item "green match";
+  item "fire";
+
+room "Inlet"			dir w w;
+
+room "Surface of Grotto Pool"	dir s s tag Pool;
+
+room "Grotto"			dir e tag Grotto;
+
+link Grotto to Landing		dir n;
+
+room "Grotto, Underwater"	dir s from Pool go down;
+
+room "Underwater Passage"	dir s go down;
+
+room "Underwater Passage"	dir w;
+
+room "Underwater"		dir n go up;
+
+room "Surface of Pool"		dir n go up;
+
+room "Ledge"			dir n;
+
+room "Tunnel"			dir n;
+
+########################################################################

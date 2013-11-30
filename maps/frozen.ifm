@@ -1,0 +1,126 @@
+# IFM Map for frozen.z5
+#	"Frozen:  A Night at the Lab" is by Jeremy Farnham
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+# $Id: frozen.ifm,v 1.4 2000/10/27 17:22:45 dchapes Exp $
+
+title "Frozen:  A Night at the Lab";
+
+########################################################################
+map "Basement";
+room "Stairs"	tag N0 exit s;
+room "Basement"	tag H0 dir s exit n s nw;
+	item "door";
+	task "x door" note "\"Experimental Laboratory\""
+		after X_calendar;
+	task "open door" tag O_door after last;
+room "Stairs"	tag S0 dir s exit n;
+
+room "Lab" tag Lab dir nw from H0 after O_door;
+	item "huge machine";
+	item "large sphere";
+	item "diagram";
+	task "x daigram. x machine. x sphere";
+	task "Drop calendar" after last need calendar drop it;
+	task "get on calendar" tag GO_calendar after last;
+	task "Get sphere" after GO_calendar goto Pentagram;
+
+
+########################################################################
+map "First Floor";
+room "Stairs"	tag N1 exit n s;
+room "Hall"	tag H1 dir s exit n s;
+room "Stairs"	tag S1 dir s exit n s;
+
+########################################################################
+map "Second Floor";
+room "Stairs"	tag N2 exit s;
+room "Hall"	tag H2 dir s exit n s w;
+room "Stairs"	tag S2 dir s exit n;
+
+room "Computer Lab" start dir w sw from H2 exit ne;
+	item "computer";
+	item "back pack" tag pack keep;
+#	task "open pack" need pack; #optional
+
+########################################################################
+map "Third Floor";
+room "Stairs"	tag N3 exit s;
+room "Hall"	tag H3 dir s exit n s ne;
+	item "man";
+room "Stairs"	tag S3 dir s exit n;
+
+room "Office" dir ne from H3 exit sw;
+	item "computer";
+	item "desk";
+	task "x desk" get calendar note "reveals calendar";
+	item "calendar" tag calendar hidden;
+	task "x calendar" tag X_calendar note "\"basement test\"";
+
+########################################################################
+map "The other side";
+room "Pentagram Room" tag Pentagram join Lab exit se;
+	item "huge pentagram";
+	item "swirling lights";
+	item "dust";
+	task "show spirit star page" tag S_star need star_page rexal;
+	task "show spirit square page" tag S_square need square_page rexal;
+	task "show spirit circle page" tag S_circle need circle_page rexal;
+	task "enter pentagram" tag GO_pentagram need rexal
+		after S_star S_square S_circle;
+	task "pour sand in circle" need rexal after GO_pentagram W_amulet
+		finish;
+room "Cellar" tag Cellar dir se exit nw ne e se s;
+	item "swirling lights";
+	item "dust";
+room "Storage Room" need amulet dir se exit nw n;
+	item "glass cases";
+room "Storage Room" need amulet dir n link Cellar exit w n s;
+	item "bottles";
+	task "search bottles" after X_page X_book get rexal;
+	item "rexal bottle" tag rexal hidden keep;
+room "Storage Room" need amulet dir n link Cellar exit sw s;
+	item "jars";
+
+room "Stairs" tag Stairs dir s s from Cellar go u exit n s;
+room "Kitchen" dir s exit n e;
+	item "cupboards";
+	item "leaves and dirt";
+room "Entry" tag Entry dir e exit w n s;
+room "Library" dir n exit s;
+	item "books";
+	item "chairs";
+	item "circle page" tag circle_page hidden after W_amulet keep;
+	task "x page" tag X_page need circle_page note "'Rexal'";
+
+room "Front Yard" dir s from Entry exit n s;
+	item "charred body";
+	task "x body" get amulet note "reveals amulet";
+	item "amulet" tag amulet hidden keep;
+	task "wear amulet" tag W_amulet need amulet;
+
+room "Attic" dir w n from Stairs go up;
+	item "dust";
+	item "bed";
+	item "mirror";
+	task "x mirror" tag X_mirror;
+	item "dusty book" tag book hidden after W_amulet keep;
+	task "read book" tag X_book need book note "'Rexal'"
+		give star_page square_page;
+	item "star page" tag star_page hidden keep;
+	item "square page" tag square_page hidden keep;
+
+# Join up all the stairs
+join N0 to N1 cmd to "U" cmd from "D" hidden;
+join N1 to N2 cmd to "U" cmd from "D" hidden;
+join N2 to N3 cmd to "U" cmd from "D" hidden;
+join S0 to S1 cmd to "U" cmd from "D" hidden;
+join S1 to S2 cmd to "U" cmd from "D" hidden;
+join S2 to S3 cmd to "U" cmd from "D" hidden;
+
+########################################################################
+# Tweaks to help the solver generate a better walkthrough
+
+task X_calendar need calendar;
+task X_mirror after W_amulet;
+
+# EOF

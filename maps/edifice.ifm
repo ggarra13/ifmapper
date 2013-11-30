@@ -1,0 +1,158 @@
+########################################################################
+# IFM map for "The Edifice" by Lucian Smith
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: edifice.ifm,v 1.1 1998/09/18 12:37:50 dchapes Exp $
+#
+# Status: map and tasks incomplete
+########################################################################
+
+title "The Edifice";
+
+########################################################################
+
+map "Start";
+
+room "At the Edifice";
+  item "the Others";
+  item "Rock"			tag rock;
+  task "Hit recess with rock"	need rock;
+
+room "Level One"		dir e after last tag L1;
+
+room "Level Two"		dir n go up after S1 tag L2;
+
+room "Level Three"		dir n go up after S2 tag L3;
+
+########################################################################
+
+map "Level One";
+
+room "Near the Arch"		join L1 tag Arch;
+
+room "Muddy Spring"		dir ne ne tag Spring;
+  item "mud";
+
+room "At the Tree"		dir ne tag Tree;
+  item "Dead Branch"		tag branch hidden;
+  item "Stick"			tag stick hidden;
+  item "Log"			hidden;
+  item "Spear"			tag spear hidden;
+  item "twigs and leaves"	tag twigs hidden;
+  task "Cut twisty branches off" after hit_branch get twigs;
+  task "Break branch"		after last get stick;
+  task "Sharpen stick into spear" need stick rock lose stick give spear;
+
+room "Up the Tree"		dir n go up;
+  item "Dead Branch";
+  task "Hit branch with rock"	need rock tag hit_branch after drink;
+
+room "At the Pool"		dir s from Tree tag Pool link Spring;
+  item "flat rock";
+  task "Stand on flat rock and drink" tag drink;
+  task "Put twigs and meat on flat rock" need meat twigs drop meat twigs;
+  task "Hit flat rock with rock" after last need rock;
+  task "Wait for meat to cook, then eat it" after last tag S1;
+
+room "By Stump"			dir s link Spring tag Stump;
+  task "Practice throwing spear at stump" need spear tag throwing_practice;
+
+room "Open Grassland"		dir s tag Grass link Arch;
+  item "Beast";
+  item "meat"			hidden tag meat;
+  task "Kill beast with spear"	after throwing_practice need spear lose it;
+  task "Cut beast open with rock" after last need rock get meat;
+
+room "Stream Rapids"		dir e from Stump link Pool Grass;
+  item "dead animal";
+
+########################################################################
+
+map "Level Two";
+
+room "Clearing near Hut"	join L2 tag Clearing;
+  item "Firepit";
+  item "Bone"			tag bone hidden;
+  task "Search firepit"		give last;
+
+room "River"			dir s;
+  item "White Bark"		tag bark hidden;
+
+room "Inside Hut"		dir e from Clearing;
+  item "Grandmother";
+  item "Wife";
+  item "Son";
+  task "Give feverleaf to Son"	need leaf lose it tag S2;
+
+room "Forest Path"		dir n from Clearing;
+  item "Berry Bush";
+  item "Berries"		tag berries;
+  item "Purple Paste"		tag paste hidden;
+  task "Grind berries into paste" need berries lose it give last;
+
+room "Stranger's Hut"		dir ne;
+  item "Stranger";
+  item "Small Boy";
+  item "Feverleaf"		hidden tag leaf;
+  task "Dip bone in paste"	need bone paste bark;
+  task "Draw feverleaf on bark"	after last need bark bone;
+  task "Say 'ne rema akne'"	after last;
+  task "Point at feverleaf"	after last need bark give leaf;
+
+########################################################################
+
+map "Level Three";
+
+room "Village"			join L3 tag Village;
+
+room "Ridge Path"		dir nw;
+  task "Jump onto horse's back"	after leave_fruit goto Riding;
+
+room "Canyon Path"		dir e link Village;
+  task "Leave fruit for horse"	after show_fruit tag leave_fruit drop fruit;
+
+room "Canyon"			dir ne;
+  item "herd of horses";
+  item "Horse"			hidden;
+  task "Show fruit to horse"	need fruit tag show_fruit;
+
+room "Waterfall"		dir n;
+  item "fruit trees";
+  item "piece of fruit"		hidden tag fruit;
+
+########################################################################
+
+map "On the Horse";
+
+room "Streaking Across the Countryside" tag Riding;
+  task "Hold onto mane";
+
+########################################################################
+
+# Stranger's language:
+#
+# a		yes?
+# akne		ill
+# alanasen	understand
+# alsen		?
+# ben		is
+# fa		you
+# fe		your
+# gralashen	kill
+# hallen	in?
+# krande	bad
+# lalse		sick
+# na		I, me
+# ne		my
+# rakasha	feverleaf
+# rema		son
+# salum		hut
+# scarmul	?
+# selme		good?
+# takramul	panther
+# takre		knife
+# tsa		this
+# vicnen	?
+# y		no
+
+########################################################################

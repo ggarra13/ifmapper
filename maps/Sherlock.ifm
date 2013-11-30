@@ -1,0 +1,209 @@
+# IFM Map for "Sherlock" by Infocom.
+# Based on Release 21 / Serial number 871214
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Sherlock.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+style Start;
+	tk.room_colour = "light blue";
+endstyle Start;
+
+style Dark;
+	tk.room_colour = "grey90";
+endstyle Dark;
+
+style Road;
+	link_line_width = 3;
+endstyle Road;
+
+
+title "Sherlock:  The Riddle of the Crown Jewels";
+
+########################################################################
+# Starting items
+
+item "hat" tag hat;
+item "coat" tag coat;
+item "whistle" tag whistle;
+item "pound note" tag pound_note;
+item "black bag" tag black_bag;
+
+#task "remove hat" tag Remove_hat need hat get stethoscope;
+#item "stethoscope" tag stethoscope hidden;
+
+
+########################################################################
+#map "";
+
+room "221-B Baker Street" tag Baker_St style Start;
+	task "knock on door" tag Knock goto Entry_Hall;
+	task "light lamp" tag On_lamp need lamp;
+room "Entry Hall" tag Entry_Hall dir w after Knock;
+	task "open door" tag O_door after Z_visitor;
+room "Vestibule" dir w go up;
+room "Holme's Study" dir n;
+	item "mail" tag mail;
+	item "knife" tag knife;
+	item "pistol" tag pistol;
+	item "slipper" tag slipper;
+	item "tobacco" tag tobacco hidden score 1;
+	item "pipe" tag pipe score 1;
+	item "violin" tag violin;
+	item "newspaper" tag newspaper score 1;
+	task "get all" give pipe slipper knife mail pistol violin newspaper;
+	task "read newspaper to Holmes" tag R_newspaper need newspaper score 5;
+	task "wait for Mrs. Hudson" tag Z_hudson
+		cmd "wait 2"
+		give clue_paper after last;
+	item "clue paper" tag clue_paper hidden;
+	task "read clue paper" need clue_paper;
+	task "wait for visitor to leave" tag Z_visitor after last
+		cmd "wait 2";
+room "Holme's Bedroom" dir w style special after Z_visitor;
+	item "ampoule" tag ampoule
+		note "Etherium.  Extremely volatile. "
+		note "Do not open in presence of fire.";
+	item "lamp" tag lamp score 3;
+	item "magnifying glass" tag mag_glass score 1;
+	task "get all" give ampoule lamp mag_glass;
+
+room "Parlour" dir n from Entry_Hall style special after Z_visitor;
+	item "matchbook" tag matchbook score 1;
+
+
+room "York Place" style Dark after On_lamp dir n from Baker_St style Road;
+
+room "Marylebone Road" tag Marylebone_Rd dir e 2 style Road;
+	item "guard";
+	item "dog";
+	task "turn off lamp" tag Off_lamp after On_lamp;
+	task "attempt to enter" tag Try_N cmd "N" after last;
+	task "put tobacco in pipe" need tobacco pipe after Try_N;
+	task "open matchbook" need matchbook note "reveals match" get match
+		after Try_N;
+	item "match" tag match hidden;
+	task "strike match" need match;
+	task "light pipe with match" need match follow last;
+	task "drop match, lamp" tag Drop_match need match lamp drop match lamp;
+	task "call handsome cab" cmd "blow whistle. again" need emerald
+		score 5;
+	task "go to Whitehall" cmd "enter cab. Whitehall. exit" follow last
+		goto Whitehall;
+
+room "Madame Tusaud's" dir n style special score 1 #leave lamp match;
+			after Drop_match;
+	item "sign" note "Chamber of Horrors";
+	item "ash";
+	task "ask Holmes about ash" note "Indian accomplice";
+	task "exit" cmd "S" need emerald torch lose torch goto Marylebone_Rd;
+room "Chaber Of Horrors" style Dark need pipe dir w;
+	task "examine scenes" note "Guy Fawkes, Charles I, Saint Thomas Becket";
+	task "examine Guy Fawkes" after last get torch;
+	item "torch" tag torch hidden;
+	task "light newspaper with pipe" need pipe newspaper;
+	task "light torch with newspaper" tag Light_torch need torch newspaper
+		follow last lose newspaper score 4;
+	task "examine Charles" after last get head;
+	item "head" tag head hidden;
+	task "melt head with torch" need head torch after Light_torch
+		lose head get emerald;
+	item "emerald" tag emerald hidden score 5;
+
+
+room "Tottenham Court Road" style Dark dir e 3 from Marylebone_Rd style Road;
+
+room "St. Giles Circus" tag Circus style Dark dir s 2 style Road;
+
+room "Great Russel Street" style Dark dir ne from Circus style Road
+		exit n
+		note "British Museum";
+	item "sign" note "Museum Hours:  8 am to 6 pm";
+
+room "Oxford Street" dir w 3 from Circus style Road;
+	item "cabstand";
+	item "growler cab";
+
+room "Orchard Street" style Dark after On_lamp dir w 2 style Road;
+	link last to Baker_St style Road;
+
+room "Audley Street" style Dark dir s style Road;
+
+room "Hyde Park Corner" tag Corner style Dark dir s style Road;
+
+room "Kensington Gardens" style Dark dir nw from Corner style Road;
+
+room "Grosvenor Place" style Dark dir se from Corner style Road;
+
+room "Victoria Square" tag Square dir se style Road;
+	item "handsom cab";
+
+room "Buckingham Palace Road" style Dark dir ne style Road;
+room "Queens Gardens" style Dark dir ne style Road
+		note "Buckingham Palace";
+	item "guard";
+
+room "Victoria Street" style Dark dir e from Square style Road;
+	item "sign" note "No Loitering.  This means YOU!";
+
+room "Broad Sanctuary" tag Broad_Sanctuary style Dark dir e style Road
+		note "Westminster Abbey";
+	item "sign" note "Visiting Hours:  7:00 am - 6:00 pm";
+
+room "Nave" dir e style special;
+
+
+room "Trafalgar Square" tag Trafalgar dir s from Circus style Road;
+	item "Nelson's Column";
+room "Diogenes Club" dir w;
+
+room "Whitehall" tag Whitehall style Dark dir s from Trafalgar style Road;
+room "Scotland Yard" dir e;
+	task "light lamp" tag On_lamp2 need lamp;
+room "The Black Museum" style Dark after On_lamp2 dir e go down;
+	item "rowboat";
+	item "sign";
+	task "look in boat" note "reveals oar" get oar;
+	item "oar" tag oar hidden score 1;
+
+room "Parliament Square" tag Parliament_Sq style Dark
+		dir s from Whitehall style Road;
+	link last to Broad_Sanctuary style Road;
+room "Houses of Parliament" dir se;
+room "Clock Tower" tag Clock_Tower dir e go up;
+	item "sapphire" tag sapphire;
+	task "open bag" tag O_bag need black_bag;
+	item "blue bottle" tag blue_bottle hidden;
+	task "open blue bottle" need black_bag after O_bag get cotton;
+	item "cotton balls" tag cotton hidden;
+	task "put cotton balls in ears" need cotton;
+	task "wait until 7" follow last;
+	task "get sapphire" cmd "get sapphire. again. again"
+		score 5 give sapphire;
+	task "examine sapphire with magnifying glass" need sapphire mag_glass
+		note "2:00 am" score 1 give ring;
+	item "ring" tag ring hidden;
+
+room "Birdcage Walk" dir w from Parliament_Sq style Road;
+	task "haggle" cmd "haggle with salesman. again";
+	task "buy telescope" follow last need pound_note lose it
+		give shilling telescope score 1;
+	item "telescope" tag telescope after last;
+	item "shilling" tag shilling hidden;
+
+########################################################################
+# Modify some of the above to help IFM generate a workable walkthrough
+
+task Z_hudson need tobacco;
+task On_lamp need matchbook;
+task Off_lamp follow On_lamp;
+task On_lamp2 need emerald;
+task O_bag in Clock_Tower;
+
+item lamp keep;
+item tobacco keep;
+item clue_paper keep;
+item matchbook keep;
+item pipe keep;
+item emerald keep;
+
+# EOF

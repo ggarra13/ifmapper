@@ -1,0 +1,68 @@
+########################################################################
+# IFM map for "Uncle Zebulon's Will" by Magnus Olsson
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: zebulon.ifm,v 1.2 2003/01/11 21:29:21 dchapes Exp $
+#
+# Status: map complete, no tasks, item notes
+########################################################################
+
+title "Uncle Zebulon's Will";
+
+########################################################################
+
+room "Garden"			tag Garden;
+
+room "Shed"			dir n tag Shed;
+  item "dog statue"		note "Put lenses in it, turn left ear";
+  item "blue lens"		note "In statue";
+  item "scrap of paper";
+
+room "Porch"			dir e from Garden;
+  item "demon"			note "Only lets you pass with one item";
+  item "letter"			note "Demon gives it to you" hidden;
+
+room "Hall"			dir e tag Hall;
+  item "lead coin"		note "Throw it into basin";
+
+room "Study"			dir s;
+  item "book"			note "Contains sheet of paper";
+  item "sheet of paper"		note "Has cryptic poem" hidden;
+  item "crystal ball"		note "Look in it";
+  item "green lens"		note "In drawer" hidden;
+
+room "Kitchen"			dir n from Hall;
+  item "carrot"			note "Point wand at it to get tomato";
+  item "tomato"			note "Eat it to get copper coin";
+  item "copper coin"		note "Throw it into basin" hidden;
+  item "cupboard"			note "Contains blue bottle";
+  item "blue bottle"		note "Contains silver coin" hidden;
+  item "silver coin"		note "Put it into acid for iron coin" hidden;
+  item "iron coin"		note "Throw it into basin" hidden;
+
+room "Sitting Room"		dir e from Hall;
+  item "green bottle"		note "Sends items to blue bottle";
+  item "chair"			note "Search it to find wand";
+  item "magic wand"		note "Point it at carrot and mirror" hidden;
+  item "mirror"			note "Point wand at it to dissolve";
+
+room "Moor Gnittis"		dir n n style special;
+  item "flask of acid"		note "Change silver coin into iron coin";
+
+room "Tower Room"		dir w go up;
+  item "gold ball"		note "Illuminate it with statue";
+  item "scroll";
+
+room "Attic"			dir se from Hall go up;
+  item "packing crate"		note "Search it to find teak box";
+  item "teak box"		note "Contains red lens" hidden;
+  item "red lens"		note "In teak box" hidden;
+  item "brass plate"		note "Has various signs on it";
+
+room "Plain"			dir n from Shed go down;
+  item "basin"			note "Throw coins into it";
+  item "greek statues"		note "They want the coins";
+
+room "Desert"			dir e style special;
+
+########################################################################

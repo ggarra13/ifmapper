@@ -1,0 +1,806 @@
+# IFM Map for Jigsaw
+#	Jigsaw is by Graham Nelson
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+# Many little mistakes corrected by Daniel Biddle <deltab@osian.net>
+#
+# $Id: Jigsaw.ifm,v 1.6 2003/01/12 16:29:50 dchapes Exp $
+#
+# Note:  This is unfinished, not updated to use IFM 2.0 features.
+
+title "Jigsaw";
+
+########################################################################
+map "Prologue";
+#    --------
+
+# Starting Items
+item "white party ticket" tag Party_Ticket;
+
+# Starting room
+room "Century Park" start tag Century_Park
+	exit n;
+item "corner piece" tag Jig1 hidden score 1 after Beer_Tent lost;
+
+# Other rooms/items
+room "Beer Tent" dir e from Century_Park;
+item "sparkler" tag Sparkler keep;
+task "enter Beer Tent" tag Beer_Tent get Jig1;
+
+room "Behind Beer Tent"	dir se from Century_Park
+	score 1 after Beer_Tent;
+item "rucksack" tag Sack keep;
+item "wooden box" note "Labeled A4";
+item "tagged key" tag Tagged_Key hidden;
+item "curious device" tag Device hidden score 1
+	need Sack keep;	# not really
+
+room "Churchyard" dir ne from Century_Park;
+item "night-jar";
+task "sketch night-jar" tag Sketch1 need Pencil Sketch_Book;
+
+room "Victorian Chapel" dir e;
+item "collage statue";
+
+room "Vestry" dir e;
+item "piano stool";
+item "charcoal pencil" tag Pencil hidden score 1;
+item "sketch book" tag Sketch_Book hidden score 1;
+
+room "Kaldecki's Monument" tag Monument dir w from Century_Park;
+
+room "Atop the Monument" dir w go up;
+item "lightning conductor";
+task "light the fuse" need Sparkler score 1
+	after Sketch1;	# not really
+
+room "Corridor in the Monument" dir n w n from Monument go in
+	oneway after last;
+item "glass display case";
+task "put gadget on case" tag Unlock_Case need RzRov;
+item "corner piece" tag Jig16 hidden lost score 1 after Unlock_Case;
+
+room "Inside the Monument" tag Jigsaw dir e;
+item "jigsaw table";
+item "ormolu clock" tag Clock keep;
+item "centre piece" tag Jig2 hidden score 1 lost;
+task "clean table" tag Clean_Table score 1;
+task "place A1 piece" need Jig4  tag Jig4  score 1 after Clean_Table;
+task "place A2 piece" need Jig9  tag Jig9  score 1 after Clean_Table;
+task "place A3 piece" need Jig14 tag Jig14 score 1 after Clean_Table;
+task "place A4 piece" need Jig1  tag Jig1  score 1 after Clean_Table;
+task "place B1 piece" need Jig5  tag Jig5  score 1 after Clean_Table;
+task "place B2 piece" need Jig7  tag Jig7  score 1 after Clean_Table;
+task "place B3 piece" need Jig12 tag Jig12 score 1 after Clean_Table;
+task "place B4 piece" need Jig8  tag Jig8  score 1 after Clean_Table;
+task "place C1 piece" need Jig3  tag Jig3  score 1 after Clean_Table;
+task "place C2 piece" need Jig2  tag Jig2  score 1 after Clean_Table;
+task "place C3 piece" need Jig6  tag Jig6  score 1 after Clean_Table;
+task "place C4 piece" need Jig11 tag Jig11 score 1 after Clean_Table;
+task "place D1 piece" need Jig16 tag Jig16 score 1 after Clean_Table;
+task "place D2 piece" need Jig15 tag Jig15 score 1 after Clean_Table;
+task "place D3 piece" need Jig13 tag Jig13 score 1 after Clean_Table;
+task "place D4 piece" need Jig10 tag Jig10 score 1 after Clean_Table;
+
+task "set clock to 59" tag Clock2 need Clock after Jig2 score 1;
+task "turn clock off and set it" tag Clock3 need Clock after Jig3;
+task "turn clock off and set it" tag Clock4 need Clock after Jig4;
+task "set clock" tag Clock5 need Clock after Jig5
+	Jig6;	# not really
+task "set clock" tag Clock6 need Clock after Jig6
+	Jig8;	# not really
+task "set clock" tag Clock7 need Clock after Jig9;
+task "set clock" tag Clock8 need Clock after Jig8
+	after Kiss_Black;	# not really
+task "set clock" tag Clock9 need Clock after Jig10;
+task "set clock" tag Clock10 need Clock after Jig11;
+task "set clock" tag Clock11 need Clock after Jig12
+	after Jig14;	# not really
+task "set clock" tag Clock12 need Clock after Jig13
+	after Jig16;	# not really
+task "set clock" tag Clock13 need Clock after Fly;
+task "set clock" tag Clock14 need Clock after Jig14
+	after Decrypt2;	# not really
+task "set clock" tag Clock15 need Clock after Jig10
+	after Break_Cables;	# not really
+
+
+task "push A1" tag PushA1 after Clock4 goto Wing_Staircase;
+task "push A2" tag PushA2 after Clock7 goto Abbey_Road;
+task "push A3" tag PushA3 after Clock14 goto East_Berlin;
+#task "push A4" tag PushA4 after Clock goto ;
+task "push B1" tag PushB1 after Clock5 goto Rue_Hamelin;
+task "push B2" tag PushB2 after Clock9 goto Devil_Hill;
+task "push B3" tag PushB3 after Clock11 goto Crawlway;
+task "push B4" tag PushB4 after Clock8 goto Tundra;
+task "push C1" tag PushC1 after Clock3 goto Reading_Room;
+task "push C2" tag PushC2 after Clock2 goto Flat;
+task "push C3" tag PushC3 after Clock6 goto Steam_Train;
+#task "push C4" tag PushC4 after Clock goto ;
+task "drop sparkler; push C4" tag PushC4 after Clock10 goto Lunar_Mod;
+#task "push D1" tag PushD1 after Clock goto ;
+#task "push D2" tag PushD2 after Clock goto ;
+task "push D3" tag PushD3 after Clock12 goto Cabbage_Fields;
+task "push D3 again" tag PushD3_again after Clock13 goto Bletchley;
+task "get sparkler; push D4" tag PushD4 after Clock15 goto Eastern_Hotel_Room;
+
+room "Disc Room" tag Disc_Room dir se;
+item "black disc";
+
+########################################################################
+map "Chapter One - Ricochet";
+#    -----------
+room "Flat over the Street" tag Flat score 1;
+item "dresser drawer";
+task "unlock and open dresser" need Tagged_Key get Jig3;
+item "edge piece" tag Jig3 hidden score 1 lost;
+task "shake Black's hand" score 1;
+task "shoot Archduke" tag Shoot_Duke score 1;
+task "sketch horses" tag Sketch2 need Pencil Sketch_Book after Shoot_Duke;
+task "return to Disc Room" after Shoot_Duke goto Disc_Room;
+
+
+########################################################################
+map "Chapter Two - Icy Calm";
+#    -----------
+room "Reading Room" tag Reading_Room;
+item "The Times";
+item "folded note";
+task "read Times and note";
+
+room "First Class Lounge" tag Lounge dir sw;
+item "clock";
+
+room "Port Promenade (fore)" dir n;
+item "broken ice";
+
+room "Port Promenade (aft)" dir w link Staircase;
+item "broken ice";
+
+room "First Class Entrance" tag Entrance dir e from Lounge;
+
+room "Top of Stairs" tag Top_Stairs dir ne n go up;
+item "band";
+item "notice";
+task "unlock Wireless room door" tag Unlock_Wireless need Long_Key;
+
+room "Gymnasium" dir w;
+item "jacket" tag Jacket;
+
+room "Starboard Promenade (fore)" dir s from Lounge;
+item "broken ice";
+
+room "Starboard Promenade (aft)" dir w;
+item "broken ice";
+
+room "Adjoining Staircase" tag Staircase dir n;
+item "first-aid box";
+item "Sailor's Syrup" hidden;
+task "wear jacket" tag Wear_Jacket in any need Jacket;
+
+room "Smoke Room" dir w;
+item "Benjamin Guggenheim";
+task "wait for letter" give Secret_Letter after Wear_Jacket need Jacket;
+item "secret letter" tag Secret_Letter hidden lost;
+
+room "Palm Court" dir w;
+item "Miss Shutes";
+item "ouija board";
+task "give secret letter to Shutes" tag Give_Letter
+	need Secret_Letter need Jacket score 1;
+task "examine ouija board" after Give_Letter get Jig4;
+item "corner piece" tag Jig4 hidden lost score 1;
+
+room "Boat Deck" dir nw from Staircase go up;
+item "deckchairs";
+task "move deckchairs" score 1 get Sea_Book;
+item "Boy's Book of the Sea" tag Sea_Book hidden;
+task "examine book" need Sea_Book get Elegant_Key;
+item "elegant key" tag Elegant_Key hidden;
+
+room "Cabins" dir e from Entrance;
+item "Captain Smith";
+task "unlock Black's cabin door" tag Unlock_Cabin_Door need Elegant_Key;
+task "get towel from stewardess" after Find_Towel get Towel;
+item "towel" tag Towel hidden
+	note "reads: 3*6=24  Opens about 2.10 am, in the lounge";
+
+room "Inside Black's Cabin" dir e after Unlock_Cabin_Door score 1;
+item "long-barreled key" tag Long_Key lost;
+item "Kaldecki detector" tag KD hidden keep;
+item "second note" hidden;
+task "spin detector" tag Detect1 need KD;
+task "open porthole" after Detect1 get Jig5;
+task "let stewardess find towel" tag Find_Towel;
+item "edge piece" tag Jig5 hidden lost score 1;
+
+room "Wireless Room" dir e from Top_Stairs need Jacket
+	after Unlock_Wireless Wear_Jacket;
+item "charts";
+item "primitive wireless";
+item "operator";
+task "examine charts" tag X_Chart;
+task "send CQD" after X_Chart score 2;
+
+task "use clock to return" need Clock after X_Chart in any goto Disc_Room;
+
+########################################################################
+map "Chapter Three - And 1% Luck";
+#    -------------
+room "Clarence Wing Staircase" tag Wing_Staircase;
+item "notice board";
+task "put mouldy dish on suitcase" tag Put_Dish after Push_Suitcase
+	need Mouldy_Dish;
+task "wait for Fleming" tag Fleming after Put_Dish score 1;
+task "wait for disturbed air" tag Disturbed_Air1 after Fleming;
+task "press white button" tag Press_Button1 after Disturbed_Air1 need Device;
+task "enter black ball" after Press_Button1 goto LandA1 score 1;
+
+
+room "Asthma Laboratory" dir sw w go down;
+item "white mice";
+task "sketch mice" tag Sketch3 need Pencil Sketch_Book;
+
+room "Office" dir n;
+item "jar of penicillium";
+task "look under jar" tag LU_Jar give Typed_Note;
+item "typed note" tag Typed_Note after LU_Jar hidden;
+task "read typed note" tag Read_Typed_Note need Typed_Note;
+
+room "Fleming's Laboratory" dir nw w from Wing_Staircase go up score 1
+	after Read_Typed_Note;	# not really
+item "Petri dishes";
+item "certificate" tag Fleming_Certificate;
+task "reveal jigsaw piece" tag Get_FC need Fleming_Certificate get Jig6;
+item "centre piece" tag Jig6 score 1 hidden lost;
+item "suitcase" tag Suitcase hidden after Get_FC
+	given lost;	# not really
+task "search dishes" tag S_Dishes get Mouldy_Dish;
+item "mouldy dish" tag Mouldy_Dish hidden after S_Dishes lost;
+task "push suitcase east" tag Push_Suitcase goto Wing_Staircase
+	need Suitcase Mouldy_Dish;	# not really
+
+########################################################################
+map "Chapter Four - Temps Perdu";
+#    ------------
+room "Rue Hamelin" tag Rue_Hamelin;
+item "door to #44";
+
+room "Avenue Kleber" dir n tag Kleber;
+item "\"Le Figaro\"";
+
+#link Kleber to Paris dir e nw;
+#link Kleber to Paris dir w ne;
+room "Paris by Night" dir n tag Paris style puzzle
+	exit w nw n ne e;	# all go back to this room
+task "follow characters" get Absinthe;
+item "flask of absinthe" tag Absinthe hidden lost;
+task "drink absinthe" tag Drunk in any need Absinthe goto Hallucinating;
+
+room "Hallucinating" tag Hallucinating dir e after Drunk style special oneway;
+item "Black";
+task "dance" goto Kleber score 1;
+link Hallucinating to Kleber style special oneway;
+
+room "The Seine" dir s from Rue_Hamelin;
+item "small coin" tag Small_Coin after Drunk;
+
+room "Maison du The" tag Maison dir w;
+item "grandfather clock";
+item "jasmine tea";
+item "paperoles" tag Paperole hidden after Swing_Pendulum lost;
+task "put madeleine in tea" tag Dip_Madeleine need Madeleine;
+task "eat madeleine" tag Eat_Madeleine need Madeleine after Dip_Madeleine
+	goto School
+	in any; # ?
+
+room "Your First School" tag School dir n style special after Eat_Madeleine score 1;
+item "clock";
+task "swing pendulum" tag Swing_Pendulum goto Maison get Paperole;
+
+room "44, Rue Hamelin" dir e from Rue_Hamelin;
+item "cage lift";
+item "uniformed boy";
+item "tip boy and go up" need Small_Coin;
+
+room "First Floor Landing" dir e go up;
+#room "Second Floor Landing" dir n go up;
+#room "Third Floor Landing" dir n go up;
+#room "Fourth Floor Landing" dir n go up;
+room "Fifth Floor Landing" tag Fifth_Floor dir n go up;
+	item "ajar door";
+#room "Sixth Floor Landing" dir n go up;
+#room "Seventh Floor Landing" dir n go up;
+room "Top Floor Landing" dir n go up;
+item "centre piece" tag Jig7 score 1 lost;
+
+room "Fifth Floor Flat" dir e from Fifth_Floor score 1;
+item "invitation";
+item "tea tray" tag Tray;
+item "madeleine" tag Madeleine;
+task "reveal jigsaw piece" tag Get_Tray need Tray get Jig8;
+item "edge piece" tag Jig8 after Get_Tray score 1 hidden lost;
+task "drop paperole" tag Drop_Paperole need Paperole score 1;
+
+task "use clock to return" after Drop_Paperole in any need Clock Jig7 Jig8
+	goto Disc_Room;
+
+########################################################################
+map "Chapter Five - No Compromise";
+#    ------------
+room "Corridor of a Steam Train" tag Steam_Train;
+item "Pravda";
+task "unlock door" tag Unlock_Bathroom need Little_Key;
+
+room "English Compartment" dir e;
+item "army uniform" tag Army_Uniform;
+item "army trunk";
+task "wear uniform" tag Wear_Uniform in any need Army_Uniform score 1
+	after Get_Paskha;	# not really, could just remove uniform
+task "open trunk" give Little_Key;
+item "little key" tag Little_Key hidden;
+
+room "Bathroom Compartment" dir w from Steam_Train after Unlock_Bathroom
+	score 1;
+item "man bound and gagged";
+task "search man" get Travel_Permit;
+item "travel permit" tag Travel_Permit hidden;
+
+room "Soldiers' Carriage" dir s from Steam_Train need Travel_Permit;
+item "soldiers";
+item "paskha" tag Paskha score 1 lost;
+task "ask about paskha" tag Get_Paskha get Paskha;
+
+room "Lenin's Carriage" tag Lenin dir n from Steam_Train
+	after Wear_Uniform need Army_Uniform;
+item "Lenin";
+task "give blank paper to Lenin" need Blank_Paper give Chit;
+item "chit" tag Chit hidden note "this is the signed blank paper";
+
+room "Guard's Van" dir ne nw n;
+item "Dmitri";
+item "blank paper" tag Blank_Paper lost;
+task "give boy paskha" need Paskha get Blank_Paper;
+
+room "Ice, Wind, Rails" dir n;
+item "metal bomb" tag Bomb hidden after Drop_Piece lost;
+item "edge piece" tag Jig9 hidden lost after Drop_Piece score 1;
+task "throw bomb" tag Throw_Bomb need Bomb score 1;
+
+room "In Queue" dir nw from Lenin;
+task "wait in queue" tag Queue need Chit goto Smoky_Compartment;
+
+room "Smoky Compartment" tag Smoky_Compartment dir n oneway style special score 1
+	need Chit after Queue;
+link Smoky_Compartment to Lenin dir se oneway style special;
+item "ash tray" tag Ash_Tray lost;
+task "look under bed" tag LU_Bed;
+task "open grille" tag Open_Grill after LU_Bed;
+task "put piece in grill" tag Drop_Piece need Ash_Tray after Open_Grill
+	goto Lenin;
+
+task "use clock to return" need Clock after Throw_Bomb in any goto Disc_Room;
+
+########################################################################
+map "Chapter Six - Wish You Were Here";
+#    -----------
+room "Abbey Road" tag Abbey_Road score 1;
+item "window";
+item "Black";
+task "when Black hums, kiss Black" tag Kiss_Black score 1;
+task "use clock to return" need Clock after Kiss_Black in any goto Disc_Room;
+
+########################################################################
+map "Chapter Seven - In The Wilderness";
+#    -------------
+room "Tundra" tag Tundra score 1;
+item "snow goose";
+task "sketch goose" tag Sketch4 need Pencil Sketch_Book;
+task "drop seed" tag Distract_Goose need Seed;
+
+room "Copse of Fir Trees" dir w;
+item "fir tree";
+item "goose nest";
+task "throw cable at nest and pull it" need Cable after Distract_Goose
+	get Jig10 get Cable2;
+item "corner piece" tag Jig10 score 1 lost;
+
+room "Woodcutter's Shed" dir sw;
+item "broom" tag Broom;
+item "seed" tag Seed lost;
+
+room "Rocky Crags" dir sw from Tundra go up;
+item "coil of cable" tag Cable lost;
+item "coil of cable" tag Cable2 hidden lost;	# actually the same cable
+
+room "Snowy Forest" dir e from Tundra style puzzle;
+task "wander around until you find a snow leopard" tag Snow_Leopard;
+task "sketch leopard" tag Sketch5 after Snow_Leopard need Pencil Sketch_Book;
+
+room "Snowy Basin" tag Basin dir n;
+link Basin to Tundra go up;
+task "brush snow" tag Brush need Broom;
+task "tie cable to ring" tag Tie_Cable after Brush need Cable2;
+task "use clock to return" need Clock Jig10 Jig11 goto Disc_Room
+	score 1;	# XXX
+
+room "Metal Shaft" dir e go down style special after Tie_Cable score 1;
+item "missile" note "serial code WDID-51";
+task "open access hatch" tag O_Missle;
+item "edge piece" tag Jig11 hidden after Press_Buttons score 1 lost;
+
+room "In the Serpent's Mouth" dir e go in;
+item "red green and blue buttons";
+task "press green and blue buttons" tag Press_Buttons;
+
+########################################################################
+map "Chapter Eight - 59 Seconds, 852 Feet";
+#    -------------
+room "Big King Devil Hill" tag Devil_Hill;
+item "paper dart";
+
+room "Atlantic Beach" tag Beach dir e e e e n n;
+item "bottle";
+
+room "Hanger" tag Hanger dir w w link Dune_Valley;
+item "anemometer";
+item "corn bread" tag Bread lost;
+
+room "By the Railing" dir w w link Devil_Hill;
+item "Orville";
+item "Wilbur";
+item "Flyer";
+item "crowd";
+item "dog" hidden;
+task "sketch dog" tag Sketch6 need Pencil Sketch_Book;
+
+room "Dune Valley" tag Dune_Valley dir n n;
+link Beach to Dune_Valley dir nw nw;
+link Hanger to Dune_Valley dir n w;
+task "distract Orville for 3 turns" tag Distract_Orville
+	after Practice_Mandolin need Mandolin score 2;
+task "wait for successful flight" after Distract_Orville in any;
+
+room "Little Hill" tag Little_Hill dir n;
+link Little_Hill to Beach dir e e e e;
+item "flyer" hidden;
+item "centre piece" tag Jig12 lost score 1;
+task "get aileron" goto Beach give Jig12;
+
+room "Machine Shop" tag Machine_Shop dir s from Hanger go in;
+item "mandolin" tag Mandolin score 1;
+item "heater";
+item "heater lid" hidden;
+task "practice the mandolin" tag Practice_Mandolin need Mandolin in any;
+task "shake mosquito powder box" tag Shake_Box need Mosquito_Powder;
+task "plug air holes with bread" tag Plug_Holes need Bread after Shake_Box
+	score 1
+	need Jig12;	# not really
+item "creased edge piece" tag Jig13 hidden score 1 after Plug_Holes;
+
+room "Kitchen End of Hut" dir e;
+item "mousetrap";
+task "bait the trap" tag Bait_Trap need Bread;
+task "wait for and sketch mouse" tag Sketch7 need Pencil Sketch_Book
+	after Bait_Trap;
+
+room "Eaves of Hut" dir w from Machine_Shop go up;
+item "green cap" tag Green_Cap lost;
+item "\"Place Names of Carolina\"";
+item "box of mosquito powder" tag Mosquito_Powder hidden score 1
+	need Green_Cap;	# not really, just need to move it
+
+task "use clock to return" in any need Jig12 Jig13 goto Disc_Room;
+
+########################################################################
+map "Chapter Nine - The High Point";
+#    ------------
+room "Lunar Module" tag Lunar_Mod;
+item "computer";
+item "sextant";
+item "\"Atlas of the Moon\"" tag Atlas lost;
+item "Black";
+task "wait for black to mention landing site" tag Mention_Site;
+task "consult atlas on site, give it to Black" tag Correct_Black need Atlas
+	after Mention_Site;
+task "wait for landing" after Correct_Black score 1;
+task "program waldo (F2,R2,F2,S1,R4,F2,L2,F2)" tag ProgWaldo1 need Waldo
+	score 1;
+task "reprogram waldo (F2)" tag ProgWaldo2 need Waldo after WaitWaldo1;
+task "wait for disturbed air" tag Disturbed_Air2 after C_Reactor need Jig14;
+task "press white button" tag Press_Button2 after Disturbed_Air2 need Device;
+task "enter black ball" after Press_Button2 goto LandC4;
+
+room "A Magnificent Desolation" tag Desolation dir e go down;
+link Desolation to Bear_Mountain dir e s oneway;
+link Desolation to Bear_Mountain dir s e oneway;
+item "lunar Module \"Othello\"";
+item "lunar rover";
+
+room "Bear Mountain" tag Bear_Mountain dir se se from Desolation;
+link Bear_Mountain to Regolith dir n nw oneway style special;
+link Bear_Mountain to Regolith dir w n n oneway style special;
+item "gnomon" tag Gnomon;
+
+room "Regolith"  tag Regolith dir n from Desolation;
+link Regolith to Desolation dir e oneway;
+
+room "Emory Crator" tag Emory_Crator dir n;
+link Emory_Crator to Regolith dir w oneway;
+item "green clod" tag Green_Clod score 1 lost;
+
+room "Apollo 17 Landing Site" tag Apollo17 dir n;
+item "lunar module \"Challenger\"";
+item "plaque";
+item "American flag";
+
+room "North Massif" tag N_Massif dir n;
+item "gold foil" tag Gold_Foil lost;
+
+room "Station 6 Rock" tag Station6 dir e;
+link Station6 to Apollo17 dir s oneway;
+
+room "Behind the Rock" dir ne go in;
+item "cargo pod";
+task "open pod with gnomon" tag O_Pod need Gnomon score 1;
+item "Waldo" tag Waldo hidden after O_Pod lost;
+item "checklist" hidden;
+
+room "Silver Cairns" tag Silver_Cairns dir w from Apollo17 score 1
+	after O_Pod;	# not really
+link Silver_Cairns to N_Massif dir n oneway;
+link Silver_Cairns to Horatio dir sw oneway;
+item "nuclear reactor";
+item "cable";
+item "long rod" tag Long_Rod score 1 after ActWaldo2 lost;
+task "wrap rod with foil" tag Wrap_Rod need Gold_Foil
+	after PrepWaldo2; # not really
+task "attach cable to waldo" tag PrepWaldo2 need Waldo after ProgWaldo2;
+task "press pink button" tag ActWaldo2 after PrepWaldo2 Wrap_Rod;
+task "put rod in reactor" tag Load_Reactor after ActWaldo2 need Long_Rod;
+task "turn waldo. press button" tag C_Reactor after Load_Reactor score 1;
+
+
+room "Between Horatio and Victory" tag Horatio dir w;
+link Horatio to Shorty_Crater dir w;
+
+room "Shorty Crater" tag Shorty_Crater dir sw w;
+
+room "Tortilla Flat" dir sw style special;
+item "astronauts";
+item "rover";
+task "throw green clod at astronauts" tag Distract_Astronauts need Green_Clod
+	after PrepWaldo1;	# not really
+task "drop Waldo and turn him south" tag PrepWaldo1 need Waldo after ProgWaldo1;
+task "press pink button" tag ActWaldo1 after PrepWaldo1 Distract_Astronauts;
+task "wait for Waldo" tag WaitWaldo1 after ActWaldo1;
+item "edge piece" tag Jig14 hidden lost score 1 after WaitWaldo1;
+
+########################################################################
+map "Chapter Ten - The Ghost of the B-29";
+#    -----------
+room "Crawlway" tag Crawlway exit ne sw;
+
+room "Ghost Plane" tag Cockpit dir n ne score 1;
+link Crawlway to Cockpit dir ne; 
+item "instrument panel";
+item "navigator's chair";
+task "turn aut/p on" tag AutP;
+task "when fuel low, press cuteng/l" tag CutEngL after AutP score 1;
+task "fly to (1945,1970)" tag Fly_B29 after ResF;
+task "land" tag Land_B29 after Fly_B29 score 1;
+task "press rel/b" tag RelB after Drop_Safe;
+
+room "Navigator's Alcove" dir w go in;
+item "radio";
+
+room "Nose Turret" dir se from Cockpit go down;
+item "pinup of Deanna Durbin";
+task "clean pinup and read it";
+
+room "Fuselage Ring" tag Fuselage dir s sw from Crawlway;
+link Crawlway to Fuselage dir sw;
+item "Geiger counter";
+item "heavy equipment locker";
+item "safe" tag Safe hidden after Land_B29 score 1 lost;
+
+room "East Side Bomb Bays" dir e;
+
+room "West Side Bomb Bays" dir w from Fuselage;
+task "press res/f" tag ResF after CutEngL AutP score 1;
+task "Drop safe" tag Drop_Safe need Safe;
+
+room "Frosty Airfield" tag Airfield dir n n from Cockpit go out after RelB;
+item "safe";
+task "put gadget on safe" tag O_Safe need RzRov;
+item "beige folder" tag Folder hidden after O_Safe;
+item "shelf" tag Shelf hidden after O_Safe lost score 1;
+item "edge piece" tag Jig15 hidden given lost; # score 1;
+task "put all in sack" tag InSack need Jig15 goto Captive;
+
+room "Silk and Ash" dir e;
+item "torn parachute";
+item "gadget" tag RzRov hidden score 1 lost;
+
+room "Disused Control Tower" dir se from Airfield;
+
+room "In Captivity" tag Captive dir w w sw from Airfield style special oneway;
+task "wait for disturbed air" tag Disturbed_Air3;
+task "press white button" tag Press_Button3 after Disturbed_Air3
+	need Sack2 Device;
+task "put body of black in ball" tag Rescue_Black after Press_Button3 score 1;
+task "enter black ball" after Rescue_Black goto LandB3;
+
+room "Cell Block Corridor" dir n after Disturbed_Air3;
+item "pine table";
+item "rucksack" tag Sack2 keep;
+
+########################################################################
+map "Chapter Eleven - Banburismus";
+#    --------------
+room "Cabbage Fields" tag Cabbage_Fields;
+task "fly" after Fly goto Disc_Room;
+
+room "Inside the Barn" dir e;
+item "wardrobe";
+item "Black";
+item "typewriter" note "\"Enigma\"";
+item "slip of paper"
+	note "Stngs X, Y, ?  a-g, w-c, v-t, u-j, y-r";
+item "two cogged wheels" hidden note "I and III";
+task "examine slip of paper" tag X_Paper;
+task "jump" tag Jump after X_Paper;
+task "fly" tag Fly after Jump;
+
+room "Hiding from Bletchley Park" tag Bletchley score 1
+	dir sw from Cabbage_Fields style special oneway; #not really
+item "spent cartrisge";
+
+room "Sheltered" dir e;
+item "cloth cap" tag Cloth_Cap;
+task "wear cloth cap" tag Wear_Cloth_Cap need Cloth_Cap in any;
+task "sketch mallard" tag Sketch8 need Pencil Sketch_Book;
+
+room "Exposed" dir n from Bletchley after Wear_Cloth_Cap;
+task "answer poacher" tag AnsPoacher goto Hut31;
+
+room "Hut 31" tag Hut31 after AnsPoacher score 1
+	dir w style special oneway;	# not really
+item "intercept";
+item "heavy crate";
+item "enigma" hidden;
+item "wheel I" hidden;
+item "wheel II" tag Wheel2 hidden lost;
+item "wheel III" hidden;
+item "wheel IV" tag Wheel4 hidden lost;
+item "wheel V" tag Wheel5 hidden lost;
+task "Put wheels II,IV,V in enigma" need Wheel2 Wheel4 Wheel5 tag PrepEnigma;
+task "unstecker" tag UnStecker after PrepEnigma;
+task "stecker a to g" tag Stecker1 after UnStecker;
+task "stecker w to c" tag Stecker2 after Stecker1;
+task "stecker v to t" tag Stecker3 after Stecker2;
+task "stecker u to j" tag Stecker4 after Stecker3;
+task "stecker y to r" tag Stecker5 after Stecker4;
+task "turn machine off" tag EnigmaOff after Stecker5;
+task "set II to X (from paper)" tag Set2 after EnigmaOff;
+task "set IV to Y (from paper)" tag Set4 after Set2;
+# The above all comes from what we've observed
+task "type intercept" tag Decrypt1 after Set4 score 1;
+task "stecker d to f" tag Stecker6 after Decrypt1;
+task "stecker x to p" tag Stecker7 after Stecker6;
+task "set II to 1" tag Set2b after Stecker7;
+task "set IV to 10" tag Set4b after Set2b;
+task "correct setting for V" tag Set5 after Set4b;
+task "type intercept" tag Decrypt2 after Set5 score 1 goto Conclusion;
+
+room "Inescapable Conclusion" tag Conclusion
+	dir s style special oneway after Decrypt2;	# not really
+task "return to disc room" goto Disc_Room after Decrypt2;
+
+########################################################################
+map "Chapter Twelve - Old Cartridge Cases";
+#    --------------
+room "East Berlin" tag East_Berlin;
+
+room "Near the Brandenburg Gate" tag Brandenburg dir w;
+
+room "Alleyway" tag Alleyway dir n;
+task "climb fence" goto NoMansLand;
+
+room "No Man's Land" tag NoMansLand dir w style special;
+task "climb fence" goto Alleyway
+	after Sketch9; # not really
+
+room "The Middle of No Man's Land" tag NoMansLand2 dir sw oneway;
+link NoMansLand2 to NoMansLand dir se oneway;
+item "hare";
+task "sketch hare" tag Sketch9 need Pencil Sketch_Book;
+
+room "Beside the Spree River" dir n from Alleyway;
+item "thick rope" tag Thick_Rope score 1 lost;
+
+room "Corner" tag Corner dir s s from Brandenburg;
+task "drive north" tag Break_Cables after TieRope2Skoda score 1
+	goto Precarious_Balcony;
+
+room "Derelict Apartment Block" tag Apartment dir sw e go in;
+item "masonry";
+task "look under masonry" tag LU_Masonry
+	after Pay_Cleaner; #not really
+
+room "Precarious Balcony" tag Precarious_Balcony dir e go up;
+item "Berliner";
+item "basket weave purse";
+item "cyrillic-lettered key" hidden tag Cyrillic_Key lost;
+item "fifty ost-mark note" hidden tag Ost_Mark;
+task "return to disc room" after Break_Cables goto Disc_Room;
+
+room "Checkpoint Charlie" tag CP_Charlie dir e e from Corner exit s;
+
+room "Side Street" dir n;
+item "white Skoda";
+task "unlock/enter/start Skoda" tag Unlock_Skoda need Cyrillic_Key;
+task "drive to Checkpoint Charlie" tag Drive_Skoda after Unlock_Skoda score 1
+	goto CP_Charlie;
+
+room "Unter den Linden" dir n oneway link East_Berlin;
+item "hoarding";
+task "give ost-mark note to street cleaner" tag Pay_Cleaner need Ost_Mark
+	after Drive_Skoda;
+#item "delivered note" hidden after Pay_Cleaner;
+task "drive to corner/exit" after Pay_Cleaner goto Corner;
+
+room "Cellar Tunnel" dir s from Apartment go down score 1
+	need Sparkler after LU_Masonry exit w sw;
+
+room "U-Bahn Conduit" tag Bahn dir sw;
+item "manhole";
+item "telephone cables";
+task "tie rope to cables" tag TieRope2Cables need Thick_Rope score 1;
+task "up; tie rope to skoda" tag TieRope2Skoda after TieRope2Cables;
+
+########################################################################
+map "Chapter Thirteen - Out of the East";
+#    ----------------
+
+room "Easter Hotel Room" tag Eastern_Hotel_Room exit n;
+item "\"Eagle\" comic";
+
+########################################################################
+map "Chapter Fourteen - ";
+#    ----------------
+
+########################################################################
+map "Chapter Fifteen - ";
+#    ----------------
+
+########################################################################
+map "The Land";
+#    --------
+#room_width = 2.0;
+room "Cube (A1)"		tag LandA1;
+room "Clouded Crags (A2)"	tag LandA2 dir e e;
+room "Scree Fall (A3)"		tag LandA3 dir e e;
+room "Dodecahedron (A4)"	tag LandA4 dir e e;
+room "Glacier Milk (B1)"	tag LandB1 dir s s from LandA1 link LandA2;
+room "Northwest of Pyramid (B2)" tag LandB2 dir e e
+				link LandA1 link LandA2 link LandA3;
+room "Northeast of Pyramid (B3)" tag LandB3 dir e e
+				link LandB2 link LandA2 link LandA3 link LandA4;
+room "Toll Gate (B4)"		tag LandB4 dir e e link LandA3 link LandA4;
+	item "doorway";
+room "At the Pagoda (C1)"	tag LandC1 dir s s from LandB1 link LandB2;
+	item "Chinese pagoda";
+room "Southwest of Pyramid (C2)" tag LandC2 dir e e link LandB1 link LandB2;
+room "Southeast of Pyramid (C3)" tag LandC3 dir e e link LandB3 link LandB4;
+room "Ash River Culvert (C4)"	tag LandC4 dir e e link LandB3 link LandB4;
+room "(D1)"	tag LandD1 dir s s from LandC1 link LandC2;
+room "(D2)"	tag LandD2 dir e e link LandC1 link LandC2 link LandC3;
+room "Carved Faces (D3)"	tag LandD3 dir e e
+				link LandC2 link LandC3 link LandC4;
+	item "faces";
+room "(D4)"	tag LandD4 dir e e link LandC3 link LandC4;
+
+room "Pyramid" dir se from LandB2 link LandB3 link LandC2 link LandC3;
+	task "return" goto Disc_Room;			# XXX
+	task "return" goto Disc_Room need Jig14;	# XXX
+	task "return" goto Disc_Room need Jig15;	# XXX

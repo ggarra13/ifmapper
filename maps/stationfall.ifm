@@ -1,0 +1,320 @@
+# IFM Map for "Stationfall" by Infocom
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Stationfall.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+
+title "Stationfall";
+
+######################################################
+# Starting items
+item "ID Card" tag IDCard;
+item "Robot Request Form" tag RobotForm;
+item "Spacecraft Request Form" tag SpacecraftForm;
+item "thermos" tag Thermos;
+
+######################################################
+# Tasks that can be done anywhere
+task "read diary" tag ReadDiary need Diary;
+task "read note" tag ReadNote need Note;
+task "open textbook" need Textbook get Paper;
+task "read paper" tag ReadPaper need Paper;
+task "replace detonator's hyperdiode" tag FixDetonator
+	need Detonator MDiode lose MDiode;
+task "validate form" tag ValidateForm need Stamp CrumpledForm after PressForm;
+task "read letter" tag ReadLetter need Letter;
+task "open star" need Star get MDiode;
+task "set jammer" tag SetJam need Jammer after ReadFreq;
+task "assemble jammer" tag AssJam need Jammer Fromitz20 lose Fromitz20;
+
+
+######################################################
+# Maps
+map "Aboard the S.P.S. Duffy";
+room "Forms Storage Room";
+room "Deck 12" dir n start exit w;
+room "Cargo Bay Entrance" tag CargoBayEntrance dir e;
+room "Robot Pool" dir n;
+	item "Rex";
+	item "Helen";
+	item "Floyd";
+	task "request floyd" tag ReqFloyd need RobotForm lose it;
+room "Cargo Bay" dir e from CargoBayEntrance;
+room "Spacetruck" tag Spacetruck dir e go in;
+	item "Survival Kit";
+	task "Launch" tag Launch after ReqFloyd need SpacecraftForm lose it
+		goto Spacetruck2;
+	join Spacetruck to Spacetruck2 oneway after last;
+
+
+######################################################
+map "Level One, Endgame";
+room "Elevator";
+room "Dome" tag Dome dir w;
+	item "storage bin";
+	task "open bin" tag OpenBin need Key lose it;
+room "Top of Air Shaft" dir w go in style special after OpenBin;
+room "Air Shaft" dir s go down;
+room "Air Shaft" dir s go down;
+room "Air Shaft" dir s go down;
+room "Air Shaft" dir s go down;
+room "Air Shaft" dir s go down;
+room "Air Shaft" dir s go down;
+room "Botton of Air Shaft" dir s go down;
+room "Computer Control" tag CC dir se go down;
+	task "jam the exercise machine" need Jammer after AssJam SetJam;
+	task "destroy the machines" tag Break need Jammer follow last;
+room "Shaft at Level Nine" dir n;
+room "Factory" dir ne from CC go up style special after Break;
+	item "pyramid";
+	task "get by Floyd" need Gun;
+	task "render pyramid harmless" need PlFoil lose it follow last finish;
+
+
+######################################################
+map "Level Two";
+room "Mess Hall" tag MessHall;
+	item "cup of coffee";
+room "Main Storage" tag MainStorage dir s se e ne ne;
+	link MessHall to MainStorage dir n ne e se;
+	item "detonator" tag Detonator;
+room "Meeting Room 1" dir ne e from MessHall;
+room "Meeting Room 2" dir s;
+room "Library" tag Library dir s;
+	link Library to MessHall dir w;
+	item "nonfilm reader";
+	task "read mauve spool" need MauveSpool drop it;
+	task "read puce spool" need PuceSpool drop it;
+	task "read lilac spool" need LilacSpool drop it;
+room "Elevator" dir e from MessHall;
+
+
+######################################################
+map "Level Three";
+room "Level Three" tag Level3;
+room "Laundry" dir nw w;
+	item "dryer";
+	item "presser";
+	task "press crumpled form" tag PressForm need CrumpledForm;
+room "Gym" dir n from Level3;
+	item "excercise machine";
+	task "read sign" tag ReadFreq note "remeber the frequency";
+room "Elevator" dir e from Level3;
+room "Theatre" dir s from Level3;
+room "Chapel" dir sw w from Level3;
+	item "puce nanofilm spool" tag PuceSpool;
+	item "seven pointed star" tag Star;
+	item "eternal flame";
+	item "M-Series Hyperdiode" tag MDiode hidden;
+	task "turn off flame" tag FlameOff;
+	task "lure balloon creature with spray can" tag LureBalloon2
+		after FlameOff follow LureBalloon need SprayCan;
+	task "use balloon to get star" after LureBalloon2 give Star;
+
+
+######################################################
+map "Level Four";
+room "Level Four" tag Level4;
+room "Docking Bay #3" dir w;
+	item "lilac nanofilm spool" tag LilacSpool;
+room "Female Barracks" dir n ne from Level4;
+room "Barracks SanFac" dir se s;
+room "Male Barracks" tag MBarracks dir s sw;
+	link MBarracks to Level4 dir nw;
+room "Elevator" dir e from Level4;
+
+
+######################################################
+map "Level Five, Scientific Sub-Module, Village";
+room "Spacetruck2" tag Spacetruck2;
+room "Docking Bay #2" dir n go out;
+room "Level Five" tag Level5 dir e;
+room "South Junction" tag SJunction dir se;
+room "Commander's Office" tag COffice dir se;
+	item "log reader";
+	task "read Commander's Log" need LogTape drop it get Stamp;
+room "Commander's Quarters" dir e;
+	item "log tape" tag LogTape;
+	item "safe";
+	item "validation stamp" tag Stamp hidden;
+	item "key" tag Key hidden;
+	task "drill medium hole in safe" tag DrillHole need MedBit Drill
+		lose MedBit;
+	task "blow safe" need Detonator Timer Thermos Explosive
+		lose Detonator Timer Explosive drop Thermos
+		after DrillHole FixDetonator get Key safe;
+room "Briefing Room" dir s from COffice link SCon;
+room "South Connection" tag SCon dir s s from SJunction exit s;
+room "Robot Shop" dir w;
+	item "medium drill bit" tag MedBit;
+	item "heating chamber";
+	item "Oliver";
+	task "floyd, get drill bit" get MedBit;
+room "File Room" dir sw from SJunction;
+room "Workshop" dir n from Level5;
+room "Storage" dir n need Headlamp;
+	item "jammer" tag Jammer;
+room "North Connection" tag NCon dir e link NJunction exit n;
+room "Elevator" dir e from Level5;
+room "North Junction" tag NJunction dir ne from Level5;
+room "Sick Bay" tag SickBay dir e;
+room "Brig" dir e need IDCard style special after ChangeID;
+room "East Junction" tag EJunction dir se from NJunction link SJunction;
+room "East Connection" tag ECon dir e link SickBay exit e;
+	task "use form" tag UsedAccessForm need CrumpledForm lose it
+		after ValidateForm;
+room "Comm Center" dir s;
+room "Station Control" dir e from SJunction link ECon COffice;
+room "The PX" dir e from NCon link NJunction;
+	item "dispenser";
+	item "timer" tag Timer hidden;
+	task "buy timer" tag BuyTimer need Coin lose it;
+	task "lead ostrich here" tag LeadOst2 after LeadOst need Nip;
+	task "retrive timer" after BuyTimer LeadOst2 need Nip lose it
+		give Timer;
+
+######################################################
+room "Tube" dir n n from NCon;
+room "Engineering Lab" tag EngLab dir n;
+room "Engineering Office" dir n;
+	item "diary" tag Diary;
+room "Astro Lab" tag AstLab dir w from EngLab;
+	item "twenty-prong fromitz board" tag Fromitz20;
+room "Astro Office" dir n;
+room "Scientist's Quarters" dir w from AstLab;
+room "Bio Lab" tag BioLab dir e from EngLab go down;
+room "Bio Office" dir n;
+	item "note" tag Note;
+room "Holding Tank Level" dir e from BioLab go down;
+
+######################################################
+room "Grimy Passage" dir s s from SCon style special after UsedAccessForm;
+room "Main Street" tag MainStreet dir s;
+room "Mayor's Office" dir nw go up;
+	item "textbook" tag Textbook;
+	item "paper" tag Paper hidden;
+room "Travel Agency" dir w from MainStreet;
+room "Bank" dir se link MainStreet;
+	item "platinum detector" tag PlDetector;
+room "Alley" tag Alley dir se se from MainStreet;
+room "Missionary" dir n;
+room "Pawn Shop" dir sw from Alley;
+	item "spray can" tag SprayCan;
+room "Loan Shark" dir e link Alley;
+	item "strong box";
+	item "coin" tag Coin hidden;
+	task "shoot box" need Gun get Coin;
+room "\"Doc\" Schuster" dir e link Alley;
+	item "ostrich";
+	item "letter" tag Letter;
+	task "lead ostrich" tag LeadOst need Nip;
+room "Junk Yard" tag JunkYard leave IDCard dir e e e e e from Alley;
+	item "pair of magnetic boots" tag Boots;
+room "Shady Dan's" dir n n n n go up;
+	item "innocuous machine";
+	task "change rank" tag ChangeID need IDCard;
+room "Trading Post" tag TradingPost dir nw nw;
+	item "instruction sheet";
+	item "twelve-prong fromitz board";
+room "Warehouse" tag Warehouse dir s s s go down link Alley;
+room "Airlock" tag Airlock dir s go down;
+	task "wear suit and boots" tag WearSuit need Suit Boots;
+	task "remove suit and boots" tag RemoveSuit need Suit Boots;
+room "In Space" dir s go down style special after WearSuit before RemoveSuit
+		need Suit Boots Headlamp;
+	item "explosive" tag Explosive;
+	task "put explosive in thermos" tag ExpCold
+		need Thermos give Explosive;
+room "Greasy Straw" dir ne e ne from MainStreet link TradingPost;
+
+######################################################
+room "Makeshit Connector" dir e e from ECon style special after UsedAccessForm;
+room "Broadway" tag Broadway dir e;
+room "Grocery" tag Grocery dir s link TradingPost;
+room "Saloon" dir se link TradingPost;
+room "Casino" tag Casino dir e e;
+	item "roulette wheel";
+	item "pair of dice";
+	task "spin wheel" tag SpinWheel;
+room "Opium Den" dir n style special after SpinWheel;
+room "Flop House" dir ne from Casino go up style special after SpinWheel;
+	item "Locker";
+	item "space suit" tag Suit hidden;
+	task "open locker" get Suit;
+room "Studio" dir w from TradingPost;
+	item "J-series hyperdiode";
+room "Barbershop" dir e from Grocery link Broadway;
+	item "mirror";
+	item "platinum foil" tag PlFoil hidden;
+	task "detect platinum and break mirror" need PlDetector get PlFoil;
+room "Field Office" dir e from Broadway;
+	item "headlamp" tag Headlamp keep;
+room "Rec Shop" dir ne from Broadway;
+	item "simulation booth";
+room "Recruitment Office" dir n from Broadway;
+room "Fortune Teller" dir nw from Broadway go down;
+	item "crystal ball";
+room "Pet Store" dir sw from Broadway link TradingPost;
+	item "cage";
+	item "balloon creature" tag Balloon;
+	item "ostrich nip" tag Nip hidden;
+	task "open hatch in ceiling" get Nip after ReadLetter;
+	task "lure balloon creature with spray can" tag LureBalloon
+			need SprayCan;
+
+
+######################################################
+map "Level Six";
+room "Level Six" tag Level6;
+room "Docking Bay #1" dir nw w;
+room "Alien Ship" dir n go in;
+	item "skeleton";
+	task "decode dots" after ReadDiary ReadNote ReadPaper;
+room "Auxiliary Barracks" dir n n from Level6;
+room "Auxiliary SanFac" dir e s;
+room "Elevator" dir e from Level6;
+room "Officer Quarters A" dir s s s from Level6;
+room "Officer SanFac" tag OSanFac dir se;
+room "Officer Quarters C" dir ne;
+room "End of Corridor" tag EndCor dir n n;
+	link Level6 to EndCor dir se;
+	task "use id" tag UseID need IDCard after ChangeID;
+room "Officer Quarters B" dir sw s link OSanFac;
+room "Armory" dir n from EndCor after UseID;
+	item "fusor-beam zapgun" tag Gun;
+room "Shipping Room" dir e from EndCor;
+
+
+######################################################
+map "Level Seven";
+room "Elevator";
+room "Printing Plant" tag Level7 dir w exit s;
+	item "trash can";
+	item "mauve nanofile spool" tag MauveSpool;
+	task "open trashcan" tag O_trashcan get CrumpledForm;
+	item "crumpled form" tag CrumpledForm;
+room "Paper Recycling Plant" dir nw;
+	item "drill" tag Drill;
+	item "small drill bit";
+
+######################################################
+# join all the elevators
+join Dome to MessHall cmd to "D" cmd from "U";
+join MessHall to Level3 cmd to "D" cmd from "U";
+join Level3 to Level4 cmd to "D" cmd from "U";
+join Level4 to Level5 cmd to "D" cmd from "U";
+join Level5 to Level6 cmd to "D" cmd from "U";
+join Level6 to Level7 cmd to "D" cmd from "U";
+
+# Force the space suit to be removed before leaving the airlock
+link Airlock hidden oneway;	# modify existing link to be oneway, hide it
+                                # so that the arrow doesn't show up on the map
+link Airlock to Warehouse after RemoveSuit;
+
+# It makes more sense to go straight to the Commander's Office
+task "Get log tape" follow Launch give LogTape in COffice;
+
+# Prevent the ID Card from getting scrambled
+item Boots after UseID;
+link JunkYard after UseID;
+# We don't need it anymore so let it get scrambled
+task UseID lose IDCard safe;

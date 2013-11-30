@@ -1,0 +1,234 @@
+########################################################################
+# IFM map for "Christminster" by Gareth Rees
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: minster.ifm,v 1.2 2003/01/11 21:29:21 dchapes Exp $
+#
+# Status: map and tasks not yet complete
+########################################################################
+
+title "Christminster";
+
+########################################################################
+
+  item "purse"				keep tag purse;
+  item "telegram"			tag telegram;
+  item "map";
+
+########################################################################
+
+map "Outside the College";
+
+room "Chapel Street"			tag Chapel;
+  item "stone"				hidden lost tag stone;
+  task "Trip on cobbles"		get stone;
+  task "Unlock the gate"		after hide_key need brass_key
+					tag unlock_gate;
+
+room "Biblioll Street"			dir s e;
+  item "window";
+  item "parrot";
+  item "feather"			hidden tag feather;
+  task "Throw stone through window"	after occupy_cop need stone
+					get feather;
+
+room "Lady Margaret Green"		dir e n;
+  item "sleeping don";
+  item "brass key"			tag brass_key;
+  task "Tickle don with feather"	need feather get brass_key;
+
+room "Bridge Street"			dir n w tag Bridge;
+  item "busker";
+  item "toffee"				hidden lost tag toffee;
+  task "Give purse to busker"		need purse get toffee;
+  task "Give toffee to policeman"	need toffee tag occupy_cop;
+  task "Give key to busker to hide it"	need brass_key tag hide_key;
+
+link Bridge to Chapel			dir w;
+
+########################################################################
+
+map "Inside the College";
+
+room "First Court"			tag First;
+
+join First to Chapel			after unlock_gate;
+
+room "Porter's Lodge"			dir nw;
+  item "porter";
+  item "pigeonholes";
+  item "note"				hidden tag the_note;
+  item "copper key"			hidden tag copper_key;
+  item "iron key"			hidden tag iron_key;
+  task "Show telegram to porter"	need telegram;
+  task "Point at keys"			after last get iron_key;
+  task "Look in Malcolm's pigeonhole"	get the_note;
+  task "Look in Baskeyfield's pigeonhole" get copper_key;
+
+room "Library Archway"			dir s from First;
+  task "Unlock the library door"	need copper_key tag unlock_library;
+
+room "Library"				dir s after unlock_library
+					tag Library;
+  item "Zinovic book"			note "Letter Substitution Ciphers"
+					hidden;
+  item "MacLane book"			note "Men of Biblioll" hidden;
+  item "Lully book"			note "The Clavicula" hidden;
+
+room "Master's Lodgings"		dir ne from First;
+  item "phone";
+  item "white box";
+
+room "The Master's Study"		dir n go up;
+  item "Master";
+  item "Arkwright book"			hidden tag arkwright
+					note "The Reign of Akhenaten";
+  task "Show telegram to Master"	need telegram;
+  task "Ask about Egyptology"		after last get arkwright;
+
+room "`A' Lodgings"			dir n from First tag A_Lodge;
+
+room "`B' Lodgings"			dir se from First tag B_Lodge;
+
+room "Archway between Courts"		dir e e from First
+					after confront_jarboe;
+
+room "Second Court"			dir e e tag Second;
+  item "old moggy";
+
+room "Great Hall"			dir sw tag Hall;
+  item "high table";
+  item "long table";
+  item "corkscrew"			hidden tag corkscrew;
+  task "Look under table"		get corkscrew;
+
+room "Senior Common Room"		dir sw go up;
+
+room "Outside the Kitchens"		dir s from Hall;
+  item "hatch";
+  task "Wait for cook to enter cellars"	need brown_bottle;
+
+room "Cellars"				dir e e go down after last;
+  item "storage bins";
+  item "green glass bottle"		hidden tag green_bottle;
+  item "pale liquid"			hidden;
+  task "Wait for cook to leave"		after last;
+  task "Turn light on"			after last;
+  task "Look in 3rd bin"		after last examine_bottle
+					get green_bottle;
+  task "Wait for cook to let you out"	after last;
+
+room "Antechapel"			dir nw from Second;
+
+room "Chapel"				dir e;
+  item "Latin Bible";
+
+room "Gardens"				dir ne from Second style puzzle;
+
+room "`C' Lodgings"			dir e from Second tag C_Lodge;
+
+########################################################################
+
+map "'A' Lodgings";
+
+room "'A' Staircase, Ground Floor"	join A_Lodge tag AG;
+
+room "A1 (Nudd)"			dir e;
+
+room "A2 (Pidduck)"			dir w from AG;
+
+room "'A' Staircase, First Floor"	dir n from AG go up tag A1;
+
+room "A3 (Kisbee)"			dir e;
+
+room "A4 (Trembath)"			dir w from A1;
+
+room "'A' Staircase, Second Floor"	dir n from A1 go up tag A2;
+  task "Unlock A5 with iron key"	need iron_key;
+
+room "A5 (Spencer)"			dir e e after last;
+
+room "Malcolm's Bedroom"		dir s;
+  item "window";
+  item "ivy";
+  item "lab book"			hidden keep tag lab_book;
+  task "Examine ivy for lab book"	get lab_book;
+  task "Hide lab book in purse"		need lab_book;
+  task "Confront Jarboe and Bungay"	tag confront_jarboe after last;
+
+room "A6 (Guzewich)"			dir w from A2;
+
+########################################################################
+
+map "'B' Lodgings";
+
+room "'B' Staircase, Ground Floor"	join B_Lodge tag BG;
+  task "Knock on B2"			need arkwright;
+  task "Show Arkwright to Wilderspin"	after last need arkwright;
+
+room "B1 (Halfhide)"			dir e;
+
+room "B2 (Wilderspin)"			dir w from BG after last;
+  item "Wilderspin";
+  item "fireplace";
+  item "griffins";
+  task "Ask Wilderspin to press an eye";
+  task "Press the other eye"		after last;
+  task "Enter the fireplace"		drop all goto Dark;
+
+room "Darkness"				dir w oneway after last tag Dark;
+  task "Listen to Wilderspin";
+  task "Climb on his shoulders"		after last;
+
+room "Secret Room"			dir s e tag Secret after last;
+  item "skeleton";
+  item "bench";
+  item "lever"				hidden;
+  item "brown glass bottle"		hidden tag brown_bottle;
+  item "retort"				hidden;
+  task "Examine brown bottle"		in any need brown_bottle
+					tag examine_bottle;
+  task "Look under bench";
+  task "Pull lever"			after last;
+
+join Secret to Library			after last;
+
+room "'B' Staircase, First Floor"	dir n from BG go up tag B1;
+  item "white box";
+
+room "B3 (Moody)"			dir e;
+
+room "B4 (Jarboe)"			dir w from B1;
+
+room "'B' Staircase, Second Floor"	dir n from B1 go up tag B2;
+  item "Edward Forbes";
+  task "Show feather to Edward"		need feather brown_bottle;
+  task "Collect his tears"		after last tag collect_tears;
+
+room "B5 (Forbes)"			dir e;
+
+room "'B' Staircase, Basement"		dir s from BG go down;
+  item "cabinet";
+  item "power pack"			hidden;
+  item "voltmeter"			hidden;
+  item "wires"				hidden;
+  item "sockets"			hidden;
+
+########################################################################
+
+map "'C' Lodgings";
+
+room "'C' Staircase, Ground Floor"	join C_Lodge tag CG;
+
+room "C1 (Baskeyfield)"			dir n;
+
+room "C2 (Middlemann)"			dir s from CG;
+
+room "'C' Staircase, First Floor"	dir e from CG go up tag C1;
+  item "white box";
+
+room "C3 (Bungay)"			dir n;
+
+room "C4 (Yeglitt)"			dir s from C1;
+
+########################################################################

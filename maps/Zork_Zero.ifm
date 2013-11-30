@@ -1,0 +1,557 @@
+########################################################################
+# IFM map for "Zork Zero" by Infocom
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: Zork_Zero.ifm,v 1.1 1998/09/18 12:37:50 dchapes Exp $
+#
+# Status: map complete, no tasks, item notes
+########################################################################
+
+title "Zork Zero";
+
+########################################################################
+
+map "Palace, Ground Level";
+
+room "Great Hall"		tag G_Hall;
+  item "calendar";
+
+room "Courtyard"		dir e tag Yard;
+
+room "Banquet Hall"		dir n tag B_Hall;
+
+room "Scullery"			dir ne tag Scullery;
+  item "straw"			note "For getting elixir at shrine";
+
+room "Wine Cellar"		dir e go down;
+  item "flask"			note "Cauldron (Lucrezia)";
+
+room "Root Cellar"		dir s;
+  item "walnut"			note "Solves Jester's riddle";
+
+room "Kitchen"			dir w go up link Scullery;
+
+room "East Hall"		dir se from Yard;
+
+room "East Wing"		dir e tag E_Wing;
+
+room "Library"			dir n;
+  item "lance"			note "Cauldron (Stonewall)";
+
+room "Guest Rooms"		dir e from E_Wing;
+  item "wand"			note "Turns creatures into objects";
+
+room "Servant's Quarters"	dir e;
+
+room "Jester's Quarters"	dir n;
+  item "slate"			note "Has elm thing on it";
+  item "scroll"			note "Has anagram on it";
+  item "red clown nose";
+
+room "Weird Passageway"		dir n tag Weird;
+
+room "Pyramid Room (left)"	dir w;
+  item "cup of potion"		note "Lets you hear fungus";
+
+room "Pyramid Room (centre)"	dir n from Weird;
+  item "goggles"		note "See under Jester's cups";
+  item "crate";
+
+room "Pyramid Room (right)"	dir e from Weird;
+  item "manuscript"		note "Cauldron (Ralph Waldo)";
+
+room "Chapel"			dir s from E_Wing;
+
+room "Crypt"			dir w go down tag Crypt;
+
+room "Oracle"			dir w tag Oracle;
+
+room "Outside Crypt"		dir s from Crypt;
+
+room "Bottom of Stairs"		dir s tag B_Stairs;
+
+room "Dungeon"			dir s tag Dungeon;
+
+room "Cell"			dir se;
+
+room "Oubliette"		dir s from Dungeon go down oneway;
+  item "seaman's cap"		note "Cauldron (John Paul)"
+				note "Needed for yacht";
+
+room "Torture Chamber"		dir sw from Dungeon;
+  item "metronome"		note "Cauldron (Johann Sebastian)";
+
+room "Top of Stairs"		dir w from B_Stairs go up;
+
+room "Tee"			dir w tag Tee;
+
+room "Secret Passage"		dir n;
+  item "candle"			note "Light";
+
+room "Throne Room"		dir n;
+  item "sceptre"		note "Cauldron (Dimwit)";
+
+room "Audience Chamber"		dir n link G_Hall;
+
+room "Balcony"			dir sw from G_Hall go up;
+
+room "Gallery"			dir s;
+
+room "Closet"			dir s;
+  item "key-shaped button"	note "Removes animal from rebus";
+  item "bar of food"		note "Eat it when you're a flamingo";
+
+room "Fore Building"		dir w from Tee;
+
+room "Donjon"			dir sw;
+
+room "Solar"			dir n go up tag Solar;
+  item "iron key"		note "Unlocks east wing";
+
+room "Bastion"			dir n go up;
+
+room "Parapet"			dir n go up;
+  item "large fly"		note "Wanted by toad for spyglass";
+
+room "Dimwit's Room"		dir w from Solar;
+
+room "Magic Clothes Closet"	dir s;
+  item "glove"			note "Clearing webs in the cell, opens vault";
+  item "stock certificate"	note "Cauldron (John D.)";
+  item "cloak"			note "Gets you to the chess game";
+
+room "Formal Garden"		dir w from G_Hall tag Garden;
+  item "flamingo"		note "Wand turns it into ornament";
+
+room "Parlour"			dir n tag Parlour;
+  item "starfish";
+  item "nutcracker"		note "Cracks walnut";
+  item "lobster"		note "Wand turns it into nutcracker";
+
+room "Torch Room"		dir w;
+
+room "West Hall"		dir sw from Garden;
+
+room "West Wing"		dir w tag W_Wing;
+
+room "Gym"			dir s;
+  item "dumbbell"		note "Cauldron (Babe)";
+
+room "Steam Bath"		dir sw;
+
+room "Dirigible Hangar"		dir w from W_Wing tag Hangar;
+
+room "Peg Room"			dir n from W_Wing;
+
+room "Gaming Room"		dir n;
+  item "zorkmid bill"		note "Cauldron (J. Pierpont)";
+
+room "Entrance Hall"		dir n from G_Hall link B_Hall Parlour;
+
+room "Inner Bailey"		dir n;
+  item "worm"			note "Put in cooking pot";
+
+room "Causeway"			dir nw;
+
+room "Barbican"			dir nw tag Barbican;
+
+room "Upper Barbican"		dir n;
+  item "cannonball";
+
+room "Drawbridge"		dir nw from Barbican;
+
+room "Outer Bailey"		dir nw tag Bailey;
+  item "treasure chest"		note "Contains crown";
+  item "crown"			note "Cauldron (Dimwit)";
+
+room "Garrison"			dir sw;
+  item "steel key"		note "Unlocks west wing";
+  item "poster";
+
+room "Perimeter Wall"		dir nw from Bailey;
+
+room "Bend"			dir ne from Bailey;
+
+room "Village Gate"		dir se;
+
+room "Shady Park"		dir e tag Park;
+
+room "URS Office"		dir n;
+  item "zorkmid coin"		note "Goes in toll booth basket";
+
+room "Church"			dir s from Park;
+
+room "Village Centre"		dir e from Park tag V_Centre;
+
+room "Courtroom"		dir n;
+
+room "Post Office"		dir s from V_Centre;
+  item "homing pigeon"		note "Flies to stand";
+
+room "FrobozzCo HQ"		dir e from V_Centre tag F_HQ;
+  item "t-square"		note "Cauldron (Frank Lloyd)";
+
+room "Back Alley"		dir e;
+
+room "Magic Shop"		dir n;
+  item "ring of ineptitude"	note "Needed for poem";
+
+########################################################################
+
+map "Palace, Lower Level";
+
+room "Lower Hall"		join G_Hall tag L_Hall;
+
+room "Laboratory"		dir n;
+  item "screwdriver"		note "Cauldron (Thomas Alva)";
+
+room "Testing Room"		dir n;
+
+room "Lowest Hall"		dir w w from L_Hall go down tag Lowest;
+
+room "Vault"			dir s;
+
+room "Passage Storeroom"	dir n from Lowest;
+  item "notice"			note "Passage instructions";
+  item "nw/se passage"		note "Join up construction";
+  item "n/s passage"		note "Join up construction";
+
+room "Pits"			dir w from Lowest go down;
+  item "lamp"			note "Cauldron (Thomas Alva)"
+				note "Light source";
+
+room "Ledge in Bottomless Pit"	dir w go down;
+
+room "Mouth of Cave"		dir w go down;
+
+room "Sloping Cave"		dir ne;
+
+room "Top of Well"		dir ne;
+
+room "Under the World"		dir n go down;
+
+room "Hanging from Roots"	dir w;
+
+room "Shoulder"			dir w;
+
+room "Ear"			dir w;
+
+room "Inner Ear"		dir w;
+  item "earwax"			note "Wanted by witches";
+
+room "Kennels"			dir s from L_Hall;
+  item "toboggan"		note "Slide down the glacier";
+
+room "Royal Zoo"		dir e link L_Hall tag Zoo;
+  item "snake"			note "Wand turns it into rope";
+  item "rope"			note "Climb down to lower ledge";
+
+room "G.U. Highway"		dir sw from L_Hall;
+
+room "Exit"			dir s tag Exit;
+
+room "Field Office"		dir w;
+  item "blueprint";
+
+room "Construction"		dir w;
+  item "hardhat"		note "Protects you from rubble";
+  item "hammer";
+
+room "Crossroads"		dir s from Exit tag Xroad;
+
+room "Cave-In"			dir e;
+  item "anti-pit bomb"		note "Destroys pits";
+
+room "Toll Plaza"		dir s from Xroad;
+
+room "Fissure's Edge"		dir s;
+
+room "Tight Squeeze"		dir e;
+
+room "Orb Room"			dir n;
+  item "orbs"			note "One contains Zilbeetha";
+
+room "Potholes"			dir w from Xroad;
+
+room "Rest Stop"		dir sw;
+
+room "Fork"			dir sw tag Fork;
+
+room "Fishy Odour"		dir w;
+
+room "Fishing Village"		dir w tag F_Village;
+
+room "Inquisition"		dir n;
+  item "ticket"			note "From the Inquisition";
+  item "squid pellet"		note "To repel squid";
+  item "box"			note "Contains squid pellet";
+
+room "Wharf"			dir w from F_Village;
+
+room "Casino"			dir n;
+  item "broom"			note "Clears webs in the cell";
+
+room "Sandbar"			dir s from F_Village;
+
+room "Quilbozza Beach"		dir s tag Beach;
+
+room "Salty Smell"		dir ne link Fork;
+
+room "Warning Room"		dir se from Beach;
+
+room "Room of 3 Doors"		dir ne;
+
+room "Wishyfoo Territory"	dir ne oneway tag Wishy;
+  item "shovel"			note "Dig for treasure";
+
+link Wishy to Fork		oneway;
+
+room "West Shore"		dir e from Zoo;
+
+room "Lake Flathead"		dir e tag Lake;
+
+room "North Shore"		dir n tag N_Shore;
+
+room "Frobozz Philharmonic Hall" dir n tag F_Phil;
+
+room "Theatre"			dir e link N_Shore;
+
+room "Conductor's Pit"		dir w from F_Phil;
+  item "violin"			note "Cauldron (Johann Sebastian)";
+
+room "FrobozzCo Basement"	dir n from F_Phil join F_HQ;
+  item "key-shaped button"	note "Removes animal from rebus";
+
+room "East Shore"		dir e from Lake;
+
+room "Base of Mountain"		dir e tag M_Base;
+
+room "Stable"			dir n;
+  item "saddle"			note "Cauldron (Stonewall)";
+  item "rooster"		note "Put in cooking pot";
+
+room "G.U. Mountain"		dir e from M_Base;
+  item "amulet"			note "Return from oracle teleport";
+
+room "Grotto"			dir n;
+  item "key-shaped button"	note "Removes animal from rebus";
+
+room "Shrine"			dir ne;
+
+room "Bottom of Lake"		dir se from Lake go down;
+  item "ruby"			note "Fits in oracle";
+
+room "G.U. Woods"		dir s from M_Base;
+  item "fox"			note "Put in cooking pot";
+
+room "G.U. Savannah"		dir sw;
+  item "larger fly"		note "Wanted by toad for spyglass";
+
+room "Edge of Desert"		dir w tag D_Edge;
+
+room "Ring of Dunes"		dir w;
+
+room "South Shore"		dir n from D_Edge link Lake;
+
+room "Stream"			dir w;
+  item "diploma"		note "Cauldron (John D.)";
+
+room "G.U. Desert"		dir s from D_Edge tag Desert;
+
+room "Cactus Patch"		dir s;
+
+room "Windblown Sands"		dir w link Desert;
+
+room "Desert Plain"		dir se tag D_Plain;
+
+room "Tall Dunes"		dir e;
+
+room "Rippled Sands"		dir s link D_Plain;
+
+room "G.U. Oasis"		dir ne;
+
+########################################################################
+
+map "Dirigible Destination";
+
+room "Smaller Hangar"		join Hangar;
+
+room "Deserted Castle"		dir s;
+
+room "Ruined Hall"		dir e tag R_Hall;
+
+room "Hothouse"			dir s;
+  item "fan"			note "Cauldron (Lucrezia)";
+
+room "Secret Room"		dir e from R_Hall;
+  item "ladder"			note "To reach trapdoor in hut";
+
+room "Marsh"			dir n from R_Hall;
+
+room "Nice Lunch Spot"		dir n;
+  item "hexagonal block"	note "Opens iron mine";
+  item "sapphire"		note "Needed for poem";
+
+########################################################################
+
+map "Oracle (no eyes)";
+
+room "Crag"			join Oracle tag Crag;
+  item "key-shaped button"	note "Removes animal from rebus";
+
+room "Natural Arch"		dir ne;
+
+room "Enchanted Cave"		dir s;
+  item "flower"			note "Put it in vase for secret room";
+
+room "Hollow"			dir sw from Crag;
+
+room "Iron Mine"		dir s;
+
+room "Upper Ledge"		dir s from Crag go down;
+
+room "Lower Ledge"		dir s go down;
+  item "landscape"		note "Cauldron (Leonardo)";
+  item "easel"			note "Cauldron (Leonardo)";
+
+########################################################################
+
+map "Oracle (one eye)";
+
+room "Glacier"			join Oracle;
+
+room "Mirror Lake"		dir se oneway;
+
+room "South of Lake"		dir s oneway tag Lake_S;
+
+room "East of Lake"		dir ne;
+
+room "North of Lake"		dir nw;
+
+room "West of Lake"		dir sw link Lake_S;
+
+room "Chalet"			dir w;
+  item "scale model"		note "Cauldron (Frank Lloyd)";
+
+########################################################################
+
+map "Oracle (two eyes)";
+
+room "Delta"			join Oracle tag D1;
+
+room "Delta"			dir ne n n w w tag D2;
+
+room "Delta"			dir sw tag D3;
+
+room "Delta"			dir sw se tag D4;
+
+room "Delta"			dir s w tag D5;
+
+room "Lily Pad"			dir nw nw tag Pad;
+  item "spyglass"		note "Cauldron (John Paul)";
+
+room "Delta"			dir n e ne link D3 tag D6;
+
+room "River's End"		dir ne from D2;
+  item "largest fly"		note "Wanted by toad for spyglass";
+
+room "Ocean's Edge"		dir sw from D5;
+
+link D1 to D3			dir n n;
+
+link D1 to D4			dir nw;
+
+link D1 to D4			dir sw;
+
+link D2 to D6			dir nw;
+
+link D4 to D5			dir w;
+
+link Pad to D5			dir w s s;
+
+########################################################################
+
+map "Oracle (three eyes)";
+
+room "Foot of Statue"		join Oracle;
+
+room "View of Statue"		dir sw tag S_View;
+
+room "Outside Hut"		dir s;
+
+room "Megaboz's Hut"		dir w;
+
+room "Attic"			dir w go up;
+  item "wizard robe";
+  item "saucepan";
+  item "notebook"		note "Has sacred word in it";
+  item "key-shaped button"	note "Removes animal from rebus";
+  item "harmonica";
+  item "even larger fly"	note "Wanted by toad for spyglass";
+
+room "Cairn"			dir se from S_View tag Cairn;
+
+room "Outside Shack"		dir e;
+
+room "Gumboz's Shack"		dir ne;
+  item "four-gloop vial"	note "Get water from oasis for witches";
+
+room "Quarry's Edge"		dir s from Cairn tag Q_Edge;
+  item "rusty key"		note "Opens Wizard's trunk";
+
+room "Quarry"			dir s;
+
+room "Outside Hovel"		dir e from Q_Edge;
+
+room "Korboz's Hovel"		dir e;
+
+room "Base of Mountains"	dir w from S_View;
+
+room "Foothills"		dir n go up;
+
+room "Zorbel Pass"		dir nw;
+
+room "Avalanche"		dir nw;
+
+room "Timberline"		dir n go up;
+
+room "Amongst the Clouds"	dir n go up;
+
+room "On Top of the World"	dir n go up;
+
+########################################################################
+
+map "Oracle (four eyes)";
+
+room "Mine Entrance"		join Oracle tag E_Mine;
+
+room "Rubble Room"		dir e;
+
+room "Heart of Mine"		dir ne;
+
+room "Crawl"			dir n;
+  item "key-shaped button"	note "Removes animal from rebus";
+
+room "Dead End"			dir nw;
+  item "quill pen"		note "Cauldron (Ralph Waldo)";
+
+room "Coast Road"		dir w from E_Mine;
+
+room "Flathead Stadium"		dir sw tag Stadium;
+  item "wooden club"		note "Cauldron (Babe)";
+
+room "North of Anthar"		dir s;
+
+room "Edge of Bog"		dir e link Stadium;
+
+room "Cliff Bottom"		dir e;
+
+room "Precipice"		dir n go up;
+  item "faded silk tie"		note "Cauldron (J. Pierpont)";
+
+room "Aerie"			dir e;
+
+room "Icky Cave"		dir se;
+  item "nine-gloop vial"	note "Get water from oasis for witches";
+
+########################################################################

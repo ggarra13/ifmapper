@@ -1,0 +1,54 @@
+########################################################################
+# IFM map for "Toonesia" by Jacob Weinstein
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: toonesia.ifm,v 1.2 2003/01/11 21:29:21 dchapes Exp $
+#
+# Status: Map complete, no tasks, item notes
+########################################################################
+
+title "Toonesia";
+
+########################################################################
+
+room "Bare Cell";
+  item "crayon"			note "Draws the door";
+  item "blindfold"		note "Wear it to walk in mid-air";
+  item "note";
+
+room "Middle of the Woods"	dir s style special tag Middle;
+  item "sign"			note "Show it to Dizzy";
+
+room "In the Woods"		dir s;
+
+room "Edge of the Woods"	dir nw link Middle tag Edge;
+  item "tasmanian devil";
+
+room "Outside the Mine"		dir n n tag Outside_Mine;
+  item "Dizzy Duck";
+
+room "Edge of a Cliff"		dir w from Edge;
+
+room "Hanging in Mid-Air"	dir w;
+
+room "Atop a Narrow Mesa"	dir w s;
+  item "gun"			note "Show it to Dizzy";
+
+room "Hanging in Mid-Air"	dir e;
+
+room "Side of a Ledge"		dir e;
+
+room "Inside Bud's Warren"	dir e tag Warren;
+  item "Hawaiian shirt";
+  item "baseball cap";
+  item "cologne bottle"		note "Wear cologne to avoid devil";
+  item "lettuce sandwich";
+  item "steak"			note "Cook it on stove";
+
+link Warren to Edge		go up style special;
+
+room "Inside the Mine"		dir e from Outside_Mine;
+  item "lamp"			note "Rub it twice for helmet";
+  item "magic helmet"		note "Makes winds blow";
+
+########################################################################

@@ -1,0 +1,110 @@
+# IFM Map for "Paper Chase" by Chris Skapura
+# Based on Release ??
+#
+# This file written by John Troxler <jtroxler@carolina.rr.com>
+#
+# $Id: paperchase.ifm,v 1.1 2000/09/06 16:20:30 dchapes Exp $
+
+title "Paper Chase";
+item "ballpoint pen" tag pen;
+
+#############################################################################
+map "College";
+room "Outside" tag Outside start exit n s;
+
+room "Entrance hall" tag Entrance dir s exit n s e w;
+
+room "Registration hall" tag Registration dir s exit n;
+  item "identity card" tag card hidden score 4;
+  task "fill out form" need pen get card;
+  task "show card to secretary" tag register need card score 6;
+
+room "Refectory" tag Refectory dir w from Entrance exit s e;
+  item "ham sandwich";
+
+room "Corridor" tag Corridor1 dir s exit n s w;
+
+room "Sports hall" dir w from Corridor1 after tuition;
+  task "run" tag pe_exam score 8;
+
+room "Chemistry lab" dir s from Corridor1 after tuition;
+  item "exam paper";
+  task "take exam" tag chem_exam need pen cheat_sheet score 8;
+
+room "Ground floor stairwell" tag Ground dir e from Entrance exit w;
+
+#############################################################################
+map "Bottom Floor";
+room "Bottom of stairwell" tag Bottom exit n s;
+  item "copy of Psychiatry Today" tag magazine hidden score 4;
+  task "open bin" get magazine;
+
+join Ground to Bottom go down;
+
+room "Student's Union" dir n exit s;
+  item "book" tag book score 4;
+  task "give card to president" need card get book note "The book tells you of your goal but not needed except for a perfect score";
+  task "give book to president" need book lose it after last;
+
+room "Bar" dir s from Bottom exit n;
+  item "pledge pin" tag pin score 4;
+  item "bottle of rum" tag bottle hidden score 4;
+  item "sheet of paper" tag cheat_sheet hidden score 4;
+  task "get pin" get bottle;
+  task "open bottle" need bottle;
+  task "drink rum" need bottle after last pe_exam;
+  task "drink rum" need bottle after last;
+  task "drink rum" need bottle after last get pin;
+  task "drink rum" need bottle after last get cheat_sheet;
+
+#############################################################################
+map "First Floor";
+room "First floor stairwell" tag First exit w;
+
+join First to Ground go down;
+
+room "Corridor" tag Corridor2 dir w exit n s w e;
+
+room "Corridor" tag Corridor3 dir s exit n w e;
+
+room "English classroom" dir w after tuition leave pin;
+  item "exam paper";
+  task "take exam" tag english_exam need pen note "Answers: 1. transparent 2. e 3. f 4. incorrectlly 5. a" score 10;
+
+room "Records Office" dir e from Corridor3;
+  item "report transcript" tag report_transcript score 4;
+  task "show transcript receipt to secretary" need transcript_receipt lose it get report_transcript;
+
+room "Bursar's office" dir w from Corridor2;
+  item "tuition receipt" tag tuition_receipt score 4;
+  item "transcript receipt" tag transcript_receipt score 4;
+  task "give gold coin to bursar" tag tuition need gold_coin lose it get tuition_receipt score 6;
+  task "give silver coin to bursar" tag receipt need silver_coin lose it after english_exam pe_exam chem_exam get transcript_receipt;
+
+room "Psychology lab" dir n from Corridor2;
+  item "manilla folder" tag folder score 4;
+  item "sheet of paper covered with strange shapes";
+  task "give magazine to psychologist" need magazine lose it get folder;
+
+#############################################################################
+map "Second Floor";
+room "Second floor stairwell" tag Second exit w;
+
+join Second to First go down;
+
+room "Corridor" tag Corridor4 dir w exit n e w;
+
+room "Financial aid office" dir n exit s;
+  item "gold coin" tag gold_coin score 4;
+  item "silver coin" tag silver_coin score 4;
+  task "fill out form" need pen get gold_coin silver_coin;
+
+room "Dean's office" dir w from Corridor4 exit e;
+  item "degree certificate" tag degree;
+  task "give card to dean" need card lose it after pe_exam english_exam chem_exam;
+  task "give receipt to dean" need tuition_receipt lose it after last;
+  task "give report to dean" need report_transcript lose it after last;
+  task "show folder to dean" need folder after last get degree score 10;
+  task "get degree" finish after last note "To win you must go back outside and into the forest" score 4;
+
+# EOF

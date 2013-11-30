@@ -1,0 +1,82 @@
+# IFM Map for "Suspended" by Infocom
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Suspended.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+title "Suspended";
+
+########################################################################
+map "Lower Level";
+
+room "to upper level" tag JoinLevel style puzzle;
+room "Hallway Junction" tag HallJunction dir s;
+room "Bending Corridor" dir w w w;
+room "Angling Corridor" dir sw;
+room "Central Chamber" tag Central dir s s;
+room "Hydroponics Monitors" dir e e;
+room "Transit Monitors" dir s s from Central;
+room "Weather Monitors" tag WeatherMon dir w w from Central;
+room "Main Supply Room" dir w;
+room "Middle Supply Room" dir s;
+room "Sub Supply Room" dir e link WeatherMon;
+
+room "Outer Library" dir s from HallJunction;
+room "Index Peripheral" tag Index dir s;
+room "Historical Peripheral" dir sw;
+room "Advisory Peripheral" dir se;
+room "Technical Peripheral" dir ne link Index;
+
+room "Southeast Junction" tag SEJunction dir e e from HallJunction;
+room "Southeast Passage" dir se;
+room "Bending Passage" dir se s;
+room "Alpha Repair" dir s;
+room "Beta Repair" dir s;
+room "Gamma Repair" dir s;
+
+room "Rising Passage" dir ne from SEJunction;
+room "Top Passage" dir ne n;
+room "Skywalk Alpha" tag SkyAlpha dir n;
+room "Skywalk Beta" tag SkyBeta dir w;
+room "Skywalk Gamma" tag SkyGamma dir w;
+room "Weather Control Area" dir n from SkyAlpha;
+room "Hydroponics Control Area" dir n from SkyBeta;
+room "Transit Control Area" dir n from SkyGamma;
+
+room "Short Corridor" dir e e from SEJunction;
+room "Cavernous Room" tag Cavernous dir e;
+room "Alpha FC" dir ne ne;
+room "Primary Channel" dir s;
+room "Beta FC" tag BetaFC dir s;
+room "Secondary Channel" dir s;
+room "Gamma FC" dir s link Cavernous;
+room "East End" dir e from Cavernous link BetaFC;
+
+########################################################################
+map "Upper Level";
+
+room "Dead End";
+room "Hallway T" tag HallT dir e;
+room "Sterilization Chamber" dir n;
+room "Decontamination Chamber" dir e;
+room "Entry Area" dir e;
+room "Small Supply Room" dir e;
+room "Activities Area" dir e;
+room "Sleep Chamber" dir e;
+room "Hallway Corner" tag HallCorner dir s;
+room "Access Hallway" dir w w link HallT;
+room "Sloping Corridor" dir s;
+room "to lower level" join JoinLevel dir s style puzzle;
+
+room "Hallway Branch" tag HallBranch dir s from HallCorner;
+room "Maintenance Access" dir e e e;
+
+room "Library Entrance" tag LibEnt dir s s s from HallBranch;
+room "Library Core" dir w w;
+room "Hallway End" dir s from LibEnt;
+
+room "Vehicle Debaration area" dir e e e style special;
+room "Biology Corridor" tag BioCor dir n;
+room "Biology Laboratory" dir w;
+room "Cryogenic Area" dir n from BioCor;
+
+# EOF

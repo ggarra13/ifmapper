@@ -1,0 +1,89 @@
+# IFM Map for mindelec.z5
+#	"The Mind Electric" is by Jason Dyer
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+# $Id: mindelec.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+
+title "The Mind Electric";
+
+########################################################################
+room "Containment Grid" start;
+	item "electric fence";
+	item "door";
+	task "wait for paper" tag Paper;
+	item "paper" hidden tag paper after last;
+	task "say word on paper (ivory)" tag Password1 after Paper score 1;
+	task "say word on paper (flood)" after Password1 score 2;
+	task "wait for scan to finish" tag Evade_Scan after Stabalise_Body score 3;
+	task "read paper again (lxprog)" tag R_lxprog need paper after Evade_Scan;
+	task "destroy paper" after R_lxprog need paper lose it score 3
+		note "so that it cannot be located by the enemy";
+
+########################################################################
+room "Crystal Cave" tag Crystal_Cave dir se go d;
+	item "granite rock" tag rock;
+	task "touch granite rock" score 1
+		note "transforms rock into cube" lose rock get cube;
+	item "red cube" tag cube hidden;
+	task "determine box number" tag Find_Box_Num
+		note "nod=correct digit&location, blink=correct digit";
+	task "give circuit board to cube" tag Activate_Cube need circuit_board
+		lose it score 5;
+	task "cube, lxprog" tag Activate_lxprog after R_lxprog score 3;
+	task "restart lxprog" tag Restart_lxprog after Activate_lxprog;
+	task "restart lxprog again" tag Restart_lxprog2 after Destroy_Sphere
+		score 2;
+	task "get message from cube" tag Cube_Msg after Restart_lxprog2
+		note "\"spidlower\" => spider access level lowered";
+	task "wait repeatedly for lxprog" tag Finish_lxprog after Enter_Portal
+		score 1 goto Grassy_Field;
+
+########################################################################
+room "Storage Room" tag Storage_Room dir n e;
+	link Storage_Room to Crystal_Cave dir e s s w w;
+	item "boxes" note "numbered from 0001-9999";
+	task "open box xxxx" tag O_Box1 after Find_Box_Num give circuit_board;
+	item "circuit board" tag circuit_board hidden;
+	task "listen" tag Listen after Restart_lxprog note "get box #";
+	task "open box xxxx" tag O_Box2 after Listen score 4 give sphere;
+	item "sphere" tag sphere hidden;
+
+########################################################################
+room "Star Plateau" tag Star_Plateau dir w s from Crystal_Cave;
+	link Star_Plateau to Crystal_Cave dir s e e n n;
+	item "obelisks";
+	item "metal loop";
+	item "spider";
+	item "doll" hidden;
+	task "touch metal loop" tag Stabalise_Body score 2
+		after Activate_Cube #?
+		note "stabalises your virtual body";
+	task "\"spider,help.g.spider,erase sphere\"" tag Destroy_Sphere
+		need sphere lose it;
+	task "spider,erase spider" tag Destroy_Spider after Cube_Msg score 4;
+
+########################################################################
+room "Apex of Obelisk" tag Obelisk dir nw go up
+		style special after Destroy_Spider cmd "climb obelisk" oneway;
+	task "touch sky" tag Touch_Sky score 4 goto Factory;
+
+########################################################################
+room "Factory" tag Factory dir n go up after Touch_Sky;
+	link Factory to Crystal_Cave dir se go down after Wait_Portal;
+	item "duplicator";
+	item "green pad";
+	item "blue pad";
+	item "storage bin";
+	item "widget";
+	task "put widget on blue pad" tag Dup1;
+	task "touch duplicator.again" tag Dup2 follow Dup1;
+	task "stand on green pad" tag Duplicate_Yourself follow Dup2 score 5;
+	task "wait for portal" tag Wait_Portal after Duplicate_Yourself;
+	task "enter portal" tag Enter_Portal after Wait_Portal
+		goto Crystal_Cave;
+
+########################################################################
+room "Grassy Field" tag Grassy_Field dir se se from Crystal_Cave
+		style special oneway after Finish_lxprog finish;
+	item "tall man";
+
+# EOF

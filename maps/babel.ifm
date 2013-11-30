@@ -1,0 +1,279 @@
+# IFM Map for "Babel" by Ian Finley
+# Based on Release Number 2
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# Note:  The walkthrough this file generates has a few unnecessary steps
+# in it like examining objects.  The idea is that the transcript the
+# walkthrough will generate should be fairly readable.
+#
+# Also note that the generated map shows two bathrooms each with two
+# exits when in reality there are four bathrooms with only one exit
+# each.  I.e. the bathrooms overlap on the map.
+#
+# $Id: babel.ifm,v 1.3 2003/01/11 21:29:21 dchapes Exp $
+
+title "Babel";
+
+########################################################################
+# Starting items
+item "gown";
+
+########################################################################
+room "North End" tag North_End start;
+	task "put ID card in slot" tag Card2 need id_card after On_power;
+	task "x calendar" need calendar after Inject_cure;
+room "Records II" after On_power dir w style special after Card2;
+	task "x safe" note "red dial";
+	task "x dial" after last note "from 1 to 100";
+	task "set dial to 80" tag O_safe after last X_blotter get key;
+	task "touch shelf" after O_safe score 1;
+	task "x key" after O_safe note "residential master";
+	item "key" tag key hidden;
+	task "ask Hosea about HS1" after X_flask;
+
+room "Courtyard" dir n from North_End go up style special after Inject_cure
+		score 1 finish;
+
+room "North Hall" dir s from North_End;
+room "Center" tag Center dir s
+		note "vision" score 1;
+	#task "touch east door frame" note "vision" score 1;	# automatic
+room "South Hall" tag South_Hall dir s;
+room "Communications Room" dir e;
+	task "x cabinet" note "reveals a large plastic switch";
+	item "switch" hidden;
+	task "flip switch" tag On_power after last note "turns on the power";
+	task "flip switch" tag Off_power after last note "power is off";
+	task "flip switch" tag On_power2 after last Wedge_door
+		note "power is on" note "system can't close gallery door";
+
+room "Entry Area" tag Entry_Area style special after On_power
+		dir s from South_Hall;
+	task "touch bulkhead" note "panel in vision" score 1;
+	task "push panel" tag P_panel after last note "opens the NW door";
+	task "put ID card in slot" tag Card1 need id_card after On_power;
+	task "type \"11:4\" on keypad" tag O_outside_bulkhead after R_bible;
+room "Records I" dir e style special after Card1;
+	task "x screen" note "HOSEA";
+
+room "Entry Steps" dir w from Entry_Area style special after O_outside_bulkhead;
+room "Outside" dir w;
+room "Shed" dir se;
+	item "battery" tag battery;
+	task "touch shelf" score 1;
+
+room "Antichamber" dir nw from Entry_Area style special after P_panel;
+room "Round Room" tag Round_Room dir nw;
+	task "unlock north door" tag UL_David need key;
+	task "unlock south door" tag UL_Alexis need key;
+	task "unlock northwest door" tag UL_dining need key;
+room "Alexis' Room" dir s style special after UL_Alexis;
+	task "touch vase" tag T_vase score 1;
+	task "open dresser";
+	task "x sketch book" follow last;
+room "Bathroom" dir w;
+	task "touch toilet" tag T_toilet score 1;
+
+room "Jonas' Room" dir w from Round_Room;
+	task "x desk" note "reveals a fading green blotter";
+	task "x blotter" tag X_blotter after last note "the number 80";
+	task "touch blotter" after X_mirror score 1;
+room "Bathroom" dir s;
+	task "touch mirror" score 1 after X_mirror;
+
+room "David's Room" dir n from Round_Room style special after UL_David;
+	task "touch table" tag T_table score 1;
+	task "open bathroom door" note "can't; inhuman strength";
+	task "inject self with fluid" after Load_red_syringe need red_syringe;
+	task "open bathroom door" tag O_bathroom follow last;
+	task "touch bookcase" after X_mirror score 1;
+room "Bathroom" dir e style special after O_bathroom;
+	task "x mirror" tag X_mirror;
+
+room "Brett's Room" dir e from Round_Room;
+	task "x mattress" get id_card note "reveals ID card";
+	item "ID card" tag id_card hidden keep;
+	task "x books" tag X_books;
+	task "touch mattress" tag T_mattress after X_mirror score 1
+		note "\"He knew his Bible to the letter\""
+		note "414";
+	task "x note" after T_mattress;
+	task "find Babel in bible" tag R_bible follow X_books after T_mattress
+		note "11:4";
+room "Bathroom" dir n;
+
+room "Dining Room" dir nw from Round_Room style special after UL_dining;
+	item "calendar" tag calendar;
+	task "touch counter" tag T_counter score 1;
+	task "touch table" after X_mirror score 1;
+room "Residential Storage" dir sw;
+	item "screwdriver" tag screwdriver;
+	item "metal pole" tag pole hidden;
+	task "touch pegboard" tag T_pegboard score 1;
+	task "x broken shelves" get pole note "support bar";
+
+
+room "East Hall" dir e from Center;
+room "East End" tag East_End dir e;
+	task "touch bulkhead" tag T_east_bulkhead score 1;
+	task "put ID card in slot" tag Card3 need id_card after On_power2;
+	task "x bulkhead" note "loose panel";
+	task "open panel with screwdriver" need screwdriver after last
+		note "manual override";
+	task "pull lever" tag Pull_lever1 after last
+		note "can't, emergency locking system";
+	task "pull lever" tag Pull_lever2 after last Off_power;
+	task "x bulkhead" after last note "grooves";
+	task "x grooves" follow last;
+	task "put pole in groove" tag Wedge_door after last need pole lose it;
+
+room "Records III" after On_power2 dir n style special after Card3;
+	task "ask Hosea about Jabberwocky" tag Ask_Jabberwocky
+		after T_east_bulkhead;
+	task "ask Hosea about Telerus" tag Ask_Telerus after T_toxin_door;
+	task "ask Hosea about gallery" tag Ask_gallery after X_recess
+		note "polarizing filters";
+	task "ask Hosea about polarizing filters" tag Ask_filters
+		follow last note "settings";
+
+room "Gallery Junction" tag Gallery_Junction dir e from East_End
+		style special after Pull_lever2;
+	task "touch south door" tag T_toxin_door score 1;
+	task "x recess" tag X_recess after On_power2
+		note "filter alignment" note "button";
+	task "press button" after last;
+	task "x sliders" follow Ask_filters;
+	task "set red to 3" tag Light_gallery follow last note "gallery is lit";
+	task "put id card in east slot" tag Card4 need id_card after On_power2;
+	task "put id card in south slot" tag Card5 need id_card after On_power2;
+	task "read warning" after On_power2;
+room "Toxin Gallery" need rad_suit after Wear_suit dir s style special after Card5;
+	task "x frame" tag X_frame get telerus_vial;
+	item "Telerus vial" tag telerus_vial;
+
+room "Terran Gallery" tag Terran_Gallery dir e e from Gallery_Junction
+		style special after Card4;
+room "Aquatic Gallery" after Light_gallery dir s go down;
+	task "touch floor" score 1 after X_mirror;
+
+room "Avian Gallery" after Light_gallery dir n from Terran_Gallery go up;
+	task "touch railing" tag T_railing score 1;
+room "Cage" dir n;
+	item "bowl of water";
+	task "wash flask" tag Wash_flask after Load_red_syringe need flask;
+
+
+room "Hall" after On_power2 dir n from Gallery_Junction;
+room "Lab Entrance" tag Lab_Entrance dir n;
+room "Supply Closet" dir e;
+	item "flask" tag flask;
+	task "x flask" tag X_flask need flask note "HS1 Hormone" in any;
+	task "open flask" tag O_flask need flask in any;
+room "Medical Alcove" dir n;
+	item "red syringe" tag red_syringe;
+	task "put liquid in red syringe" tag Load_red_syringe
+		follow O_flask need flask red_syringe in any;
+	task "touch sink" after X_mirror score 1;
+room "Lab Hall III" dir w link Lab_Entrance;
+	task "touch cages" tag T_cages score 1;
+	task "x cabinet" tag X_cabinet note "lock and hinges";
+	task "x lock" follow last;
+	task "x hinges" tag X_hinges follow last note "quite thin";
+	task "x battery" need battery in any
+		note "highly corrosive" note "slit";
+	task "open battery with screwdriver" need battery screwdriver
+		after last;
+	task "pour acid on hinges" tag O_cabinet need battery
+		after last X_hinges get base_vial note "cabinet opens";
+	task "touch shelf" after O_cabinet score 1;
+	task "read notes" after O_cabinet note "instructions";
+	item "base vial" tag base_vial hidden;
+room "Lab Hall II" dir w;
+	task "touch microscope" score 1;
+room "Lab Hall I" dir w;
+	item "amber syringe" tag amber_syringe;
+	task "touch microscope" score 1;
+	task "x bulkhead" note "release lever";
+	task "pull lever" tag O_lab1_bulkhead follow last;
+	link last to North_End after last;
+room "Landing" tag Landing dir n n ne e s go down;
+room "Changing Room" dir w;
+	item "radiation suit" tag rad_suit;
+	task "get radiation suit" give rad_suit get green_card;
+	item "green card" tag green_card hidden;
+	task "wear suit" tag Wear_suit need rad_suit in any;
+	task "touch bench" tag T_bench score 1 after X_mirror;
+
+room "Radiation Area" dir s from Landing go down;
+	task "set dial to 414" tag Set_dial after T_mattress;
+	task "x control panel" tag X_controls;
+	task "open hatch" tag O_hatch;
+	task "open base vial" need base_vial in any;
+	task "put base in flask" tag base_in_flask
+		need base_vial flask follow last after Wash_flask in any;
+	task "open Telerus vial" need telerus_vial in any;
+	task "put Telerus in flask" tag Telerus_in_flask
+		need telerus_vial flask follow last after Wash_flask in any;
+	task "close flask" tag Prep_flask need flask
+		after base_in_flask Telerus_in_flask in any;
+	task "shake flask" tag Shake_flask need flask after last;
+	task "put flask in alcove" after last drop flask until O_hatch2;
+	task "close hatch" after last;
+	task "flip switch" after last after X_controls;
+	task "put green card in slot" after last
+		need green_card drop it until Press_black;
+	task "press black button" tag Press_black after last after Set_dial;
+	task "press blue button" after last;
+	task "flip switch" after last;
+	task "open hatch" tag O_hatch2 need green_card after last;
+	task "open flask" need flask after last;
+	task "put cure in amber syringe" need flask amber_syringe after last;
+	task "inject self with cure" tag Inject_cure need amber_syringe
+		after last;
+
+########################################################################
+# Modify some of the above to help IFM generate a better walkthrough
+
+# Move into the room immediatly after unlocking the door.
+# It's nicer than unlocking all the doors at once.
+task T_vase follow UL_Alexis;
+task T_table follow UL_David;
+task T_counter follow UL_dining;
+task UL_dining after UL_Alexis;
+task X_frame follow Card5;
+task Card5 after T_mattress;
+task T_railing follow Card4;
+
+# Finish Alexis' room before unlocking anything else
+task T_toilet follow T_vase;
+
+# Make sure we pick up the calendar...
+task T_pegboard need calendar;
+
+# Don't drop the the calendar
+item calendar keep;
+
+# Don't bother going to the east hall until we can open the door
+#link East_End need pole;
+link East_End after T_pegboard;
+
+# Try pulling the lever once before turning off the power
+task Off_power after Pull_lever1;
+
+# Ask some questions all at once
+task Ask_Jabberwocky follow Card3;
+task Ask_Telerus follow Ask_Jabberwocky;
+task Ask_gallery follow Ask_Telerus;
+
+# Pick up the red syring on the way to Lab Hall III
+task T_cages need red_syringe;
+task X_cabinet after T_cages;
+
+# Don't bother going to touch the railing until we're ready to wash the flask.
+task Wash_flask follow T_railing;
+
+# Touch the bench before we start the process to produce the anti-toxin
+task Shake_flask after T_bench;
+task Set_dial after T_bench;
+
+# EOF

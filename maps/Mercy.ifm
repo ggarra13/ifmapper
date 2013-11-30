@@ -1,0 +1,76 @@
+# IFM Map for "Mercy" by Chris Klimas.
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Mercy.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+#
+# Note:  not finished, not upgraded to use IFM v2.0 features
+
+title "Mercy";
+
+########################################################################
+# Starting Inventory
+item "id card" note "Name: Dr. Peter Basham";
+item "blade";
+
+########################################################################
+map "First Floor/Outside";
+
+room "Stairs, First Floor" tag Stair_1 exit s w;
+room "First Floor Hallway" tag Hall_1 dir w w;
+room "The Wards" dir s;
+	item "man";
+room "The Wards" dir e;
+	item "Rose" note "She tells you about Simon and Leslie";
+
+room "Clinic Entrance" tag Clinic_Ent dir n from Hall_1;
+	item "Dr. Hegel" note "He tells you about some e-mail";
+	item "Leslie";
+room "Clean Room" tag Clean_Room dir e style special after Knock_Jason;
+	item "antibiotics";
+	item "computer";
+	item "chair";
+	task "login" note "read e-mail from Mort Roth";
+
+room "In the Crowd" dir n from Clinic_Ent style special;
+	item "Jason";
+	task "knock jason down" tag Knock_Jason goto Clean_Room;
+room "On the Metro" dir e style special;
+	item "woman";
+
+room "Bespectacled Cafe" tag Cafe dir n ne oneway style special;
+	item "tofu";
+
+room "Market" tag Market dir w w sw oneway style special;
+	item "Leslie's mother";
+	item "oranges";
+room "Back of the Market" dir e;
+	item "scotch";
+
+room "Outside the Apartment Building" dir n from Market style special oneway;
+
+########################################################################
+map "Second Floor";
+
+room "E-Room 2" start;
+	item "thermostat";
+	item "steel table";
+room "Second Floor Hallway" tag Hall_2E dir s;
+room "E-Room 3" dir s;
+	item "steel table";
+	item "irradiator";
+
+room "Second Floor Hallway" dir w from Hall_2E exit s e;
+
+room "Stairs, Second Floor" tag Stair_2 dir e from Hall_2E join Stair_1;
+
+########################################################################
+map "Third Floor";
+
+room "Stairs, Third Floor" join Stair_2;
+room "Office Hallway" tag Office_Hall dir w exit n s e;
+room "Your Office" dir n;
+	item "desk";
+	item "diploma";
+	item "picture";
+
+# EOF

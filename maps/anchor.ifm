@@ -1,0 +1,645 @@
+# IFM Map for "Anchorhead" by Michael S. Gentry
+# Based on Release 5 / Serial number 990206
+# (Note:  earlier version of this game had different solutions
+# to several of the puzzles!)
+#
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: anchor.ifm,v 1.5 2003/01/11 21:29:21 dchapes Exp $
+#
+# Note:  Not finished.  Days one and two (of four) are basicly done.
+
+# Mark the starting location
+room_border_width = 2 in style Start;
+
+# This style is used for connecting rooms between different map sections
+style Connection;
+  room_shadow_xoff = 0;
+  room_shadow_yoff = 0;
+  ps.room_border_dashed = 1;
+  tk.room_border_colour = "grey";
+  tk.room_colour = "grey90";
+endstyle Connection;
+
+title "Anchorhead";
+
+########################################################################
+# Starting items
+item "wedding ring"			tag wedding_ring keep;
+item "trenchcoat"			tag trenchcoat;
+item "clothes"				tag clothes;
+item "umbrella"				tag umbrella keep;
+
+########################################################################
+map "Anchorhead";
+
+room "Outside the Real Estate Office"	tag Outside_Office style Start start;
+# task "close door"			tag C_door # optional
+#					after UL_office_door LU_Verlac;
+
+room "Alley"				tag Alley dir se 2;
+  item "boxes";
+  item "garbage cans";
+  item "fence";
+  item "window";
+  task "push can under window";
+  task "stand on cans"			after last;
+  task "open window"			follow last;
+  task "close umbrella"			follow last need umbrella;
+  task "enter window"			tag Go_window follow last
+					goto File_Room;
+
+room "Narrow Beach"			tag Beach dir e;
+  item "sewage pipe";
+
+
+room "File Room"			tag File_Room dir n 2 from Alley
+					style special after Go_window;
+  item "filing cabinets";
+  task "look for Verlac in cabinets"	tag LU_Verlac after Play_messages
+					give keyring house_key cellar_key;
+  item "keyring"			tag keyring hidden score 2 keep;
+  item "key to house"			tag house_key hidden keep;
+  item "key to cellar"			tag cellar_key hidden keep;
+
+room "Office"				tag Office dir w;
+  link Office to Outside_Office		style special after UL_office_door;
+  item "blinds";
+  item "papers";
+  item "telephone";
+  item "answering machine";
+  item "cup of coffee";
+  task "examine answering machine";
+  task "press play"			tag Play_messages follow last
+					note "Verlac";
+# task "press delete"			after last; #optional;
+  task "unlock door"			tag UL_office_door;
+
+
+room "Narrow Street"			tag Narrow_Street
+					dir w from Outside_Office;
+room "Local Pub"			tag Pub dir n;
+  item "table";
+  item "lantern"			tag lantern;
+  task "look under table"		get flask note "reveals a flask";
+  item "flask"				tag flask hidden;
+
+
+room "Twisting Lane"			dir nw ne from Narrow_Street;
+  item "graffiti"			hidden ;# after Sleep;
+  task "read graffiti"			tag X_graffiti after Sleep;
+
+room "Hidden Court"			dir w 2 style special after X_graffiti;
+  item "sign";
+
+room "The Cauldron"			dir s;
+  item "display case";
+  item "violin";
+  item "propietor";
+  task "examine case"			tag X_case
+			note "reveals tarot cards, a geode, and an amulet";
+  item "tarot cards"			hidden;
+  item "geode"				hidden;
+  item "amulet"				tag amulet hidden score 5;
+  task "ask man about William Verlac";
+  task "ask man about Edward Verlac"	note "trinket";
+  task "ask man about trinket"		follow last;
+  task "ask man about amulet"		after X_case give amulet;
+  task "show man puzzle box"		need puzzle_box drop it
+					note "he opens it for you" score 2;
+  task "look in puzzle box"		after last get black_disk
+					note "reveals black disk";
+  item "black disk"			tag black_disk hidden;
+
+
+room "Juntction"			tag Junction dir w 3 from Narrow_Street
+					exit nw;
+
+room "Mill Road"			tag Mill_Road dir n 4;
+
+room "Breakwater"			dir e 2;
+
+room "At the Foot of the Lighthouse"	dir ne;
+  item "bronze door";
+
+room "Rocky Spur"			dir se ne exit e;
+  item "turbulent patch of water";
+
+
+room "Entrance to the Paper Mill"	tag Ent_Paper_Mill
+					dir w 3 from Mill_Road exit sw;
+  item "gate";
+
+room "Shanty Town"			dir n;
+  item "shacks";
+# task "knock on door 11"		after R_newspaper;
+
+
+room "Bare Foundations"			dir s sw from Ent_Paper_Mill;
+
+room "Railroad Tracks"			dir se;
+
+
+room "University Court"			dir nw from Junction;
+
+room "Library"				dir w leave book;
+  item "Michael";
+  item "book";
+  task "Michael, hello"			note "or \"examine book\", or ..."
+					note "asks if you got the house keys";
+  task "yes"				follow last;
+  task "show Michael the keys"		tag Show_keys follow last need keyring
+					score 2;
+
+room "Circulation Desk"			dir n;
+  item "sign";
+  item "register";
+  item "bell";
+  task "look up michael in register"
+    note "\"A Historical Overview of Superstitions in the Misaton Valley Region\" by J. Arnsworth Frazer";
+  task "ring bell"			follow last;
+  task "show librarian card"		follow last need faculty_card;
+  task "ask librarian for Arnsworth Frazer"	follow last give book;
+  item "Superstitions book"		tag book hidden score 2;
+  task "read Superstitions book"	need book get slip
+					note "a slip of paper falls out";
+  task "again"				tag R_book follow last need book
+			note "Croseus Verlac, Eustacia Verlac, Wilhelm Verlac";
+  task "ring bell"			after last;
+  task "give Superstitions book to librarian"	follow last
+					need book lose it;
+  item "slip of paper"			tag slip hidden;
+  task "read slip of paper"		tag R_slip need slip;
+
+
+room "Whateley Bridge"			dir s 2 from Narrow_Street;
+
+room "Town Square"			tag Town_Square dir s 2 exit s;
+  item "stone obelisk";
+  item "iron ring"			hidden;
+  item "hieroglyphs"			hidden;
+  item "newspaper"			tag newspaper hidden after Sleep;
+  task "read newspaper"			tag R_newspaper need newspaper in any
+			note "Jeffery Greer, 8yr old from #11 Mill Town road"
+					note "Edward Verlac";
+
+room "Dark Corner"			dir w 2;
+
+room "Asylum Courtyard"			dir s;
+
+room "Waiting Room"			dir s exit s style special after Sleep;
+  item "sofa";
+  item "palm";
+  item "metal gate";
+  item "orderly";
+  item "cell key"			tag cell_key keep;
+  task "ask orderly about Edward";
+
+
+room "Side Alley"			dir sw from Town_Square;
+
+
+room "Courthouse"			dir s from Town_Square
+					style special after Sleep exit w e;
+
+room "Courthouse Basement"		tag CH_Basement dir s go down exit sw;
+
+room "Birth Records"			dir se;
+  task "look up Eustacia Verlac in records"	after R_book
+						note "born Nov 22, 1634";
+  task "look up Wilhelm Verlac in records"	after R_book
+						note "born March 11, 1651";
+
+room "Death Records"			dir sw from CH_Basement;
+  task "look up Croseus Verlac in records"	after R_book
+						note "died March 11, 1651";
+  task "look up Eustacia Verlac in records"	after R_book
+						note "died April 8, 1686";
+  task "look up Wilhelm Verlac in records"	after R_book
+						note "died October 18, 1734";
+
+
+room "Riverwalk"			tag Riverwalk dir e 2 from Town_Square;
+  item "iron gate";
+
+room "Under the Bridge"			dir n nw exit s;
+  item "metal door";
+  task "unlock door with copper key"	tag UL_bridge_door
+					need keyring copper_key;
+  join last to Access_Shaft		after UL_bridge_door go s;
+
+room "to sewers"			style Connection dir s nopath
+					style special after UL_bridge_door;
+
+room "Vacant Lot"			tag Vacant_Lot dir e from Riverwalk;
+  item "mattress";
+  item "man"				hidden ;# after Sleep;
+  task "give flask to man"		after Sleep need flask drop it score 2
+					note "he takes it and drinks from it";
+  task "ask man about Verlac"		follow last;
+  task "show man the boy's picture"	follow last need silver_locket;
+  task "show man the woman's picture"	follow last need gold_locket
+					note "Anna";
+  task "ask man about Anna"		follow last;
+  task "ask man about Edward"		follow last;
+  task "ask man about William"		follow last;
+  task "ask man about coffin"		follow last;
+  task "show skull to man"		follow last need skull;
+  task "give amulet to man"		tag G_amulet follow last
+					need amulet lose it
+					give copper_key score 5;
+  item "copper key"			tag copper_key hidden keep;
+  task "put copper key on keyring"	need keyring copper_key;
+
+room "Wharf"				dir se;
+  item "boats";
+  item "tin of fish oil";
+
+
+room "Chilly Avenue"			tag Chilly_Ave dir s 3 from Riverwalk;
+
+room "Deserted Lane"			tag Deserted_Lane dir s 2;
+
+room "Down the Road"			dir s exit s;
+
+
+room "Churchyard"			dir e from Deserted_Lane;
+
+room "Behind the Church"		dir se ne;
+  item "trap door";
+  item "padlock"			hidden;
+
+room "Scenic View"			dir sw w sw w sw from Chilly_Ave
+					style special after Show_keys;
+room "Outside the House"		tag Outside_House dir nw;
+  item "typewritten notice";
+
+# Note:  The House is just to make the map look nice.
+room "House"				tag J_house style Connection
+					dir n style special nopath;
+join Outside_House to Foyer go n need keyring house_key length 4
+  cmd to "unlock door with house key. N. close door. lock it with house key"
+  cmd from "unlock door with house key. S. close door. lock it with house key";
+join Kitchen to Behind_House go n need keyring house_key length 4
+  cmd to "unlock door with house key. N"
+  cmd from "S. close door. lock it with house key";
+
+room "Path Behind the House"		tag Behind_House dir n style special;
+
+room "Family Plot"			dir nw;
+  item "tombstones";
+  item "marble crypt";
+  task "unlock door with iron key"	tag UL_crypt need keyring iron_key;
+
+room "In the Crypt"			need lantern dir n go in
+					style special after UL_crypt;
+  item "coffins in niches";
+  task "examine niches"			tag X_niches
+		note "there are nameplates above the niches";
+  task "look up Edward"			after X_niches R_pages
+		note "Edward Verlac, b. April 26, 1960, d. March 14, 1997";
+  task "look up William"		after X_niches R_pages
+		note "William Verlac, b. June 22, 1954, d. Sept 18, 1958";
+  task "open William's Coffin"		follow last get animal_skeleton
+		note "reveals an animal's skeleton and skull";
+  item "animal's skeleton"		tag animal_skeleton hidden;
+  item "skull"				tag skull hidden need animal_skeleton;
+
+
+########################################################################
+map "Verlac Mansion:  Groud Floor";
+
+room "to outside"			style Connection;
+
+room "Foyer"				tag Foyer dir n nopath;
+  item "luggage";
+
+room "Back Hall"			tag Back_Hall dir n exit w;
+
+room "Gallery"				dir e link Sitting_Room;
+  item "paintings";
+  task "examine paintings";
+  task "examine scene"			follow last;
+
+
+room "Sitting Room"			tag Sitting_Room dir e from Foyer;
+  item "sofa";
+  item "rug";
+  item "fireplace";
+  item "portrait";
+  item "family album"			tag family_album;
+
+room "Dining Room"			tag Dining_Room dir w from Foyer;
+  item "table";
+  item "china cupboard";
+  task "open cupboard"			note "velvet lining";
+  task "examine lining"			after last note "corner";
+  task "pull it"			follow last give journal
+					note "reveals a journal" score 2;
+  item "journal"			tag journal hidden;
+  task "read journal"			tag R_journal need journal
+				note "safe combination (changes every time)";
+
+room "Kitchen"				tag Kitchen dir n link Back_Hall;
+  item "cabinets";
+  item "flashlight"			tag flashlight;
+  task "open cabinets"			get matches
+					note "reveals a book of matches";
+  item "matches"			tag matches hidden;
+
+room "Pantry"				tag Pantry need flashlight dir nw
+					cmd to "NW. turn on flashlight"
+					cmd from "SE. turn off flashlight"
+					length 2;
+  item "broom"				tag broom;
+  task "unlock door with cellar key"	tag UL_cellar after last
+					need keyring cellar_key;
+					
+room "Cellar"				tag Cellar dir s w s go down
+					style special after UL_cellar;
+  item "fuse cabinet";
+  task "open fuse cabinet";
+  task "examine it"			follow last;
+  task "examine fuse plugs"		follow last;
+
+room "Wine Cellar"			dir e;
+  item "wine bottles";
+
+room "Storage"				dir s from Cellar;
+  item "crates";
+  task "search boxes"			note "newspaper clippings"
+					note "reveals spider web";
+  item "newspaper clippings"		hidden;
+  task "examine spider web"		after last;
+  task "sweep spider web with broom"	need broom get iron_key;
+  task "put iron key on keyring"	after last need keyring give iron_key;
+  item "iron key"			tag iron_key hidden score 1 keep;
+
+# To make the map look nice
+room "to back of house"			style Connection dir n from Kitchen
+					nopath style special;
+
+########################################################################
+map "Verlac Mansion:  Upstairs";
+
+room "Upstairs Landing"			tag Landing;
+  join Foyer to Landing			go up;
+
+room "Master Bedroom"			tag Bedroom dir n;
+  item "dressing mirror";
+  item "radiator";
+  item "bed";
+  task "get in bed"			tag In_bed
+					drop all except wedding_ring;
+  task "sleep"				tag Sleep follow last; #after Lock_house_door;
+  item "Michael's pants"		tag pants hidden ;# after Sleep;
+  task "stand"				follow last;
+  task "search pants"			follow last get wallet
+					note "reveals Michael's wallet";
+  item "wallet"				tag wallet hidden;
+  task "open wallet"			need wallet get faculty_card
+					note "reveals Michael's faculty card";
+  item "faculty card"			tag faculty_card hidden;
+  task "Get faculty card"		after last need wallet lose it pants
+					give faculty_card;
+  task "get dressed"			after last give clothes;
+  task "get umbrella and keyring"	after last give umbrella keyring
+						house_key cellar_key;
+  task "wear trenchcoat"		tag W_trenchcoat after last
+					give trenchcoat ;
+  task "get in bed"			tag In_bed2 after G_amulet
+					drop all except wedding_ring
+						silver_locket gold_locket;
+  task "sleep"				tag Sleep2 follow last;
+  task "stand"				follow last;
+  task "get dressed"			follow last give clothes;
+  task "wear trenchcoat"		tag W_trenchcoat2 follow last
+					give trenchcoat safe;
+
+room "Bathroom"				tag Bathroom dir w;
+  item "bathtub";
+  item "bath towel"			hidden ;# after Sleep;
+# task "take bath"			tag Bath after K_grate
+#					drop all except wedding_ring
+#						silver_locket gold_locket;
+# task "get dressed"			follow last give clothes;
+# task "wear trenchcoat"		tag W_trenchcoat3 follow last
+#					give trenchcoat safe;
+
+
+room "Upstairs Hall"			tag Hall dir e from Landing;
+  item "window";
+  item "cord";
+  task "pull cord"			tag P_cord;
+
+room "Children's Bedroom"		dir s;
+  item "bed";
+  item "vanity table";
+  item "ancient crib";
+  item "jewelry box";
+  task "open box"			get silver_locket
+					note "reveals a silver locket";
+  item "silver locket"			tag silver_locket hidden keep;
+  task "wear locket"			need silver_locket;
+  task "open locket"			follow last
+					note "reveals a boy's picture";
+  task "examine boy's picture"		follow last;
+  task "look under bed"			note "odd scratches";
+  task "move bed"			follow last
+					note "reveals a ragged hole";
+  task "search hole"			follow last get soggy_pages
+					note "reveals a bundle of soggy pages";
+  item "soggy pages"			tag soggy_pages hidden score 2;
+  task "examine pages"			follow last ;# need soggy_pages;
+  task "read pages"			tag R_pages follow last
+					give soggy_pages
+					note "mentions the locket";
+
+room "Library"				dir n n from Hall;
+  item "books";
+  item "leather armchair";
+  item "window";
+  item "brass pipe stand";
+  item "mahogany doors";
+  item "sizable volume";
+  task "examine volume";
+  task "read manual"			tag R_manual after last
+					note "section on opening doors";
+  task "examine books"			note "reveals Edgar Allen Poe's book";
+  item "Edgar Allen Poe book"		tag poe_book hidden;
+  task "Get Poe"			after last
+					note "reveals safe" score 1;
+  item "safe"				hidden;
+  task "open safe"			after last R_journal score 2
+  					note "using combination from journal"
+					cmd "turn dial to XX"
+					cmd "turn dial to XX"
+					cmd "turn dial to XX";
+  task "look in safe"			after last get puzzle_box flute
+				note "reveals a puzzle box and a metal flute";
+  task "hide safe"			tag C_safe after last #optional
+  					cmd "close safe"
+					cmd "Get Poe";
+  item "puzzle box"			tag puzzle_box hidden before C_safe;
+  item "metal flute"			tag flute hidden before C_safe;
+
+room "Study"				tag Study dir e 2
+					style special need newspaper;
+  item "desk";
+  item "chair";
+  item "fireplace";
+  item "laptop";
+  item "letter opener"			tag letter_opener;
+  task "read laptop";
+  task "remove ring"			follow last need wedding_ring
+					note "inscription";
+  task "examine it"			follow last need wedding_ring
+					note "Wedding date is June 28th";
+  task "wear it"			follow last need wedding_ring;
+  task "type 0628"			follow last score 2;
+  task "read laptop"			tag R_laptop follow last;
+  task "open drawer"			get Cryptical_Haermoniacon
+				note "reveals \"The Cryptical Haermoniacon\"";
+  item "Cryptical Haermoniacon"		tag Cryptical_Haermoniacon hidden;
+  task "examine Cryptical Haermoniacon"	need Cryptical_Haermoniacon;
+  task "read it"			follow last need Cryptical_Haermoniacon;
+  task "examine fireplace"		note "brass spheres";
+  task "examine spheres"		follow last note "smudges";
+  task "turn sphere"			tag Turn_sphere follow last;
+
+room "to narrow corridors"		style Connection dir sw
+					style special nopath;
+  link last to Crawlspace		style special nopath oneway;
+
+
+room "Attic"				tag Attic dir e se e n from Hall go up
+					style special after P_cord;
+  item "door";
+  task "put newspaper under door"	need newspaper ;#drop it until P_opener;
+  task "put letter opener in keyhole"	tag P_opener need letter_opener
+					follow last note "knocks out brass key";
+  task "Get newspaper"			follow last #give newspaper
+					get brass_key;
+  task "put brass key on keyring"	after last need keyring give brass_key;
+  item "brass key"			tag brass_key hidden score 1 keep;
+  task "unlock door with brass key"	tag UL_attic_door
+					need keyring brass_key;
+
+room "Crawlspace"			tag Crawlspace need lantern dir w;
+
+
+room "Attic Cell"			dir n from Attic
+					style special after UL_attic_door;
+  item "straw";
+  item "pencil marks";
+  task "search straw"			get gold_locket
+					note "reveals a gold locket";
+  item "gold locket"			tag gold_locket hidden keep;
+  task "open gold locket"		need gold_locket
+					note "reveals a woman's picture";
+  task "examine woman's picture"	after last;
+  task "wear gold locket"		need gold_locket;
+
+
+########################################################################
+map "Narrow Corridors";
+
+room "to Study"				style Connection;
+
+room "Narrow Corridors-1"		tag NCor1 dir se nopath;
+  join Study to NCor1			need lantern after Turn_sphere
+  					cmd to "SW" cmd from "NW";
+  link NCor1 to NCor3			dir w s 2 se;
+  link NCor1 to NCor4			dir sw se 2 e 2;
+
+room "Narrow Corridors-2"		tag NCor2 dir ne se;
+  item "hole";
+# task "look through hole"		note "into darkness";
+  link NCor2 to NCor3 dir s;
+  link NCor2 to NCor4 dir se w;
+  link NCor2 to NCor5 dir sw se s;
+
+room "Narrow Corridors-3"		tag NCor3 dir s sw;
+  item "hole (into children's bedroom)";
+# task "look through hole"		note "into children's bedroom";
+  link NCor3 to NCor5			dir nw s 3;
+
+room "Narrow Corridors-4"		tag NCor4 dir e ne s;
+  item "hole (into sitting room)";
+# task "look through hole"		note "into sitting room";
+
+room "Narrow Corridors-5"		tag NCor5 dir se sw w w;
+
+room "Observatory"			tag Observatory dir se oneway;
+  join Observatory to Crawlspace	go se oneway;
+  item "charts";
+  item "telescope";
+  task "examine charts"			note "comet tomorrow";
+  task "put black disk in telescope"	tag P_disk need black_disk drop it;
+
+room "to crawlspace"			style Connection dir se oneway nopath;
+
+
+########################################################################
+map "Sewers";
+
+room "exit"				style Connection;
+
+room "Access Shaft"			tag Access_Shaft dir s nopath;
+
+room "Sewer Tunnel"			tag Sewer_Tunnel dir e go down exit se;
+
+room "Dripping Tunnel"			dir n;
+
+room "Bottom of Shaft"			dir n;
+
+room "Outflow Tunnel"			dir n go up;
+
+room "End of the Pipe"			dir e;
+  item "metal grate";
+  task "examine grate";
+  task "kick it"			tag K_grate follow last;
+  join last to Beach			after last
+					cmd to "E"
+					cmd from "enter sewage pipe";
+
+room "to beach"				style Connection dir e
+					style special nopath;
+
+room "Vaulted Tunnel"			dir se from Sewer_Tunnel;
+  item "depression";
+
+########################################################################
+# Modify some of the above to help IFM generate a workable walkthrough
+
+# Prefer other routes over climbing through the window.
+link File_Room				length 2;
+
+# Don't bother with the pub until day two
+link Pub				after Sleep;
+
+# Don't bother exploring the house until day two
+link Back_Hall				after Sleep;
+link Sitting_Room			after Sleep;
+link Dining_Room			after Sleep;
+link Hall				after Sleep;
+
+# Make *sure* we don't leave the bedroom undressed
+link Bedroom				before In_bed;
+link Landing to Bedroom			after W_trenchcoat before In_bed2;
+link Bedroom to Landing			after W_trenchcoat2 ;#before Bath;
+#link Bedroom to Landing			after W_trenchcoat3;
+# XXX
+task ""					after W_trenchcoat2 in Bathroom;
+
+# Don't bother going to the attic directly, taking the secret passage first
+# gets us there too.
+link Attic				after P_disk;
+
+# Delay talking to the man in the vacant lot
+link Vacant_Lot				after P_disk;
+
+# Leave the sewers until day three
+task UL_bridge_door			after Sleep2;
+
+# EOF

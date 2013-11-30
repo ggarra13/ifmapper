@@ -1,0 +1,154 @@
+# IFM Map for "MUSE:  An Autumn Romance" by Christopher Huang
+# Based on Release 1 / Serial number 980927
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: muse.ifm,v 1.2 2000/10/27 17:22:45 dchapes Exp $
+# This does not correctly finish the game.
+
+title "MUSE:  An Autumn Romance";
+
+########################################################################
+# Starting items
+item "pocket New Testament";
+
+########################################################################
+map "French Coastal Village";
+
+room "Pier";
+	task "wait" cmd "z.z.z" tag Z_woman note "young woman appears";
+	task "wait" cmd "z.z" tag Z_boatman after last note "boatman";
+	task "give trunk to boatman" need trunk lose it;
+	task "enter boat" tag Finish follow last finish;
+
+room "Cobbles" tag Cobbles after Z_boatman dir e;
+	item "well";
+	item "artist";
+	item "easel";
+#	task "examine artist" tag X_artist note "sketchbook";
+#	task "introduce myself to artist" tag Intro_John note "John Austin";
+#	task "ask artist about painting" after Intro_John;
+
+room "L'eglise St-Pierre" dir e;
+	item "altar";
+	item "crucifix";
+	item "priest";
+	task "introduce myself to priest" tag Intro_priest
+		note "Father Antoine LeBrun";
+	task "ask him about Konstanza" tag Ask_priest_Konstanza follow last;
+	task "ask him about Klara" tag Ask_priest_Klara follow last;
+	task "ask him about Viktor" follow last;
+#	task "ask him about artist" follow last;
+
+room "Churchyard" dir s;
+	item "graves";
+	item "inn windows";
+	task "talk to Konstanza" after O_window1;
+	task "ask her about her mother" follow last;
+	task "walk with her" follow last;
+	task "tell her about myself" follow last;
+	task "ask her about Viktor" follow last;
+	task "ask her about graves" tag Ask_Konstanza_graves follow last
+		after Ask_priest_Klara;
+	task "tell Konstanza about Viktor" tag Tell_Konstanza_Viktor
+		after Tell_Viktor_Konstanza
+		after Sketch_Konstanza;
+
+room "Beach Wall" tag Beach_Wall dir w link Cobbles;
+	task "John, paint Konstanza" tag John_paint
+		follow Tell_Konstanza_Viktor;
+	task "wait for nightfall" cmd "z.z.z.z.z.z.z" 2 tag Z_night
+		after Paint_Konstanza;
+
+room "Lobby" tag Lobby dir s;
+	item "desk";
+	item "Rene";
+	item "German gentleman";
+	item "young woman";
+	task "introduce myself to gentleman" tag Intro_Viktor
+		note "Viktor Von Goethe, daughter is Konstanza";
+	task "check in" tag Checkin note "room number";
+	task "ask Rene about Viktor" tag Ask_Rene_Viktor after Save_Viktor;
+	task "Rene, trade rooms" tag Trade_rooms follow last;
+	item "cheque" tag cheque hidden after Sleep2;
+	task "cheque is given to us" cmd none after Sleep2 give cheque;
+
+room "Public House" dir e;
+	item "Yvette";
+#	task "ask Yvette about Rene";
+	task "introduce myself to artist" tag Intro_John after Save_Viktor
+		note "John Austin";
+	task "John, sketch Konstanza" tag Sketch_Konstanza
+		follow last after O_window1;
+	task "ask Yvette about John" after Tell_Konstanza_Viktor;
+	task "ask her about sketchbook" follow last;
+	task "ask her for sketchbook" follow last give sketchbook;
+	item "sketchbook" tag sketchbook hidden;
+
+room "Hallway" tag Hall dir sw w n from Lobby go up after Checkin;
+room "Room 1" dir e after O_window3;
+	task "hold man" follow O_window3;
+	task "yell for help" cmd "yell.yell.yell" tag Save_Viktor
+		follow last goto Room3;
+#	task "ask Viktor about Konstanza" after Intro_Viktor Save_Viktor;
+#	task "ask Viktor about suicide" after Intro_Viktor Save_Viktor
+#		note "wife's name was Klara";
+	item "trunk" tag trunk after Trade_rooms;
+	task "open window" tag O_window1 after Trade_rooms note "Konstanza";
+	task "sleep" tag Sleep2 after Emma_money;
+	task "stand up" follow last;
+room "Room 2" dir n from Hall;
+room "Room 3" tag Room3 dir w from Hall;
+	item "bed";
+	item "dresser";
+	item "window";
+	task "open window" tag O_window3 note "Viktor gets a rope";
+	task "stand up" follow Save_Viktor;
+	task "tell Viktor about Konstanza" tag Tell_Viktor_Konstanza
+		after Ask_Konstanza_graves;
+
+room "Telegraph Office and Newsagent" tag Telegraph_Office dir n from Cobbles;
+	item "telegraph machine";
+	item "newspapers";
+	item "postmaster";
+#	task "introduce myself to postmaster" Intro_Maurice
+#		note "Maurice Roget";
+#	task "ask postmaster about artist";
+	task "telegraph Emma" after Buy_painting;
+	task "ask Emma for money" tag Emma_money follow last goto Cobbles;
+
+room "John Austin's Studio" dir n go up after Z_night;
+	item "seascape";
+	item "landscape" tag landscape;
+	task "buy landscape" tag Buy_painting;
+	task "buy landscape" need cheque lose it
+		give landscape
+		goto Telegraph_Office;
+
+room "Beach" dir w from Beach_Wall;
+	task "ask Konstanza about Viktor" after Tell_Konstanza_Viktor;
+	task "show sketch to Konstanza" need sketchbook;
+	task "give sketchbook to John" need sketchbook lose it
+		after John_paint;
+	task "ask John about Konstanza" follow last;
+	task "ask Konstanza about John" follow last;
+	task "introduce Konstanza to john" follow last;
+	task "John, paint Konstanza" tag Paint_Konstanza follow last;
+	task "ask Konstanza about John" after Z_night;
+
+########################################################################
+# Modify some of the above to help IFM generate a workable walkthrough
+
+# Don't refer to Viktor by name until introduced
+task O_window3 after Intro_Viktor;
+task Ask_Rene_Viktor after Intro_Viktor;
+
+# Don't refer to Konstanza by name until we know it
+task Ask_priest_Konstanza after Intro_Viktor;
+
+# Don't get the trunk right away
+item trunk after Sleep2;
+
+# Leave with John's landscape
+task Finish need landscape;
+
+# EOF

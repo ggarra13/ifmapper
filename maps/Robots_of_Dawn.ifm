@@ -1,0 +1,224 @@
+# IFM Map for "Robots of Dawn" by ??
+#
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Robots_of_Dawn.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+#
+
+# Mark the starting location
+room_border_width = 2 in style Start;
+
+# Mark outside rooms
+room_colour="yellow" in style Outside;
+
+# This style is used for connecting rooms between different map sections
+style Connection;
+  room_shadow_xoff = 0;
+  room_shadow_yoff = 0;
+  ps.room_border_dashed = 1;
+  tk.room_border_colour = "grey";
+  tk.room_colour = "grey90";
+endstyle Connection;
+
+room_colour = "grey" in style Dark;
+room_colour = "blue" in style puzzle;
+
+
+title "Robots of Dawn";
+
+########################################################################
+# Starting items
+item "blaster";
+
+########################################################################
+map "Han Fastolfe's Estate";
+
+room "Living Room"		tag F_living_room style Start start;
+
+room "Hallway"			tag F_hall1 dir e;
+room "Hallway"			tag F_hall2 dir e;
+room "Hallway"			tag F_hall3 dir n 2;
+
+room "Hallway"			tag F_hall4 dir w from F_living_room;
+room "Hallway"			tag F_hall5 dir w 2;
+room "Hallway"			tag F_hall6 dir n;
+  item "contact strip";
+
+room "Fastolfe's Workshop"	dir n from F_hall6;
+  item "Daneel";
+  item "psychic probe";
+
+room "Small Room"		dir ne e from F_hall6;
+
+room "Study"			dir w from F_hall6;
+  item "safe";
+  item "blue bookfilm";
+  item "desk";
+  item "recording device";
+
+room "Elevator"			dir e from F_hall6;
+
+room "Spare Room"		dir n from F_hall1;
+  item "chair";
+  item "time band";
+
+room "Visitor's Personal"	dir s from F_hall5;
+  item "shaver";
+
+room "Workroom"			dir w from F_hall3;
+  item "hyperwave screen";
+
+room "Guest Room"		dir e from F_hall3;
+room "Personal"			dir s;
+  item "gloves";
+
+room "Master Bedroom"		dir n 3 from F_hall3;
+  item "notebook";
+room "Personal"			dir se s;
+  item "nose filter";
+
+room "Kitchen"			tag F_kitchen dir s from F_hall1;
+
+room "Dining Room"		dir se from F_hall4;
+link last to F_kitchen;
+  item "spicer";
+  item "coffee";
+
+room "Breakfast Room"		dir s from F_hall2;
+link last to F_kitchen;
+
+
+room "Outside Fastolfe's"	style Outside dir n 3 from F_living_room;
+room "to Gladia's"		style Connection dir e;
+
+########################################################################
+map "Gladia Solaria's";
+
+room "to Fastolfe's"		style Connection;
+room "Stream"			style Outside dir e;
+room "Outside"			style Outside dir e;
+
+room "Hallway"			tag G_hall1 dir e s;
+room "Hallway"			tag G_hall2 dir e;
+room "T-Intersection"		tag G_T_hall dir e;
+room "Hallway"			tag G_hall4 dir s;
+room "Hallway"			tag G_hall5 dir n from G_T_hall;
+room "Hallway"			tag G_hall6 dir e ne go up;
+
+room "Living Room"		tag G_living_room dir w sw from G_hall1;
+  item "pastry";
+room "Small Hallway"		tag G_small_hall dir se s;
+
+room "Personal"			dir w from G_small_hall;
+room "Dining Room"		dir e from G_small_hall;
+room "Kitchen"			tag G_kitchen dir e;
+
+room "Trimensic Viewer Room"	dir s from G_hall2;
+link last to G_kitchen;
+link last to G_hall4;
+
+room "Breakfast Room"		dir s from G_hall4;
+room "Guest Bedroom"		dir e from G_hall4;
+
+room "Personal"			dir w from G_hall5;
+room "Master Bedroom"		dir n ne;
+link last to G_hall5;
+  item "lightsphere";
+
+room "Sun Room"			dir n from G_hall6;
+room "Jander's Room"		dir s from G_hall6;
+room "Work Room"		dir w from G_hall6;
+  item "light-form";
+  item "bookfilm reader";
+
+########################################################################
+map "Dr. Vasilia Aliena";
+
+room "Outside"			style Outside;
+
+room "Workroom"			tag V_workroom dir n;
+  item "Dr. Vasilia";
+
+room "Hallway"			tag V_hall1 dir nw w from V_workroom;
+room "Hallway"			tag V_hall2 dir s exit s w;
+
+room "Dining Room"		dir e from V_workroom;
+room "Kitchen"			dir n;
+
+room "Personal"			dir w from V_hall1;
+
+room "Bedroom"			dir w from V_hall2;
+
+room "Study"			dir s from V_hall2;
+  item "tingle field neutralizer";
+
+
+########################################################################
+map "Robotics Institute";
+
+room "Outside"			style Outside;
+
+room "Anteroom"			dir n;
+  item "tingle field";
+
+room "Hallway"			tag R_hall1 dir n style special;
+room "Hallway"			tag R_hall2 dir w 2;
+room "Hallway"			tag R_hall3 dir n 3;
+room "Hallway"			tag R_hall4 dir n;
+room "Hallway"			tag R_hall5 dir e 2 from R_hall1;
+room "Hallway"			tag R_hall6 dir e 2;
+room "Hallway"			tag R_hall7 dir s;
+room "Hallway"			tag R_hall8 dir n from R_hall6;
+room "Hallway"			tag R_hall9 dir n from R_hall1;
+room "Hallway"			tag R_hall10 dir n;
+room "Hallway"			tag R_hall11 dir n 2 from R_hall4 go up exit e;
+room "Hallway"			tag R_hall12 dir w exit n s sw;
+
+room "Cafeteria"		dir w from R_hall2;
+room "Personall"		dir n;
+
+room "Personal"			dir n from R_hall5;
+room "Personal"			dir sw s from R_hall12;
+
+room "Office"			dir w from R_hall3;
+room "Office"			dir w from R_hall4;
+room "Office"			dir w from R_hall7;
+room "Office"			dir e from R_hall7;
+room "Office"			dir w from R_hall8;
+room "Office"			dir nw w from R_hall8;
+room "Office"			dir w from R_hall9;
+room "Office"			dir e from R_hall9;
+room "Office"			dir e from R_hall10;
+room "Office"			dir s from R_hall12;
+
+room "Junction"			tag Junction style Dark dir e from R_hall4;
+  item "contact strip";
+
+room "Workroom"			dir s from Junction;
+  item "plasma torch";
+
+room "Ultrasonic Brain Dissolving Chamber"
+				dir e from Junction style special;
+  item "humaniform robot";
+  item "summary";
+
+room "Waiting Room"		dir n from R_hall12;
+  item "cable car";
+
+room "Production Room"		dir s from R_hall7;
+room "Pathway Simulation Room"	dir e from R_hall8;
+
+room "Ramp"			style puzzle dir n from R_hall10;
+
+########################################################################
+map "Santrix Gremionis'";
+
+room "Outside"			style Outside;
+
+room "Living Room"		tag SG_living_room dir n exit n w;
+  item "Gremionis";
+room "Hallway"			dir w;
+
+room "Dining Room"		dir n from SG_living_room;
+
+# EOF

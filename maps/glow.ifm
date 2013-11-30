@@ -1,0 +1,101 @@
+########################################################################
+# IFM map for "Glowgrass" by Nate Cull
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: glow.ifm,v 1.1 1998/09/18 12:37:50 dchapes Exp $
+#
+# Status: map complete, has tasks
+########################################################################
+
+title "Glowgrass";
+
+########################################################################
+
+room "Courtyard"			tag Courtyard exit ne e;
+  item "glimmer";
+  task "Throw frisbee"			need frisbee;
+  item "silver rod"			hidden after last tag rod;
+  task "Unlock door with rod"		need rod;
+  task "Open door"			after last tag open_1;
+
+room "Lawn"				dir e exit se;
+  task "Examine lawn";
+  item "clump of glowgrass"		hidden after last tag grass;
+  item "sheeting";
+
+room "Pool"				dir se tag Pool;
+  item "outlet grate";
+  task "Examine grate";
+  item "set of cards"			hidden after last tag holos;
+  item "orange frisbee"			tag frisbee;
+
+room "Vehicle Dome"			dir ne from Courtyard after open_1
+					tag Dome exit w;
+  item "skycar";
+  task "Open hatch";
+  task "Open door"			tag open_2;
+
+room "Skycar"				dir n go in after last;
+  item "access panel";
+  task "Open panel"			tag open_panel;
+  item "power cell"			hidden after last tag cell;
+  item "corroded metal coil"		hidden tag corroded;
+  item "triangular hole"		hidden note "Put water in here";
+  item "round hole"			hidden note "Sunburst symbol";
+  item "rectangular hole"		hidden note "Power goes in here";
+  item "red disk"			hidden tag red_disk;
+  task "Put tap in triangular hole"	need vat drop it after open_panel;
+  task "Turn tap"			after last tag triangular;
+  task "Put shiny coil in round hole"	need corroded coil drop it tag round;
+  task "Replace cell"			after password need cell;
+  task "Put green disk in slot"		after last need red_disk green_disk
+					drop it;
+  task "Press button"			after last triangular round;
+  task "Say the password"		after last cmd "Say costello";
+  task "Close hatch"			after last;
+  task "Close panel"			after last;
+  task "Pull lever"			after last;
+  task "Follow Marie's instructions"	after last;
+
+room "Living Area"			dir w from Dome exit w sw after open_2
+					tag Living;
+  item "sculpture";
+  item "black cube";
+  item "yellow disk"			tag yellow_disk;
+  task "Put cable in power cell"	need cable cell;
+  task "Put cable in cube socket"	after last;
+  task "Press button"			after last;
+  task "Put green disk in slot"		after last need green_disk yellow_disk;
+  task "Sit in sculpture"		after last;
+  task "Watch the recording"		after last;
+  task "Show frisbee to Marie"		follow last need frisbee;
+  task "Show teddy to Marie"		follow last need bear;
+  task "Show holograms to Marie"	follow last need holos;
+  task "Show glowgrass to Marie"	follow last need grass;
+  task "Ask Marie about skycar"		after last note "Password 'costello'"
+					tag password;
+
+room "Sleep Area"			dir sw sw tag Sleep exit nw;
+  item "skeleton";
+  item "mattress";
+  item "images";
+  item "device"				hidden;
+  item "headset"			hidden;
+  item "green disk"			hidden tag green_disk;
+  item "fabric bear"			hidden tag bear;
+
+room "Hygiene Area"			dir nw tag Hygiene exit ne;
+  item "blue lens";
+  item "white vat"			tag vat;
+
+room "Service Area"			dir ne tag Service link Living;
+  item "printout";
+  task "Touch panel";
+  item "black cable"			hidden after last tag cable;
+  item "white box"			hidden after last tag box;
+  task "Open box"			need box;
+  item "transparent bag"		hidden;
+  task "Open bag"			after last;
+  item "shiny metal coil"		hidden after last tag coil;
+
+########################################################################

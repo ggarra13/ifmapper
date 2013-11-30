@@ -1,0 +1,277 @@
+########################################################################
+# IFM map for "Wishbringer" by Infocom
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: Wishbringer.ifm,v 1.1 1998/09/18 12:37:50 dchapes Exp $
+#
+# Status: map complete, no tasks, item notes
+########################################################################
+
+title "Wishbringer";
+
+########################################################################
+
+map "Festeron";
+
+room "Hilltop"			tag Hill;
+
+room "Post Office"		dir s;
+  item "Mr Crisp";
+  item "envelope"		note "Mr Crisp gives it to you" hidden;
+
+room "Outside Cemetery"		dir w from Hill;
+
+room "Creepy Corner"		dir w;
+
+room "Spooky Copse"		dir n tag Copse;
+  item "gravedigger";
+
+room "Open Grave"		dir e go down;
+  item "bone"			note "Give it to poodle";
+
+room "Twilight Glen"		dir w from Copse tag Glen;
+  item "umbrella"		note "Wish for rain";
+
+room "Outside Cottage"		dir e from Hill;
+  item "poodle"			note "Give it the bone";
+
+room "Rotary South"		dir n n tag R_South;
+  item "Miss Voss";
+  item "violet note"		note "Show it to evil Mr Crisp" hidden;
+
+room "Library"			dir se go in;
+
+room "Rotary East"		dir e n from R_South tag R_East;
+
+room "Theatre"			dir ne go in;
+
+room "Pleasure Wharf"		dir e e from R_East tag Wharf;
+  item "mailbox";
+
+room "Wharf's End"		dir e;
+  item "seahorse"		note "Throw it into water?";
+
+room "Video Arcade"		dir s from Wharf;
+  item "video machine";
+
+room "Park"			dir w from R_East link R_South tag Park;
+  item "gold coin"		note "Buy theatre ticket with it";
+  item "goldfish";
+
+room "Rotary North"		dir n w from R_East link Park tag R_North;
+
+room "Church"			dir nw go in;
+  item "candle";
+
+room "Rotary West"		dir w s from R_North link Park tag R_West;
+
+room "Police Station"		dir sw go in;
+  item "Sgt. MacGuffin";
+  item "chocolate"		note "Wish for freedom";
+  item "poster";
+
+link R_West to R_South		dir s;
+
+room "Lake Edge"		dir w w w from R_West link Glen;
+  item "leaves";
+  item "message";
+
+room "River Outlet"		dir n n n tag Outlet;
+
+room "South of Bridge"		dir e e e e link R_North tag S_Bridge;
+
+room "Rocky Path"		dir e;
+
+room "Lighthouse"		dir e e;
+  item "pelican"		note "Give it the hat to get magic word";
+
+room "Tidal Pool"		dir s link Wharf;
+  item "conch shell"		note "Wish for advice";
+
+room "Lookout Hill"		dir se from Outlet go up;
+  item "horseshoe"		note "Wish for luck";
+  item "tree stump";
+
+room "Bridge"			dir n from S_Bridge;
+
+room "North of Bridge"		dir n;
+
+room "Cliff Bottom"		dir e tag F_Cliff;
+  item "tree trunk";
+  item "branch"			note "Put it in pit to save platypus";
+
+########################################################################
+
+map "Witchville";
+
+room "Hilltop"			tag Hill2;
+  item "drawbridge"		note "Say the magic word to lower it";
+
+room "Outside Cemetery"		dir w from Hill2;
+
+room "Creepy Corner"		dir w;
+
+room "Spooky Copse"		dir n tag Copse2;
+
+room "Open Grave"		dir e go down tag Grave;
+
+room "Twilight Glen"		dir w from Copse2 tag Glen2;
+
+room "Outside Cottage"		dir e from Hill2 tag Cottage;
+  item "hellhound"		note "Say ALEXIS, HEEL to it";
+
+room "Rotary South"		dir n n tag R_South2;
+
+room "Library"			dir se go in tag Library;
+
+room "Cottage"			dir e from Cottage go in;
+  item "steel key"		note "Unlocks library door";
+
+room "Rotary East"		dir e n from R_South2 tag R_East2;
+  item "Miss Voss"		note "Buy ticket from her with coin";
+  item "ticket"			note "Get into theatre with it" hidden;
+
+room "Theatre Lobby"		dir ne go in;
+  item "gravedigger"		note "Give him the ticket";
+  item "carton";
+
+room "Inside Theatre"		dir n;
+  item "seat"			note "Glasses hidden under it";
+  item "glasses"		note "Wish for foresight; wear in lab" hidden;
+
+room "Pleasure Wharf"		dir e e from R_East2 tag Wharf2;
+  item "big mailbox"		note "Get it to fight with little one";
+room "Wharf's End"		dir e;
+
+room "Video Arcade"		dir s from Wharf2;
+  item "video machine"		note "Use token; position to C5";
+
+room "Park"			dir w from R_East2 link R_South2 tag Park2;
+  item "brass token"		note "Put it in video machine";
+  item "piranha"		note "Feed it the earthworm";
+
+room "Rotary North"		dir n w from R_East2 link Park2 tag R_North2;
+
+room "Church"			dir nw go in;
+
+room "Rotary West"		dir w s from R_North2 link Park2 tag R_West2;
+
+room "Police Station"		dir sw go in;
+
+room "Jail Cell"		dir w go in tag Cell;
+  item "bunk"			note "Move it to reveal hole";
+  item "blanket"		note "Put it on baby Grue";
+
+link R_West2 to R_South2	dir s;
+
+room "Lake Edge"		dir w w w from R_West2 link Glen2 tag Edge;
+  item "pit"			note "Put branch in it";
+  item "platypus"		note "Marks where silver whistle is";
+  item "silver whistle"		note "Blow it here to go to island" hidden;
+
+room "River Outlet"		dir n n n tag Outlet2;
+
+room "South of Bridge"		dir e e e e link R_North2 tag S_Bridge2;
+
+room "Rocky Path"		dir e tag R_Path;
+
+room "West of House"		dir s;
+  item "little mailbox";
+  item "leaflet"		note "In the little mailbox" hidden;
+
+room "Lighthouse"		dir e e from R_Path;
+
+room "Lookout Hill"		dir se from Outlet2 go up tag Lookout;
+
+room "Bridge"			dir n from S_Bridge2;
+
+room "North of Bridge"		dir n;
+  item "toll gate";
+  item "troll"			note "Open the can at him";
+
+room "Cliff Bottom"		dir e tag W_Cliff;
+  item "vulture";
+
+########################################################################
+
+map "Underground";
+
+room "Underground"		join Cell tag UG1;
+
+room "Underground"		dir n tag UG2;
+
+room "Underground"		dir w join Lookout tag UG3;
+  item "roots"; 
+
+room "Underground"		dir s link UG1 join Grave tag UG4;
+
+room "Grue's Nest"		dir e from UG2;
+  item "fridge"			note "Contains bottle and earthworm";
+  item "baby Grue"		note "Put blanket on it";
+  item "milk bottle"		note "Wish for darkness" hidden;
+  item "earthworm"		note "Feed it to piranha" hidden;
+
+########################################################################
+
+map "The Mountain";
+
+room "Steep Trail"		join F_Cliff W_Cliff;
+
+room "Steep Trail"		dir w;
+
+room "Steep Trail"		dir n;
+
+room "Steep Trail"		dir n go up;
+
+room "Steep Trail"		dir e;
+
+room "Steep Trail"		dir s;
+
+room "Cliff Edge"		dir e go up;
+
+room "Magick Shoppe"		dir n go in;
+  item "old woman";
+  item "can"			note "Open it near troll" hidden;
+  item "stone"			note "Wishbringer" hidden;
+
+########################################################################
+
+map "Misty Island";
+
+room "Misty Island"		join Edge;
+
+room "Throne Room"		dir w;
+  item "King Anatinus"		note "Gives you the wizard's hat";
+  item "wizard's hat"		note "Give it to pelican" hidden;
+
+########################################################################
+
+map "In the Tower";
+
+room "Vestibule"		join Hill2;
+
+room "Round Chamber"		dir s tag Round;
+  item "paintings"		note "Move one to reveal crank";
+  item "crank"			note "Turn it to raise drawbridge" hidden;
+
+room "Torture Chamber"		dir s go down;
+  item "Mr Crisp"		note "Show him the violet note";
+  item "lab coat"		note "Contains rusty key" hidden;
+  item "rusty key"		note "Unlocks your chains" hidden;
+
+room "Laboratory"		dir w go up;
+  item "black cat"		note "Decoy cat";
+  item "broomstick"		note "Wish for flight";
+  item "control panel"		note "Turn switches (what do they do?)";
+
+########################################################################
+
+map "Inside the Library";
+
+room "Circulation Desk"		join Library;
+
+room "Museum"			dir s;
+  item "display case"		note "Break into it with heavy object";
+  item "sculpture"		note "Put stone in the hole";
+
+########################################################################

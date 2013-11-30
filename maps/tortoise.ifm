@@ -1,0 +1,72 @@
+########################################################################
+# IFM map for "The Lesson of the Tortoise" by G. Kevin Wilson
+# This file written by Glenn Hutchings <zondo@hunting2.demon.co.uk>
+#
+# $Id: tortoise.ifm,v 1.1 1999/05/13 14:17:46 dchapes Exp $
+#
+# Status: Map and tasks complete.  Requires IFM version 3 or greater.
+########################################################################
+
+title "The Lesson of the Tortoise";
+
+  item "hoe"				tag hoe;
+
+########################################################################
+
+room "The Road Home"			exit n;
+  item "tortoise";
+  task "Flip tortoise"			score 1;
+
+room "Outside Your Home"		dir s tag Outside;
+  item "serpent";
+  task "Hit serpent with hoe"		need hoe score 1;
+
+room "Downstairs"			dir e tag Downstairs;
+  item "shrine";
+  task "Tell Min to give the pebble"	cmd "min, give wang li the pebble"
+					after goto_wang_li;
+  task "Tell Wang Li what happened"	after last cmd "talk to wang li"
+					score 1 finish;
+
+room "The Kitchen"			dir s tag Kitchen;
+  item "cooking pot";
+  task "Throw pebble at Min"		after become_fish need pebble lose it;
+  task "Talk to Min"			after last score 1;
+  task "Tell Min to go to Wang Li"	after last cmd "min, get bucket"
+					cmd "min, go north" tag goto_wang_li
+					goto Downstairs;
+
+room "Your Garden"			dir s tag Garden;
+  item "pond";
+  link last to Outside			dir w;
+  item "tortoise"			hidden note "Moves here (eventually)";
+  task "Talk to tortoise"		after escape drop all tag become_fish
+					score 1;
+  task "Pick up the pebble"		after last give pebble;
+  task "Wait for your moment"		after last cmd "wait" 6 goto Kitchen;
+
+room "Your Bedroom"			dir n from Downstairs go up;
+  item "bed";
+  task "Get punched by Long Gen"	cmd none drop all goto Cellar;
+
+room "The Cellar"			dir e from Kitchen nolink tag Cellar;
+  item "chest";
+  task "Open chest";
+  item "puzzle box"			tag box hidden after last;
+  task "Open box"			need box cmd "Press sun"
+					cmd "Press moon" cmd "Press sun"
+					cmd "Pull panel";
+  item "fortune cookie"			hidden after last tag cookie;
+  task "Open cookie"			need cookie lose it give pebble
+					tag vision score 1;
+  item "magic pebble"			hidden tag pebble;
+  task "Scrape stone with chopstick"	after vision need chopstick lose it
+					tag escape score 1;
+  link last to Garden			dir s oneway after last;
+
+room "The Cellar"			dir e;
+  item "wedding dress";
+  task "Unfold dress";
+  item "chopstick"			hidden after last tag chopstick;
+
+########################################################################

@@ -1,0 +1,307 @@
+# IFM Map for "Curses" by Graham Nelson
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: curses.ifm,v 1.4 2003/01/11 21:29:21 dchapes Exp $
+#
+# Note:  not finished or updated to use IFM 2.0 features
+
+title "Curses";
+
+# Starting items
+item "torch" tag torch keep;
+
+# XXX these items are really picked up somewhere
+item "medicine bottle" tag medicine;
+
+########################################################################
+map "House/Attic Area";
+
+room "Attic" tag Attic start;
+	item "teachest";
+	item "History of the Meldrews" tag history_book hidden keep need sack;
+room "Servants Room" tag ServantsRoom dir e join Premonition;
+	item "bed";
+	item "dictionary";
+	item "scarf" tag scarf;
+	task "lie on bed and sleep" tag ServantsSleep goto Premonition;
+
+room "Old Furniture" dir s from Attic;
+	item "cupboard";
+	item "gift wrapped parcel" tag parcel hidden lost need sack;
+	task "open parcel" tag O_parcel need parcel
+		give chocolates postcard
+		note "reveals box of chocolates and a postcard";
+	item "box of chocolates" tag chocolates hidden lost;
+	item "postcard" tag postcard hidden;
+room "Over East Wing" tag OverEastWing dir se;
+room "East Annex" tag EastAnnex dir e;
+	item "insulation rolls";
+	task "search rolls" tag XX_rolls after Wear_gloves;
+	item "new battery" tag new_battery after XX_rolls keep;
+	task "put new battery in torch" tag Fix_torch need new_battery torch
+		in any; 
+room "Inside Cupboard" dir n after Fix_torch style special puzzle join Cupboard;
+
+room "Dead End" tag DeadEnd dir s from EastAnnex;
+	item "rucksack" tag sack keep;
+	task "push south wall" tag Push_s_wall after X_cross;
+room "Alison's Room" dir s style special after Push_s_wall;
+	task "put flag on bed" tag Put_flag need flag;
+	task "sleep" after Put_flag;
+
+room "Tiny Balcony" dir s;
+
+room "Dark Room" dir w from OverEastWing;
+	item "flash";
+	item "photograph";
+	item "hanging cord";
+	task "pull cord" tag On_light need postcard;
+	task "read postcard" tag R_postcard need postcard after On_light;
+
+room "Disused Observatory" tag Obs dir s from OverEastWing;
+	item "glass ball";
+	task "clean glass ball" tag Clean_glassball
+		after UL_hatch; #not really
+	task "set off alarm" tag FireAlarm after Proj_fool;
+room "Library" dir w
+		after Clean_glassball; #not really
+	item "pipes";
+	item "romance novel" tag novel;
+	item "poetry" tag poetry;
+	task "fix pipes" need wrench get novel poetry;
+	task "read poetry" need poetry goto UnrealCity;# in any;
+
+room "Souvenir Room" tag Projector dir s from Obs;
+	item "slide projector";
+	task "turn on projector";
+	task "turn the dial";
+	task "put Ace of Cups in projector" need AceOfCups goto Cup1;
+	task "put Fool in Projector" tag Proj_fool;
+room "" tag ThroughProjector dir s oneway style special puzzle;
+
+
+room "Old Winery" tag OldWinery dir n from Attic;
+	item "demijohn";
+	item "tourist map" after O_demijohn;
+	item "red battery" after O_demijohn;
+	task "open demijogn" tag O_demijohn after Wear_gloves need sack;
+room "Jemima's Lair" tag JemimaLair dir w exit sw;
+	item "calendar";
+	task "turn radio on" tag On_radio after Push_radio;
+	task "examine calendar" tag X_calendar note "Merlyn's hat is YELLOW"
+		need chocolates; #not really
+room "Airing Cupboard" dir s;
+	item "sheets";
+	task "examine sheets" tag X_sheets note "reveals radio";
+	item "radio" tag radio hidden;
+	task "push radio north" tag Push_radio after X_sheets;
+
+room "Potting Room" dir w from JemimaLair;
+	item "Jemima";
+	item "gloves" tag gloves keep;
+	task "wait for music" tag Z_music after On_radio
+		note "Jemima needs to be distracted";
+	task "wear gloves" tag Wear_gloves need gloves in any
+		after Z_music;
+	task "give chocolates to Jemima" tag G_chocolates need chocolates
+		after X_calendar;
+	task "ask for yellow daisy chain" tag Ask_yellow after G_chocolates;
+	item "yellow daisy chain" tag daisy after Ask_yellow;
+	task "wear yellow daisy chain" tag W_daisy need daisy in any;
+
+room "Storage Room" dir e from OldWinery
+		need sack; #not really
+	item "wrench" tag wrench;
+room "Dumbwaiter" tag DumbTop dir e ne e go in;
+	item "chicken bone" tag bone lost;
+
+room "Dumbwaiter" tag DumbBot dir s s style special oneway;
+room "Dumbwaiter" tag DumbMid dir ne style special oneway;
+	link DumbMid to DumbTop style special oneway;
+
+# Basement Area
+room "Cellars" tag Cellars dir s from DumbBot go out;
+	item "robot mouse" tag mouse;
+room "Cellar West" tag CellarWest dir w exit nw;
+	item "iron door";
+room "Hellish Place" dir s;
+	item "demon";
+
+room "Cellars South" dir s from Cellars;
+	item "small hole";
+	task "command mouse to get key" need mouse get brass_key;
+	item "brass key" tag brass_key hidden;
+
+room "Wine Cellars" tag WineCellar dir e from Cellars;
+
+
+room "Dark Shaft" dir n from DumbMid go out;
+	task "wear gas mask" tag Wear_gasmask need gas_mask;# in any;
+room "Dark Passage" tag DarkPassage dir n;
+	task "unlock door" tag UL_door need brass_key after Wear_gasmask;
+
+# Garden Area behind house
+room "Garden Stream" tag GardenStream dir n from DarkPassage
+		style special after UL_door;
+	task "remove gas mask" need gas_mask after UL_door;# in any;
+room "Beside the Wall" tag BesideWall dir e;
+	link BesideWall to WineCellar dir s s s s oneway style special;
+
+room "Family Tree" tag FamilyTree dir nw from GardenStream;
+room "Up the Tree" dir nw go up;
+	task "examine maze" tag X_maze note "empty space in se corner";
+
+room "Clearing" tag Clearing dir w from FamilyTree;
+room "Garage" dir w;
+	item "roller";
+	item "spade";
+	item "weed killer";
+
+room "Vegtable Garden" dir s from Clearing;
+	item "bean plant";
+
+room "Lawn Ornaments" dir e from FamilyTree;
+room "Mosaic" tag Mosaic dir e;
+
+room "Maze" dir n n from FamilyTree style puzzle special after X_maze;
+room "View Point Lodge" dir w;
+	item "miniature" tag miniature;
+
+# Area beside house
+room "Beside Drive" dir e e from DeadEnd go down
+		style special after FireAlarm;
+room "Public Footpath" tag Footpath dir ne ne ne n n n ne;
+room "Hollow" tag Hollow dir w go down;
+	link Hollow to Mosaic oneway; # dir nw;
+
+room "Stone Cross" dir n from Footpath exit n;
+	task "examine cross" tag X_cross;
+
+
+room "Sandstone Passage" dir e e e from DarkPassage style special;
+room "The Octagon" dir e;
+room "White Hallway" tag WhiteHall dir se;
+room "Halfway up Stairs" dir n go up;
+room "Servants Room" dir n go up style puzzle join ServantsRoom;
+
+room "Bricked Path" dir ne from WhiteHall;
+room "Hedgery" tag Hedgery dir e;
+room "Croquet Lawn" dir e;
+
+room "Summer House" dir n from Hedgery;
+
+########################################################################
+map "Premonition";
+
+room "Premonition" tag Premonition;
+room "Tent" dir e;
+room "Shrine" dir n;
+	item "mascot" tag mascot;
+	task "examine mascot" tag X_mascot need mascot
+		note "just to hear a magic word";
+
+room "Camp Fire" dir sw from Premonition;
+room "Near Dolmen" dir e;
+	task "wake up" goto ServantsRoom after X_mascot;
+
+########################################################################
+map "Inside Cupboard";
+
+room "Inside Cupboard" tag Cupboard;
+	item "painting of Mad Isaac" tag painting;
+	item "gas mask" tag gas_mask need sack;
+	task "turn crank" tag O_roof
+		after UL_door; #not really
+	task "put brass key and torch in fireplace and drop all"
+		tag Prep_Fireplace
+		need brass_key torch after G_bone;
+room "Fireplace" dir e after Prep_Fireplace;
+room "Priest's Hole" dir s go down oneway style special;
+	item "stick";
+	item "key" tag key hidden;
+	task "Get all" tag Get_all give key;
+	task "unlock hatch" tag UL_hatch need brass_key after Get_all;
+room "Cellar West" tag PseudoCellarWest dir e oneway
+		after UL_hatch style special puzzle;
+	join PseudoCellarWest to CellarWest oneway;
+	task "go back to cupboard and get all" goto Cupboard;
+
+room "Roof" dir n from Cupboard exit s after O_roof;
+room "Battlements" dir nw;
+	item "key";
+	task "Get key" tag G_key note "Joshua apears";
+	task "give chick bone to Joshua" tag G_bone need bone
+		after G_key note "key falls down fireplace";
+
+########################################################################
+map "Unreal City";
+
+room "Unreal City" tag UnrealCity;
+room "Near Ring Road" dir e;
+room "Chatelet-les-Halles" dir s go down;
+	item "Anton";
+
+room "Shadowy Hallway" tag ShadowyHall dir n from UnrealCity;
+room "Bohemia" dir e;
+	item "mural";
+	task "examine mural";
+
+room "Consulting Room" dir n from ShadowyHall go up;
+	item "push bell";
+	item "tarrot cards"; 
+	item "the Fool" tag fool hidden after Push_bell1;
+	task "push bell" tag Push_bell1 goto UnrealCity;
+
+room "Down by the River" dir w from UnrealCity;
+	item "silk handkerchief" tag hanky
+		need fool; #not really
+	task "wave hanky" tag Wave_hanky need hanky;
+room "Boat" dir w go in style special after Wave_hanky;
+	item "Ace of Cups" tag AceOfCups hidden given;
+	task "say time" goto GardenStream;# get AceOfCups;
+room "Garden Stream" dir n oneway join GardenStream style special puzzle;
+
+########################################################################
+map "Museum";
+join ThroughProjector to MuseumFoyer oneway;
+
+room "Museum Foyer" tag MuseumFoyer exit s;
+room "Revolving Door (?)" tag RevDoor dir ne;
+	link RevDoor to RevDoor dir n e s oneway;
+
+########################################################################
+map "Ace of Cups card";
+join ThroughProjector to Cup1 oneway;
+
+room "store room" tag Cup1;
+	item "crates";
+	item "mounted bottle" tag bottle;
+	task "search crates" get ship;
+	item "model ship" tag ship hidden;
+	task "pull anchor and put ship in bottle" tag Ship_in_Bottle
+		need bottle ship;
+	task "examine ship" after Ship_in_Bottle goto Ship;
+
+map "On board the Ship";
+join Cup1 to Ship oneway;
+
+room "ship" tag Ship;
+	item "flag" tag flag hidden after Parachute lost;
+	item "timber" tag timber hidden after Parachute lost;
+
+room "mast" dir nw go up;
+	item "flag";
+	task "grab flag" tag G_flag;
+	task "go port" tag Parachute after G_flag goto Ship;
+
+room "fore" dir n from Ship;
+	item "green branch" tag branch;
+
+room "aft" dir s from Ship;
+	item "wheel";
+	item "anchor";
+	task "turn wheel" tag Turn_wheel
+		need flag timber branch; #not really
+	task "go down anchor" after Turn_wheel goto Projector;
+
+# EOF

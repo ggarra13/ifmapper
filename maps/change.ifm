@@ -1,0 +1,128 @@
+# IFM Map for "For A Change" by Dan Schmidt
+# Based on Version 1.02 / Serial number 990930
+#
+# This file writen by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: change.ifm,v 1.1 2001/02/24 07:57:37 dchapes Exp $
+#
+
+# Mark the starting location
+room_border_width = 2 in style Start;
+
+# Mark dark rooms
+room_colour="grey" in style Dark;
+
+title "For A Change";
+
+########################################################################
+# Starting items
+item "small stone"		tag stone;
+
+########################################################################
+
+room "Under the High Wall"	tag High_Wall style Start start exit w n s;
+  item "guidebook"		tag book keep;
+  task "depart resting"		tag depart;
+  #task "read about high wall in book"	need book;
+  #task "read about plain in book"	need book;
+  #task "read about mobile in book"	need book;
+
+
+room "Hillside"			tag Hillside dir s after depart;
+  #task "read about spinster in book"	need book;
+
+room "Before the Cube"		tag Cube dir n from High_Wall after depart;
+  task "x cube";
+  task "x cup"			follow last;
+  task "look up"		tag break follow last;
+
+room "In the Cube"		dir n after put_stone;
+  item "cup";
+  task "x cup";
+  item "lie establisher"	tag lie_establisher hidden after last;
+  task "read about lie establisher in book"	need book after last;
+
+
+room "In the Shade"		tag Shade dir w from High_Wall after depart;
+  task "read about toolman in book"	need book;
+  task "give anchisel to toolman"	need anchisel lose it
+  					give lie_opener;
+  item "lie opener"			tag lie_opener hidden;
+  task "read about lie opener in book"	need book after last;
+
+room "Before the Tower"		tag Before_Tower dir w exit w;
+  #task "read about tower in book"	need book;
+  #task "read plaque";
+
+room "Base of Tower"		dir w;
+  item "wood scrapes";
+
+room "Halfway Up Tower"		dir n go up;
+
+room "Observation Room"		tag Observation dir n e go up;
+  link Observation		before throw_fish;
+  item "model landscape";
+  #task "x crack"		after break;
+  task "put stone in crack"	tag put_stone after break need stone lose it;
+  task "turn model over"	after throw_fish;
+  task "go outside"		cmd "d. d. e." after last
+  				goto Before_Tower finish;
+
+room "On the Flagpole"		tag Flagpole dir s leave all;
+
+room "By the Hole"		dir n from Shade link Cube;
+  task "x hole";
+  #task "x pool"			after last;
+  #task "x handle"		after last;
+  task "get handle fish with bar"	need bar give handlefish
+  				after water_fall;
+  item "handlefish"		tag handlefish hidden after last;
+
+room "Outside Cave"		tag Outside_Cave dir s from Shade link Hillside;
+room "Inside the Cave"		dir s;
+room "Lantern Room"		tag Lantern dir e;
+  item "songlantern";
+  #task "read about songlantern in book"	need book;
+  #task "listen";
+  item "bar"			tag bar;
+
+room "End of Passage"		tag Passage dir e;
+  task "press button"		tag water_fall need lie_opener;
+  task "wait until the water stops" cmd "wait" 4 follow last goto Outside_Cave;
+  task "squeeze lie establisher" tag squeeze need lie_establisher handlefish
+  				goto Cylinder;
+
+room "In The Cylinder"		tag Cylinder dir e go up nopath;
+  task "wait"			follow squeeze goto Top_Cylinder;
+
+room "Top Of Cylinder"		tag Top_Cylinder dir n go up nopath;
+
+room "On The High Wall"		tag On_High_Wall dir n go up;
+  link On_High_Wall		before throw_fish;
+  task "throw handlefish in ocean" tag throw_fish need handlefish lose it;
+  task "wait"			tag wall_falls cmd "wait" 2 follow last
+  				goto Water lose book;	# lose all
+
+
+room "In The Ocean"		tag Ocean dir e from Top_Cylinder leave all;
+  link On_High_Wall to Ocean	dir e oneway leave all;
+
+room "In The Water"		tag Water dir w from On_High_Wall oneway nopath;
+  task "get on rock"		follow wall_falls;
+  task "wait"			follow last;
+  task "get on flagpole"	follow last goto Flagpole;
+
+room "Sloping Passage"		dir s from Lantern;
+  task "sing"			tag sing;
+
+room "Dead End"			style Dark dir w after sing;
+  item "anchisel"		tag anchisel;
+  #task "read about anchisel in book"	need book;
+  #task "read about curry in book"	need book after last;
+
+
+# Not required, just makes the generated walkthrough nicer
+task "x words"		in Passage need lie_opener;
+task water_fall		after last;
+
+# EOF

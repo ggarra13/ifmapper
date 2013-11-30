@@ -1,0 +1,149 @@
+# IFM Map for "Seastalker" by Infocom
+# This file written by Dave Chapeskie <dchapes@ddm.crosswinds.net>
+#
+# $Id: Seastalker.ifm,v 1.5 2003/01/11 21:29:21 dchapes Exp $
+#
+# Note:  the task list is NOT complete nor has this been updated to use
+#        the new IFM v2.0 features
+
+title "Seastalker";
+
+########################################################################
+# Starting Items
+item "logbook";
+
+########################################################################
+map "The Lab";
+
+room "Lab Center" tag Lab start;
+	item "workbench";
+	item "diagram" hidden note "revealed by examining the workbench";
+	item "videophone";
+	item "microphone" tag mic note "scores 1";
+	task "turn on videophone" note "scores 1";
+	task "tune videophone" after last note "scores 1";
+	task "turn on microphone" after last need mic;
+	task "ask Bly about problem" after last need mic;
+	task "ask Bly about monster" after last need mic;
+	task "ask Bly about dome" after last need mic;
+	task "Bly, good-bye" tag Say_bye follow last need mic note "scores -3";
+	task "call Bly" after Fix_phone;
+
+room "West Part" tag WLab dir w;
+	item "shelve";
+	item "mechanical supplies";
+
+room "North Part" tag NLab dir n e link Lab;
+	item "computestor";
+	task "turn on computestor" tag ON_comp;
+	task "ask computestor about videophone" after last;
+	task "ask computestor about circuit breaker" tag AskComp_cb after last;
+	task "ask computestor about SCIMITAR" tag AskComp_scimitar
+		note "catalyst capsule";
+
+room "East Part" tag ELab dir e s link Lab;
+	item "microwave security scanner";
+	item "intercom";
+	task "turn on scanner";
+room "Corridor" tag Corridor dir e;
+	item "electrical panel";
+	task "close circuit breaker" tag Fix_phone after AskComp_cb score 3;
+	#task "open storage door" tag O_storage; #optional
+room "Storage Closet" dir s;# after O_storage;
+room "Kemp's Office" dir e from Corridor;
+	item "desk";
+	item "chair";
+	item "file drawer";
+	item "business papers";
+	item "magazine" tag magazine note "actually Tip is holding this" keep;
+	task "read magazine" need magazine in any;
+	task "read article" after last need magazine in any
+		note "Dr. Jerome Thorpe, ultrasonic pulses, Amino-Hydrophase";
+
+room "South Part" tag SLab dir s w from ELab link Lab;
+	link SLab to WLab dir w;
+	item "shelves";
+	item "chemical and electronic supplies";
+
+room "North Walkway" tag NWalkway dir s
+		after AskComp_scimitar; #not really
+room "West Walkway" dir w s;
+	item "catalyst capsule" tag catalyst score 5;
+room "South Walkway" dir s e;
+
+room "SCIMITAR" tag Scimitar dir s from NWalkway go in score 1;
+	item "sonarscope";
+	item "hydrophone";
+	item "sonarphone";
+	item "temperature gauge" hidden;
+	task "put capsule in reactor" need catalyst lose it;
+	task "close reactor" after last;
+	task "turn reactor on" after last score 5;
+	task "close hatch" after last;
+	task "x control panel" after last;
+	task "fill tank" after last;
+	task "open gate" after last;
+	task "turn on engine" after last score 5;
+	task "east" follow last;
+	task "open throttle" follow last score 5;
+	task "pilot SCIMITAR out of the bay (NE)" follow last score 5;
+	task "turn on autopilot" follow last score 5 goto Scimitar2;
+
+########################################################################
+map "Aquadome";
+
+room "SCIMITAR" tag Scimitar2;
+	item "emergancy oxygen gear" tag gear hidden keep;
+	item "universal tool" tag tool hidden note "actually Tip has it" keep;
+	task "wear gear" tag Wear_gear need gear;
+	task "dock" score 5;
+	task "turn off engine" after last;
+	task "open hatch" tag O_hatch after last;
+
+room "Docking Tank" dir n go out after O_hatch;
+room "Docking Tank Entrance" dir n;
+room "Reception Area" tag Reception dir n;
+	item "Bly";
+	item "Mick Antrim";
+	item "Doc Horvak";
+	item "Bill Greenup";
+	item "Amy Lowell";
+	item "Marv Siegel";
+	task "ask Bly about private matter" note "air trouble!";
+	task "turn on gear" tag On_gear after Wear_gear follow last;
+	task "ask Bly about private matter" tag Ask_private after Fix_air
+		goto Aquadome_Office;
+
+room "Dome Center" tag Dome dir n from Reception;
+	task "open access door with tool" need tool follow On_gear score 5;
+	item "electrolyte relay" tag relay;
+	task "screw relay into space" tag Fix_air after last
+		need relay lose it score 5;
+
+room "Southeast Deck" tag SEDeck dir e from Reception link Dome;
+room "Storage Room" dir s;
+room "Aquadome Office" tag Aquadome_Office dir e from SEDeck
+		style special after Ask_private;
+	item "window";
+	item "station monitor";
+	task "ask Bly about evidence" get box note "Bly presents black box";
+	item "black box" tag box hidden;
+
+room "Northeast Deck" tag NEDeck dir n n from SEDeck link Dome;
+room "Galley" dir e;
+room "Comm Center" dir n from NEDeck;
+
+room "Northwest Deck" tag NWDeck dir w w from NEDeck link Dome;
+room "Workshop" dir w;
+room "Aquadome Laboratory" dir n from NWDeck;
+
+room "Southwest Deck" tag SWDeck dir w from Reception link NWDeck link Dome;
+room "male dorm" dir s;
+room "female dorm" dir w from SWDeck;
+
+
+# The following rules are just to help the solver
+task ON_comp after Say_bye;
+link Scimitar need catalyst;
+
+# EOF
