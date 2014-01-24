@@ -105,8 +105,8 @@ class TranscriptReader
   ARTICLE = /^#{THE}/i
 
   ## Possible nessages indicating get/take succeeded
-  TAKE_OBJ = '([\w\d\-\'\s]+)'
-  TAKE_FROM = '(?:\s+(?:up|from|out)\s+.*)$'
+  TAKE_OBJ = '([\w\'\s]+)'
+  TAKE_FROM = '(\s+(?:up|from|out)\s+.*)$'
   TAKE_ALIAS = '(?:grab|pick\s+up|pick|pilfer|take(?:\s+up)?)'
   TAKE_OK = [ 
     /\btaken\b/i,
@@ -879,7 +879,7 @@ class TranscriptReader
     if line =~ /^You\sare\s(?:now\s)?(?:[io]n\s)?(?:#{THE})?([\w'\d\s\-_]+)\.$/
       return false if $1 =~ /own feet/
       return $1
-    elsif line =~ /^\(([\w\d\s_]+)\)$/
+    elsif line =~ /^\(([\w\s]+)\)$/
       return $1
     else
       return false

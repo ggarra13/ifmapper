@@ -99,7 +99,7 @@ class IFMReader
   # see if line is a variable line.  if so, return true
   #
   def parse_variable
-    @line =~ /^\s*[\w_\-\.]+\s*=.*$/
+    @line =~ /^\s*[\w\.]+\s*=.*$/
   end
 
   #
@@ -143,8 +143,8 @@ class IFMReader
     when nil, 
 	'to', 'cmd', 'from', 'need', 'lose', 'lost', 'tag', 'all', 'except',
 	'before', 'after', 'start', 'style', 'endstyle', 'follow', 'link', 
-	'until', 'dir', 'start', 'get', 'drop', 'goto', 'give', 'given', 
-	'exit', 'in', 'keep', 'any', 'safe', 'score', 'style', 'go', 
+	'until', 'dir', 'get', 'drop', 'goto', 'give', 'given', 
+	'exit', 'in', 'keep', 'any', 'safe', 'score', 'go', 
 	'hidden', 'oneway', 'finish', 'length', 'nopath', 'note', 'leave', 
 	'join', /^#/
       return false
@@ -305,8 +305,6 @@ class IFMReader
       when 'lost'
       when 'except'
 	get_item while is_tag?
-      when 'length'
-	get_token
       when 'until'
 	get_task while is_tag?
       when 'link'
