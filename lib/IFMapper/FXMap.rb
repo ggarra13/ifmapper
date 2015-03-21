@@ -211,8 +211,8 @@ class FXMap < Map
     h = maxy - miny
 
     # Find an area in pathmap that has w x h empty rooms
-    0.upto(@width-1-w) { |x|
-      0.upto(@height-1-h) { |y|
+    minx.upto(@width-1-w) { |x|
+      miny.upto(@height-1-h) { |y|
 	if _free_area?(x, y, w, h)
 	  return [x - minx, y - miny]
 	end

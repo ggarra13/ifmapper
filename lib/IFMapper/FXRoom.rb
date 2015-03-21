@@ -12,8 +12,6 @@ class FXRoom < Room
   @@win = nil
 
   def copy(b)
-    self.xx = b.xx
-    self.yy = b.yy
     self.selected = b.selected
     super b
   end

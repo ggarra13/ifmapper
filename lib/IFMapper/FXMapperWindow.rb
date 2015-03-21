@@ -48,7 +48,7 @@ require 'IFMapper/FXWarningBox'
 class FXMapperWindow < FXMainWindow
 
   PROGRAM_NAME = "Interactive Fiction Mapper"
-  VERSION      = '1.2.4'
+  VERSION      = '1.3.1'
   AUTHOR = "Gonzalo Garramuno"
 
   @@copy_buffer = nil
@@ -652,6 +652,7 @@ class FXMapperWindow < FXMainWindow
       w.execute
     else
       map.clear_selection
+
 
       # Add rooms
       r_to_nr = {}  # orig room to new room hash

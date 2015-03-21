@@ -1,3 +1,5 @@
+v1.3.1  Fixes to copy/paste on the same map.
+
 v1.2.9  Fixes to some regexp that would show warnings in ruby 2.1.0
 
 v1.2.8  Same as 1.2.7 but in all languages.

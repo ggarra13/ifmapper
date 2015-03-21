@@ -7,7 +7,6 @@ install_loc = '.' if install_loc == ''
 Dir.chdir(install_loc)
 $LOAD_PATH << './lib'
 require 'rubygems'
-require 'bundler/setup'
 require 'IFMapper/FXMapperWindow'
 
 if __FILE__ == $0
