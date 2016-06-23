@@ -1390,7 +1390,7 @@ class TranscriptReader
       if @f.eof
         @map.status AUTOMAP_IS_WAITING_FOR_MORE_TEXT
       end
-      parse_line(@f.gets)
+      FXApp.instance().runOnUiThread {parse_line(@f.gets)}
     rescue => e
       $stderr.puts e
       $stderr.puts e.backtrace
