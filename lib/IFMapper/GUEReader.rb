@@ -1,4 +1,3 @@
-
 require "IFMapper/Map"
 
 class FXMap; end
@@ -12,7 +11,7 @@ class GUEReader
   class MapError < StandardError; end
 
   # This is the GUEmap magic number/ID at the beginning of the file.
-  GUE_MAGIC = "\307U\305m\341p"
+  GUE_MAGIC = "\xc7U\xc5m\xe1p".b
 
   DIRS = { 
     0 => 0, # n
@@ -71,14 +70,14 @@ class GUEReader
     case version
     when 4
       crap = @f.read(2)
-      crap = @f.read(1)[0]
+      crap = @f.read(1).unpack('C')[0]
       if crap == 32
-	len = @f.read(1)[0]
+	len = @f.read(1).unpack('C')[0]
 	@map.name = @f.read(len)
-	crap = @f.read(1)[0]
+	crap = @f.read(1).unpack('C')[0]
       end
       if crap == 40
-	len = @f.read(1)[0]
+	len = @f.read(1).unpack('C')[0]
 	if len == 255
 	  len = @f.read(2).unpack('s')[0]
 	end
@@ -88,14 +87,14 @@ class GUEReader
       hdr = @f.read(15)
     when 3,2
       crap = @f.read(2)
-      crap = @f.read(1)[0]
+      crap = @f.read(1).unpack('C')[0]
       if crap == 32
-	len = @f.read(1)[0]
+	len = @f.read(1).unpack('C')[0]
 	@map.name = @f.read(len)
-	crap = @f.read(1)[0]
+	crap = @f.read(1).unpack('C')[0]
       end
       if crap == 40
-	len = @f.read(1)[0]
+	len = @f.read(1).unpack('C')[0]
 	if len == 255
 	  len = @f.read(2).unpack('s')[0]
 	end
@@ -114,11 +113,11 @@ class GUEReader
   def read_connection
     type = Connection::FREE
     dir  = Connection::BOTH
-    dA   = @f.read(1)[0]
-    a    = @f.read(1)[0]
+    dA   = @f.read(1).unpack('C')[0]
+    a    = @f.read(1).unpack('C')[0]
     stub = false
 
-    opt = @f.read(1)[0]
+    opt = @f.read(1).unpack('C')[0]
     exitAtext = exitBtext = 0
 
     case opt
@@ -126,7 +125,7 @@ class GUEReader
       #normal connection
     when 34
       # up/down/in/out connection
-      exitAtext = @f.read(1)[0]
+      exitAtext = @f.read(1).unpack('C')[0]
       if exitAtext & 8 != 0
 	exitAtext -= 8
 	type = Connection::SPECIAL
@@ -147,20 +146,20 @@ class GUEReader
 	exitAtext -= 64
 	dir = Connection::AtoB
       end
-      exitBtext = @f.read(1)[0]
-      data      = @f.read(1)[0]
+      exitBtext = @f.read(1).unpack('C')[0]
+      data      = @f.read(1).unpack('C')[0]
     else
       raise ParseError, "option: #{opt} unknown"
     end
 
     unless stub
-      dB    = @f.read(1)[0]
-      b     = @f.read(1)[0]
-      opt   = @f.read(1)[0]
+      dB    = @f.read(1).unpack('C')[0]
+      b     = @f.read(1).unpack('C')[0]
+      opt   = @f.read(1).unpack('C')[0]
     end
 
-    data    = @f.read(1)[0]
-    data    = @f.read(1)[0] unless @f.eof?
+    data    = @f.read(1).unpack('C')[0]
+    data    = @f.read(1).unpack('C')[0] unless @f.eof?
 
     section = @map.sections[@map.section]
     roomA = section.rooms[a]
@@ -244,12 +243,12 @@ class GUEReader
   # Read a room from file stream
   #
   def read_room
-    x       = @f.read(1)[0]
+    x       = @f.read(1).unpack('C')[0]
     data    = @f.read(1)
-    y       = @f.read(1)[0]
+    y       = @f.read(1).unpack('C')[0]
     data    = @f.read(1)[0]
 
-    type    = @f.read(1)[0]
+    type    = @f.read(1).unpack('C')[0]
 
     case type
     when 41
@@ -267,12 +266,12 @@ class GUEReader
       return
     end
 
-    len  = @f.read(1)[0]
+    len  = @f.read(1).unpack('C')[0]
     name = ''
     comment = ''
 
     name = @f.read(len)
-    test = @f.read(1)[0]
+    test = @f.read(1).unpack('C')[0]
 
     case test
     when 41
@@ -280,7 +279,7 @@ class GUEReader
     when 0
       data = @f.read(2)
     else
-      len     = @f.read(1)[0]
+      len     = @f.read(1).unpack('C')[0]
       if len == 255
 	len = @f.read(2).unpack('s')[0]
       end
@@ -305,8 +304,8 @@ class GUEReader
   def parse
     header
     while not @f.eof?
-      type = @f.read(1)[0]
-      data = @f.read(1)[0]
+      type = @f.read(1).unpack('C')[0]
+      data = @f.read(1).unpack('C')[0]
 
       debug "type: #{type}"
       debug "data: #{data}"
