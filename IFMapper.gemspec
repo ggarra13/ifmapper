@@ -1,6 +1,6 @@
 require "rubygems"
 
-VERSION = '1.3.1'
+VERSION = '2.0.0'
 
 gem = Gem::Specification.new do |s|
 	s.name = "ifmapper"
