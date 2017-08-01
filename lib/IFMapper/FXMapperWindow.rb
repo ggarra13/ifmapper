@@ -48,7 +48,7 @@ require 'IFMapper/FXWarningBox'
 class FXMapperWindow < FXMainWindow
 
   PROGRAM_NAME = "Interactive Fiction Mapper"
-  VERSION      = '1.3.1'
+  VERSION      = '2.0.4'
   AUTHOR = "Gonzalo Garramuno"
 
   @@copy_buffer = nil
@@ -1420,7 +1420,7 @@ class FXMapperWindow < FXMainWindow
   end
 
   def docs(*opts)
-    browsers = [ 'firefox', 'opera', 'explorer' ]
+    browsers = [ 'chrome', 'chromium', 'firefox', 'opera', 'explorer' ]
     address  = 'docs/' + language + '/start.html'
     status "#{MSG_OPENING_WEB_PAGE} #{address}..."
     ok = false

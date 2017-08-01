@@ -1,19 +1,20 @@
 require "rubygems"
 
-VERSION = '2.0.0'
+VERSION = '2.0.6'
 
 gem = Gem::Specification.new do |s|
 	s.name = "ifmapper"
 	s.version = VERSION
 	s.author = "Gonzalo Garramuno" 
 	s.email = 'ggarra13@gmail.com'
-	s.license = 'GPL'
-	s.homepage = 'http://www.rubyforge.org/projects/ifmapper/'
+	s.license = 'GPL-2.0'
+	s.homepage = 'http://ggarra13.github.io/ifmapper/en/start.html'
 	s.summary = 'Interactive Fiction Mapping Tool.'
 	s.require_path = "lib"
 	s.executables = "IFMapper"
 	s.files = ['IFMapper.rbw'] + ['bin/IFMapper'] +
 		     ['IFMapper.gemspec'] +
+		     ['LICENSE'] +
                      Dir.glob("lib/IFMapper/*.rb") + 
                      Dir.glob("lib/IFMapper/locales/*/*.rb") + 
                      Dir.glob("lib/IFMapper/locales/*/*.sh") + 
@@ -29,5 +30,5 @@ EOF
 				Dir.glob("docs/*/*")
 	s.has_rdoc = true
 	s.rubyforge_project = 'ifmapper'
-	s.required_ruby_version = '>= 1.8.0'
+	s.required_ruby_version = '>= 2.0.0'
 end

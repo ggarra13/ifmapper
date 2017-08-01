@@ -1,3 +1,4 @@
+# coding: utf-8
 ################ 
 TITLE = '#{PROGRAM_NAME} v#{VERSION} - Written by #{AUTHOR}'
 
@@ -251,6 +252,7 @@ MSG_COMPLEX_CONNECTION_DONE = 'Complex connection done.'
 
 MSG_CLICK_TO_SELECT_AND_MOVE = 'Click to select and move.  Double click to edit.'
 MSG_CLICK_TOGGLE_ONE_WAY_CONNECTION  = 'Click to toggle one way connection.'
+MSG_CLICK_CHANGE_DIR  = 'Click to change the direction of the connection.'
 MSG_CLICK_CREATE_ROOM = 'Click to create new room.'
 MSG_CLICK_CREATE_LINK = 'Click to create new connection.'
 
@@ -318,6 +320,7 @@ MENU_NEXT_SECTION = "Next Section\t\tGo to Next Map Section."
 MENU_PREVIOUS_SECTION = "Previous Section\t\tGo to Previous Map Section."
 MENU_ADD_SECTION = "Add Section\t\tAdd a New Section to Map."
 MENU_SECTION_INFO = "Current Section Information\t\tChange current section information."
+MENU_RENAME_SECTION = "Rename Section\t\tRename Current Section."
 MENU_DELETE_SECTION = "Delete Section\t\tDelete Current Section from Map."
 
 MENU_FLIP_DIRECTION = "Flip Direction of Selection"

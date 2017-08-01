@@ -1,3 +1,4 @@
+# coding: iso-8859-1
 
 TITLE  = '#{PROGRAM_NAME} v#{VERSION} - Programado por #{AUTHOR}'
 
@@ -52,18 +53,23 @@ Versión de FXRuby: #{Fox::fxrubyversion}
 
 Una herramienta de mapeado para ficción interactiva.
 
-ggarra@advancedsl.com.ar
+ggarra13@gmail.com
 EOF
 
 MSG_SAVE_MAP = 'Grabar Mapa'
 MSG_WAS_MODIFIED = "fue modificado.\n"
 MSG_SHOULD_I_SAVE_CHANGES = '¿Grabo los cambios?'
 
+MSG_SAVE_MAP_AS_TRIZBORT = 'Grabar Mapa como archivo Trizbort'
+FMT_TRIZBORT             = 'Mapa Trizbort (*.trizbort)'
+
 MSG_SAVE_MAP_AS_IFM = 'Grabar Mapa como Archivo IFM'
 FMT_IFM             = 'Mapa IFM (*.ifm)'
 
-MSG_SAVE_MAP_AS_INFORM = 'Grabar Mapa como Archivo Inform'
-FMT_INFORM             = 'Codigo Fuente de Inform (*.inf,*.inform)'
+MSG_SAVE_MAP_AS_INFORM6 = 'Grabar Mapa como Archivos Inform 6'
+MSG_SAVE_MAP_AS_INFORM7 = 'Grabar Mapa como Archivos Inform 7'
+FMT_INFORM6            = 'Código Fuente Inform6 (*.inf)'
+FMT_INFORM7            = 'Código Fuente Inform7 (*.inform)'
 
 MSG_SAVE_MAP_AS_TADS   = 'Grabar Mapa como Archivo TADS3'
 FMT_TADS               = 'Codigo Fuente de TADS (*.t)'
@@ -233,6 +239,7 @@ MSG_COMPLEX_CONNECTION_STOPPED = 'Creación de la conexión compleja interrumpid
 MSG_COMPLEX_CONNECTION_DONE = 'Conexión compleja completada.'
 
 MSG_CLICK_TO_SELECT_AND_MOVE = 'Cliquée para seleccionar y mover.  Cliquée dos veces para editar.'
+MSG_CLICK_TOGGLE_ONE_WAY_CONNECTION  = 'Cliquée para intercambiar la conexión de una sola dirección.'
 MSG_CLICK_CHANGE_DIR  = 'Cliquée para cambiar dirección de la conexión.'
 MSG_CLICK_CREATE_ROOM = 'Cliquée para crear una nueva localidad.'
 MSG_CLICK_CREATE_LINK = 'Cliquée para crear una nueva conexión.'
@@ -251,8 +258,10 @@ MENU_SAVE_AS = "Grabar &Como...\t\tGrabar mapa en otro archivo."
 
 MENU_EXPORT  = 'Exportar'
 MENU_EXPORT_PDF    = "&Exportar como PDF...\t\tExportar mapa como documento Acrobat PDF."
+MENU_EXPORT_TRIZBORT = "Exportar como Triz&bort...\t\tExportar mapa como un mapa de Trizbort."
 MENU_EXPORT_IFM    = "&Exportar como IFM...\t\tExportar mapa como un archivo IFM."
-MENU_EXPORT_INFORM = "&Exportar como Código Fuente de Inform...\t\tExportar mapa como un código fuente de Inform."
+MENU_EXPORT_INFORM6 = "Exportar como Codigo de Inform 6...\t\tExportar mapa como un archivo de codigo fuente de Inform 6."
+MENU_EXPORT_INFORM7 = "Exportar como Codigo de Inform 7...\t\tExportar mapa como un archivo de codigo fuente de Inform 7."
 MENU_EXPORT_TADS = "&Exportar como Código Fuente de TADS3...\t\tExportar mapa como un código fuente de TADS3."
 
 MENU_PRINT = 'Imprimir'
@@ -284,6 +293,7 @@ MENU_DELETE = "Borrar\tDel\tBorrar las localidades seleccionadas o las conexione
 
 MENU_MAP_INFO  = "Datos del Mapa\t\tCambiar los datos del mapa."
 MENU_ROOM_LIST = "Lista de Localidades\t\tLista de todas las localidades en el mapa."
+MENU_ITEM_LIST = "Lista de Items\t\tLista de todos los items en los lugares del mapa."
 
 
 MENU_AUTOMAP = 'Mapeado Automático'
@@ -296,9 +306,13 @@ MENU_SECTIONS = 'Secciones'
 MENU_NEXT_SECTION = "Sección Próxima\t\tIr a la Sección Próxima del Mapa."
 MENU_PREVIOUS_SECTION = "Sección Previa\t\tIr a la Sección Previa del Mapa."
 MENU_ADD_SECTION = "Agregar Sección\t\tAgregar una Nueva Sección al Mapa."
+MENU_SECTION_INFO = "Información de la Sección Actual\t\tCambie la información de la sección actual."
 MENU_RENAME_SECTION = "Renombrar Sección\t\tRenombrar Sección Actual."
 MENU_DELETE_SECTION = "Borrar Sección\t\tBorrar Sección Actual del Mapa."
 
+MENU_FLIP_DIRECTION = "Cambiar Dirección de la Selección"
+MENU_MOVE_LINK = 'Mover la Unión a la Salida'
+MENU_SWITCH_WITH_LINK = 'Intercambiar con Unión'
 
 MENU_ZOOM_PERCENT = '#{v}%\t\tAcercamiento de la página al #{v}%.'
 MENU_ZOOM = 'Acercamiento'
@@ -349,6 +363,7 @@ BOX_OBJECTS  = 'Objetos: '
 BOX_DARKNESS = 'Oscuridad'
 BOX_TASKS    = 'Tareas: '
 BOX_DESCRIPTION = 'Descripción: '
+BOX_COMMENTS = 'Comentarios: '
 
 BOX_CONNECTION_TYPE = 'Tipo de Conexión: '
 BOX_CONNECTION_TYPE_TEXT = [
@@ -410,6 +425,25 @@ BOX_PDF_PAGE_ORIENTATION_TEXT = [
 ]
 BOX_PDF_LOCATIONNOS = 'Incluya números de ubicación'
 
+MSG_SAVE_MAP_AS_SVG    = 'Grabar Mapa como Gráfico de Vector Estructurado (SVG)'
+FMT_SVG                = 'Gráfico de Vector Estructurado (*.svg)'
+MENU_EXPORT_SVG        = "Exportar como &SVG...\t\tExportar mapa como documento de Gráfico de Vector Estructurado (SVG)."
+BOX_SVG_LOCATIONNOS    = "Mostar números de ubicación"
+BOX_SVG_INTERACTIVE    = "Mostrar Información Interactiva del Lugar"
+BOX_SVG_CONNECTIONS    = "Mostrar Conexiones entre los Lugares"
+BOX_SVG_ROOMNAMES      = "Mostrar el Texto del Lugar"
+BOX_SVG_SECTIONCOMMENTS= "Mostrar los Comentarios de la Sección"
+BOX_SVG_SPLITSECTIONS  = "Exportar a Archivos Separados de SVG"
+BOX_SVG_COMPASS_SIZE   = "Tamaño de Brújula: "
+BOX_SVG_LINE_THICKNESS = "Grosor de las Líneas: "
+BOX_SVG_COLOUR_SCHEME  = "Esquema de Color: "
+BOX_SVG_COLOUR_SCHEME_TEXT = [
+  'Red',
+  'Green',
+  'Yellow',
+  'Blue',
+]
+
 ########### Botones
 BUTTON_YES = '&Sí'
 BUTTON_NO  = '&No'
@@ -453,3 +487,5 @@ class Room
     'no',
   ]
 end
+
+AUTOMAP_IS_WAITING_FOR_MORE_TEXT = "Automap está esperando más texto."

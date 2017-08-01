@@ -1,3 +1,8 @@
+v2.0.5  Bug fixed Spanish locale crashing due to missing BOX_COMMENTS.
+
+v2.0.4  Fixed translation in different locale (Spanish).
+	Fixed version number in GUI.
+
 v2.0.0  Updated for ruby 2.0+ threads and unicode
 
 v1.3.1  Fixes to copy/paste on the same map.
