@@ -40,15 +40,25 @@ end
 get_fox
 include Fox
 
+load "IFMapper.gemspec"
 require 'IFMapper/FXMap'
 require 'IFMapper/FXMapperSettings'
 require 'IFMapper/FXWarningBox'
 
+#
+# Bug fix in String class for PDF::Writer.  Missing method each.
+#
+if Gem::Dependency.new('', '~> 2.1').match?( '', RUBY_VERSION )
+  class String
+    def each
+      each_line
+    end
+  end
+end
 
 class FXMapperWindow < FXMainWindow
 
   PROGRAM_NAME = "Interactive Fiction Mapper"
-  VERSION      = '2.0.4'
   AUTHOR = "Gonzalo Garramuno"
 
   @@copy_buffer = nil
