@@ -39,7 +39,9 @@ class IFMWriter
         # simple connection
         idx = a.next_to?(b)
       end
-      dir = ' ' + Room::DIRECTIONS_ENGLISH[idx]
+      if idx != nil
+	dir = ' ' + Room::DIRECTIONS_ENGLISH[idx]
+      end
     else
       # complex path
       dir = ''
@@ -70,7 +72,8 @@ class IFMWriter
 
     tag = t.dup
 
-    if RUBY_VERSION < 1.9
+    version = RUBY_VERSION.split('.').map { |x| x.to_i }
+    if (version <=> [1,9,0]) < 0
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       tag = utf.iconv( tag )
     else
@@ -78,7 +81,7 @@ class IFMWriter
                         :undef => :replace, :replace => '' )
     end
 
-    tag.gsub!(/[\-\(\s,\.!'&"#$@\/\\\-\)]+/, '_')
+    tag.gsub!(/[\-\(\s,\.!'&"\#$@\/\\\-\)]+/, '_')
     tag.gsub!(/__/, '')                  # remove reduntant __ repetitions
     tag.sub!(/^([\d]+)_?(.*)/, '\2\1')   # No numbers allowed at start of tag
     tagname = tag
