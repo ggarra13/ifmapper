@@ -12,34 +12,596 @@
         }
 
         .title {
+            color: #000080;
             font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #000080;
+            font-size: 1.13em;
             font-weight: bold;
             text-decoration: underline;
         }
 
-        .subtitle {
+        .heading1 {
+            color: #000080;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .heading2 {
+            color: #000000;
             font-size: 1.13em;
             font-weight: bold;
+        }
+
+        .imageborder {
+            border: 5px solid;
+        }
+
+        .imagealignright {
+            float: right;
         }
 
     </style>
 </head>
 
 <body>
-
     <p class="center title">
-        <a href="start.html">Interactive Fiction Mapper</a>
+        <u>Interactive Fiction Mapper (IFMapper)</u><br>
+        by Gonzalo Garramu&ntilde;o
     </p>
     <p class="center subtitle">
-        <a href="start.html">by Gonzalo Garramu&ntilde;o</a>
-    </p>
-    <p class="center">
-        <a href="start.html"><img src="../images/IFMapper_main.gif" width="595" height="447" alt="IFMapper main user interface"></a>
-    </p>
-    <p class="center">
-        <a href="start.html">A Tool for Mapping Interactive Fiction</a>
+        User's Manual
     </p>
 
+    <ol>
+        <li>
+            <a href="#Introduction">Introduction</a>
+            <ul>
+                <li>
+                    <a href="#WhatAreInteractiveFictionGames">What are Interactive Fiction Games?</a>
+                </li>
+                <li>
+                    <a href="#WhatIsIFMapper">What is IFMapper?</a>
+                </li>
+                <li>
+                    <a href="#FeaturesOfIFMapper">Features of IFMapper</a><br>
+                    &nbsp;
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#Installation">Installation</a>
+            <ul>
+                <li>
+                    <a href="#WhatYou'llNeed">What you'll need</a>
+                </li>
+                <li>
+                    <a href="#WhereToGetTheStuff">Where to get the stuff</a>
+                </li>
+                <li>
+                    <a href="#InstallingFromAZipFile">Installing from a zip file</a>
+                </li>
+                <li>
+                    <a href="#InstallingOrUpgradingUsingRubyGems">Installing or Upgrading using RubyGems</a><br>
+                    &nbsp;
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#StartingIFMapper">Starting IFMapper</a><br>
+            &nbsp;
+        </li>
+        <li>
+            <a href="#UsingIFMapper">Using IFMapper</a>
+            <ul>
+                <li>
+                    <a href="#TheInterface">The Interface</a>
+                </li>
+                <li>
+                    <a href="#Navigation">Navigation</a>
+                </li>
+                <li>
+                    <a href="#CreatingLocations">Creating Locations</a>
+                </li>
+                <li>
+                    <a href="#CreatingConnections">Creating Connections</a>
+                </li>
+                <li>
+                    <a href="#DeletingRoomsOrConnections">Deleting Rooms and Connections</a>
+                </li>
+                <li>
+                    <a href="#ComplexConnections">Creating Complex Connections</a>
+                </li>
+                <li>
+                    <a href="#MovingRoomsInMap">Moving Rooms Around</a>
+                </li>
+                <li>
+                    <a href="#DealingWithMultipleSections">Dealing with Multiple Sections</a>
+                </li>
+                <li>
+                    <a href="#Searching">Searching</a>
+                </li>
+                <li>
+                    <a href="#Preferences">Preferences </a>
+                </li>
+                <li>
+                    <a href="#SavingAndLoadingMaps">Saving and Loading Maps</a>
+                </li>
+                <li>
+                    <a href="#LockingMaps">Locking Maps</a>
+                </li>
+                <li>
+                    <a href="#MappingGamesFromTranscripts(Automapping)">Automatically Creating Maps from Transcripts (Automapping)</a>
+                    <ul>
+                        <li>
+                            <a href="#HowDoesTheAutomapperDistinguishLocations">How does Automapping work?</a>
+                        </li>
+                        <li>
+                            <a href="#LimitationsOnAutomapping">Limitations on Automapping</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#ExportingToSVG">Exporting Maps to Scalable Vector Graphics (SVG) Format</a><br>
+                    &nbsp;
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#CreatingANewInform/TADS3Game">Creating a new game for <i>TADS 3</i> or <i>Inform</i></a><br>
+            &nbsp;
+        </li>
+        <li>
+            <a href="#Appendix">Appendix</a>
+            <ul>
+                <li>
+                    <a href="#IAmNewToInteractiveFiction.WhatGamesWouldYouRecommend?">I am new to Interactive Fiction. What games would you recommend?</a>
+                </li>
+                <li>
+                    <a href="#ContactingTheAuthor">Contacting the Author</a>
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+    <p>&nbsp;</p>
+
+    <p id="Introduction" class="heading1">
+        Introduction
+    </p>
+    <p id="WhatAreInteractiveFictionGames" class="heading2">
+        What are Interactive Fiction Games?
+    </p>
+    <p>
+        These are adventure games, which usually contain little or no graphics but use prose to describe locations, events and, hopefully, a good story. The first interactive fiction game was created in the late 1970s and was known as <i>Adventure</i> (or <i>Colossal Cave</i>), albeit the genre became widely popular and developed most of its conventions with the creation of Infocom in the 1980s.<br>
+        If you have never played an interactive fiction game, perhaps the best comparison is that they are a grown-up version of &quot;Dungeons and Dragons&quot; or the &quot;Choose Your Own Adventure&quot; series of children's books.<br>
+        Still, just like any good novel, interactive fiction has evolved into all sorts of different styles, genres, and level of interactivity. And you can find adventures being developed today in a lot of languages like English, Spanish, Italian, German, etc. See the section: &quot;<a href="#IAmNewToInteractiveFiction.WhatGamesWouldYouRecommend?">I am new to Interactive Fiction. What games would you recommend?</a>&quot;<br>
+        <br>
+    </p>
+    <p id="WhatIsIFMapper" class="heading2">
+        What is IFMapper?
+    </p>
+    <p>
+        IFMapper is a tool for easily mapping these interactive fiction games. As these games rely mainly on text descriptions and often use compass directions for navigation around the game world, it is relatively easy to get lost. In the old days, players would use grid paper to draw their maps, using boxes and lines to show each location and its exits. IFMapper is basically, the 21st century version of that old practice.<br> 
+        Albeit IFMapper is mainly a mapping tool, it can also be used as a design tool in the early stages of development of new games (for either <i>Inform 6</i> or <i>TADS 3</i>).<br>
+        <br>
+    </p>
+    <p id="FeaturesOfIFMapper" class="heading2">
+        Features of IFMapper
+    </p>
+    <ul>
+        <li>Multi-platform</li>
+        <li>Very simple click interface</li>
+        <li>Complex paths supported (paths that loop on themselves or connect two remote nodes)</li>
+        <li>Automatic connection of rooms thru complex paths using an A* algorithm</li>
+        <li>Mousewheel support for zooming in/out</li>
+        <li>Middle mouse scrolling</li>
+        <li>Rooms can have objects and tasks listed</li>
+        <li>Automatic numbering of rooms</li>
+        <li>Multiple map editing</li>
+        <li>Ability to easily move rooms in map with arrow keys</li>
+        <li>Written in a simple and great scripting language (Ruby)</li>
+        <li>Adobe PDF output</li>
+        <li>W3C Scalable Vector Graphics (SVG) output</li>
+        <li>Can read and save <i>IFM</i> files</li>
+        <li>Can read and save <i>Trizbort</i> maps</li>
+        <li>Can read and save <i>Inform/TADS 3</i> source code files</li>
+        <li>Locking of maps</li>
+        <li>Search for keywords in room names, objects or tasks</li>
+        <li>Can automap games from Infocom-like transcripts, even while you play them</li>
+        <li>Free and open source</li>
+    </ul>
+
+    <p>&nbsp;</p>
+
+    <p id="Installation" class="heading1">
+        Installation
+    </p>
+    <p id="WhatYou'llNeed" class="heading2">
+        What you'll need
+    </p>
+    <p>
+        In order to use IFMapper, you need to have the Ruby scripting language installed and FXRuby. IFMapper was originally developed to run under Ruby 1.8 and FXRuby 1.2, but it will probably be compatible with later versions too.<br>
+        To print PDF documents, you will also need Austin Ziegler's PDF::Writer module.<br>
+        <br>
+    </p>
+    <p id="WhereToGetTheStuff" class="heading2">
+        Where to get the stuff
+    </p>
+    <p>
+        If your platform is Windows, your best bet is to download the RubyInstaller from:<br>        
+        <a href="https://rubyinstaller.org">https://rubyinstaller.org</a><br>
+        <br>
+        This installer comes with the latest stable Ruby version and also with the latest FXRuby. It also comes with RubyGems (see RubyGems later).<br>
+        <br>
+        If your platform is Linux or macOS, you may need to obtain Ruby from your repositories.<br>
+        <br>
+        For example on Ubuntu:<br>
+        <br>
+        $ sudo apt-get install ruby<br>
+        <br>
+        macOS currently comes with Ruby pre-installed, which although it is a tad old will work fine for IFMapper.<br>
+        <br>
+        After you have Ruby up and running, you should then proceed to install FOX and FXRuby. You can do this by either installing RubyGems (what I'd recommend) or installing them both manually. If you want to use RubyGems, proceed to the &quot;<a href="#InstallingOrUpgradingUsingRubyGems">Installing or Upgrading using RubyGems</a>&quot; section.<br>
+        <br>
+        FXRuby can be found at:<br>
+        <a href="http://www.fxruby.org">http://www.fxruby.org</a><br>
+        <br>
+        After you have FXRuby (which requires the FOX toolkit) installed, you should then be able to install IFMapper.<br>
+        <br>
+    </p>
+    <p id="InstallingFromAZipFile" class="heading2">
+        Installing from a zip file
+    </p>
+    <p>
+        After you have Ruby and FXRuby properly installed, download the IFMapper zip file from:<br>
+        <br>
+        <a href="https://github.com/ggarra13/ifmapper">https://github.com/ggarra13/ifmapper</a><br>
+        <br>
+        Use unzip, WinZip or some other zip decompression tool to open the archive. All files will be placed inside an ifmapper directory. You should be ready to start IFMapper.<br>
+        <br>
+        If you want to output PDF files from IFMapper, you will also need to install the PDF::Writer library. You can do so using RubyGems or by downloading the PDF::Writer library from:<br>
+        <br>
+        <a href="https://github.com/metaskills/pdf-writer">https://github.com/metaskills/pdf-writer</a><br>
+        <br>
+    </p>
+    <p id="InstallingOrUpgradingUsingRubyGems" class="heading2">
+        Installing or Upgrading using RubyGems
+    </p>
+    <p>
+        RubyGems is a manager of Ruby libraries that should help with automatically installing any library dependencies that IFMapper may need. RubyGems comes pre-installed with the RubyInstaller for Windows. For other platforms, you can obtain it from:<br>
+        <br>
+        <a href="https://rubygems.org">https://rubygems.org</a><br>
+        <br>
+        Once RubyGems is installed, you can then open a Windows PowerShell or a shell window and do:<br>
+        <br>
+        <code>&gt; gem install -r ifmapper</code><br>
+        <br>
+        This will download the latest version of IFMapper, as well as all the libraries needed for IFMapper to run (in case they are not installed on your system). If you don't have FXRuby installed, it will get installed for you. On Unix systems, you will probably still need to compile it yourself.<br>
+        IFMapper (and other libraries) will then be placed inside your Ruby install directory, like:<br>
+        <br>
+        <code>C:\ruby\lib\ruby\gems\1.8\gems\ifmapper-{VERSION}</code>
+    </p>
+
+    <p>&nbsp;</p>
+
+    <p id="StartingIFMapper" class="heading1">
+        Starting IFMapper
+    </p>
+    <p>
+        Once installed, you can then run IFMapper by either clicking on the IFMapper.rbw file inside the ifmapper directory or invoking IFMapper.rbw from any shell or console.<br>
+        <br>
+        Assuming everything is installed properly, you should then see the IFMapper window popup with an empty map.
+    </p>
+
+    <p>&nbsp;</p>
+
+    <p id="UsingIFMapper" class="heading1">
+        Using IFMapper
+    </p>
+    <p id="TheInterface" class="heading2">
+        The Interface
+    </p>
+    <p>
+        <img src="../images/IFMapper_main.gif" width="800" height="600" alt="IFMapper main user interface"><br>
+        <br>
+        The IFMapper interface consists of a menu that allows you to access common operations (open/save maps, change settings, etc), a toolbar with a similar functionality, and one or more windows displaying a map canvas.<br>
+        <br>
+        IFMapper allows you to edit multiple maps simultaneously.<br>
+        Each map can have multiple &quot;sections&quot;, so as to keep different parts of the games organized. Note that these sections have nothing to do with how printing is done and two or more sections could end up being printed together in a page or a single section may end up getting split into a multiple page document once printed.<br>
+        <br>
+        When you start IFMapper for the first time, you should be placed in an empty map that shows a grid of where rooms and straight connections can be placed.
+        <br>
+    </p>
+    <p id="Navigation" class="heading2">
+        Navigation
+    </p>
+    <p>
+        Use your mouse for navigation. If your mouse supports a mousewheel, this can be used for zooming in or out of the map easily.<br>
+        To pan around the map, use the <b>Middle Mouse Button</b> or, alternatively, <b>ALT + Left Mouse Button</b> (These hotkeys mimic the behavior of <i>Maya</i> and <i>3D Studio Max</i>, both popular 3D packages). You can also scroll the map using the scrollbars around the canvas.<br>
+        <br>
+    </p>
+    <p id="CreatingLocations" class="heading2">
+        Creating Locations
+    </p>
+    <p>
+        <img class="imagealignright" src="../images/room_small.gif" width="342" height="377" alt="IFMapper Location/Room Information requester">
+        You create new Locations or Rooms in the map by just clicking on any of those template boxes. The new location will then be given a default name and settings ('New Location').<br>
+        Each room added will automatically receive a number, based on creation order.<br>
+        To modify the name and settings of a location, you can then double click on it and a requester will pop up allowing you to do so.<br>
+        If you want the requester to pop up as soon as a new room is created, you can turn on <b>Map-&gt;Options-&gt;Edit on Creation.</b><br>
+        This requester also has options to allow you to mark the room as in darkness and to add a list of objects present in the room.<br>
+        As you play the game, you can also choose to list the tasks that you need to do in the room to progress further (providing you some with a rudimentary walkthru/hint functionality).<br>
+        This requester can be left open so as to quickly change from room to room.<br>
+        <br>
+        Besides using the mouse, you can also use the numeric keypad with Num Lock on and use the numbers from <b>1 to 9</b> to create a new room in the appropriate direction.<br>
+        <br>
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p id="CreatingConnections" class="heading2">
+        Creating Connections
+    </p>
+    <p>
+        You can then create connections among rooms by clicking on the non-boxed areas of the map. Depending on where exactly you click, a simple connection will be made between two rooms.<br>
+        <br>
+        In its default configuration, you can also click to create a connection on an area where no rooms yet exist. IFMapper will then create the missing rooms automatically for you, in addition to the connection.<br>
+        <br>
+        Note that you can change the behavior of how nodes and connections are created from the <b>Map-&gt;Options</b> menu:<br>
+        <b>Automatic Connection -</b> will create a connection to the previous room for each new room you create.<br>
+        <b>Create on Connection -</b> will allow you to add both the connection and the missing rooms when you click on some connection area in the map.<br>
+        <img class="imagealignright" src="../images/connection.gif" width="332" height="118" alt="IFMapper Connection requester">
+        <br>
+        Connections can also be modified similarly to rooms, by clicking twice on them. The connection requester allows you to specify the connection as a free, door, locked or special connection. It also allows you to make the connection travel in a single direction or in both directions. You can also add text to the connections to indicate that connection takes you Up/Down or In/Out.<br>
+        <br>
+        <img class="imagealignright imageborder" src="../images/connection_menu.gif" width="342" height="241" alt="IFMapper Connection menu">
+        Changing the connection to be one way can also be done by just clicking on them several times, without opening the requester.<br>
+        <br>
+        Finally, selecting a connection and using the <b>Right Mouse Button</b> gives you access to a context-sensitive menu that allows you to flip the direction of a connection or to shift the connection to some other exit in the room.<br>
+        <br>
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p id="DeletingRoomsOrConnections" class="heading2">
+        Deleting Rooms or Connections
+    </p>
+    <p>
+        To remove a room or connection, just select it by clicking on it with the <b>Left Mouse Button</b>. Then, press the Delete or Backspace key.<br>
+        Note that there is currently no Undo, so deleted nodes or connections cannot be restored.<br>
+        <br>
+    </p>
+    <p id="ComplexConnections" class="heading2">
+        Complex Connections
+        <img class="imagealignright imageborder" src="../images/complex_connection.gif" width="338" height="308" alt="IFMapper Complex Connection example">
+    </p>
+    <p>
+       A lot of text adventures have mazes with exits that lead nowhere and exits that change direction from one room to the next. We refer to these as complex connections.<br>
+       To create a complex connection, type the letter <b>'x'</b> or use the <b>Edit-&gt;Add Complex Connection</b> menu option. Afterwards, click on the exit next to the first room you want to connect and then click on the exit of the second room.<br>
+       If you want to get out of the add complex connection mode, just hit Esc at any time.<br>
+       IFMapper will then try to calculate a path along the map to take you from your first room to the second one.<br>
+       For a complex connection to happen, the path between those nodes has to be 'free' of other rooms. IFMapper will also try to avoid inter-crossing connections as much as it can, but will still allow them.<br>
+       To create exits that just loop onto themselves, you can do a complex connection by clicking twice on the same exit or, you can just use <b>CTRL + Left Mouse Button</b> without needing to go into the Complex Connection mode.<br>
+       <br>
+    </p>
+    <p id="MovingRoomsInMap" class="heading2">
+        Moving Rooms in Map
+    </p>
+    <p>
+        When building large maps on complex games, you will probably run into the need to shift nodes around. To do so, select on the nodes you want to move by <b>CTRL + Left Mouse Button</b> on them, and then use the arrow keys to shift the nodes one grid unit at a time.<br>
+        You can also use <b>SHIFT + Left Mouse Button</b> to drag a box around the rooms to select.<br>
+        If there are any simple or complex connections, IFMapper will keep recalculating those connections on the fly as you move the nodes.<br>
+        Note that complex connections can sometimes 'fail'. In those cases, you will see the complex connection become taut and tinted red.<br>
+        <br>
+    </p>
+    <p id="DealingWithMultipleSections" class="heading2">
+        Dealing with Multiple Sections
+    </p>
+    <p>
+        Some adventure games can be rather large and might be split into chapters. In those cases, you may want to take advantage of using multiple sections in your map. This will keep your map organized and may also help you with printing them later on.<br>
+        <br>
+        You can create and delete sections from the menu, in <b>Map-&gt;Sections-&gt;Create Section</b> and <b>Map-&gt;Sections-&gt;Delete Section.</b><br>
+        <br>
+        To move from one section to another, you can use the Arrows located in the right section of the toolbar or <b>Map-&gt;Sections-&gt;Next/Previous Section.</b><br>
+        <br>
+    </p>
+    <p id="Searching" class="heading2">
+        Searching
+    </p>
+    <p>
+        You can search for words in locations, objects, tasks or descriptions in the current section or in the whole map, using regular expressions.<br>
+        The search is interactive, a la <i>Emacs</i>, meaning that as you type, the rooms that match the search get highlighted.<br>
+        The number of matches for the map and the section is display in the status bar.<br>
+        You can use the Next/Previous button to keep centering your view on each match (and automatically moving thru sections if you are matching stuff in the whole map).<br>
+        <br>
+    </p>
+    <p id="Preferences" class="heading2">
+        Preferences
+    </p>
+    <p>
+        IFMapper allows you to change and set preferences on a per map basis (colors, editing options, etc). You can also save your preferences so that IFMapper will boot with those settings in place for creating new maps.<br>
+        <br>
+    </p>
+    <p id="SavingAndLoadingMaps" class="heading2">
+        Saving and Loading Maps
+    </p>
+    <p>
+        To save a map you are editing, you can go to <b>File-&gt;Save</b> or <b>File-&gt;Save As</b>. The internal format of IFMapper's maps is the .map format, which is binary format. This format saves all your map preferences as well as all the connections and descriptions.<br>
+        To load a map, you can then use <b>File-&gt;Open</b>. Besides IFMapper's own .map format, IFMapper also supports other popular formats within the IF community. IFMapper can read:<br>
+        - .ifm files (Dave Chapeski's <i>IFM</i>, a popular free Unix mapping/walkthru tool)<br>
+        - .gmp file (<i>GUEmap</i>'s maps, a shareware (v1) / open source (v2) mapping tool for Windows)<br>
+        - .inf files (<i>Inform 6</i> source code files)<br>
+        - .inform files (<i>Inform 7</i> source code files)<br>
+        - .trizbort files (<i>Trizbort</i> map files)<br>
+        - .t3m or .t files (<i>TADS 3</i> makefiles or source code files)<br>
+        <br>
+    </p>
+    <p id="LockingMaps" class="heading2">
+        Locking Maps
+    </p>
+    <p>
+        Once you finish an adventure game, you can then lock the map for distribution.<br>
+        <br>
+        You can do so by going into <b>Map-&gt;Map Information</b> and click on the Read-Only switch, making sure you then save the map as a .map file (IFMapper's native format).<br>
+        Making the map read-only will not allow you to modify the map anymore (and thus will prevent accidentally moving or changing room descriptions by mistake).<br>
+        When reading any IFM file, Read-Only mode is entered automatically, as it is assumed these maps were created and finished elsewhere. If you need to modify them, just untick the Read-Only switch in the Map Information box again.<br>
+        <br>
+    </p>
+    <p id="MappingGamesFromTranscripts(Automapping)" class="heading2">
+        Mapping Games from Transcripts (Automapping)
+    </p>
+    <p>
+        New to v0.8, the feature of automapping was added. The way automapping works is that it will read a transcript or log of your game, and will attempt to parse it to generate rooms and connections (even while you are playing it!).<br>
+        <br>
+        To use automapping, go to your game and start a transcript. Usually this is done by doing:<br>
+        <br>
+        <b>&gt; verbose</b><br>
+        <b>&gt; script</b><br>
+        <br>
+        and then specifying the name of the file.<br>
+        <br>
+        <img class="imagealignright" src="../images/automap.gif" width="413" height="428" alt="IFMapper Transcript Options requester">
+        Then, go to IFMapper and go to a map (usually an empty one) and do:<br>
+        <b>Map-&gt;Automap-&gt;Start</b>. This will pop up a file requester for you to feed IFMapper the name of the transcript.<br>
+        Then, you will be asked thru a requester to select some options.<br>
+        The options include how will the automapper identify locations as being unique. The automapper can determine whether you are in a new location by comparing the room description (the default) or by comparing just the short name of the room. Games that have rooms with the same short names (usually, mazes) will benefit from being identified by the room description while games that often change the room description on several visits to it might be mapped better using just short names. Note that you can also switch from one method to another at any time later on.<br>
+        Another option allows you to specify what type of transcript you are dealing with. Most games use the &quot;Classic&quot; format, albeit some old Infocom games (mainly <i>Witness</i> and <i>Moonmist</i>) used a tad different format.<br>
+        And voila. Immediately, you should see IFMapper get to work and start creating locations and connections.<br>
+        If you continue playing your game and the 'script' command is still in operation, IFMapper will try to interactively map your game. This works very well for games running under <i>WinFrotz</i>, for example, albeit some other interpreters might not append text to transcripts as soon as you run a command, leading to a less interactive automapping (you'll probably have to type several commands before the interpreter will update the transcript file).<br>
+        Besides trying to parse for locations and movements, automapper will also try to parse for objects in the room, by monitoring your 'get' or 'take' commands and remembering where each object was first found, so as to add it to the appropriate room.<br>
+        Note that, at any point during your mapping, you can pop up the automapper properties again to switch from automapping using descriptions to using short names.<br>
+        <br>
+    </p>
+    <p id="HowDoesTheAutomapperDistinguishLocations" class="heading2">
+        How does the Automapper distinguish locations?
+    </p>
+    <p>
+        As we said before, the automapper will parse all the game text, looking for room descriptions. Not just the replies to moving commands.<br> 
+        This is done so that teleporting commands (such as magical words) or special events that take you other places will work.<br> 
+        Room locations are determined by finding the room's short name: a string of text where all of its words of 4 or more letters are capitalized (or where the string follows the format specified, in case of <i>Witness</i>/<i>Moonmist</i> format).<br> 
+        The paragraph following that is assumed to be a room description.<br> 
+        Depending on your automapper settings, the automapper will give preference to the room description or to the room's short name to determine whether a certain room has already been visited.<br> 
+        <br>
+    </p>
+    <p id="LimitationsOnAutomapping" class="heading2">
+        Limitations on Automapping
+    </p>
+    <p>
+        Albeit automapping is very cool and powerful, there are some limitations on it you should be aware of.<br>
+        First, it only works with games written in English.<br>
+        Second, you should try to use automapping with verbose mode. Automapping will try to rely on the room description to distinguish one room from the next, instead of just the room's short name.<br>
+        If your game is in brief or normal mode, automapping could end up getting confused about interpreting a previously visited location as a new location, as it could interpret an object or a character description as part of the room description.<br>
+        Even with full verbose mode, automapping may get confused if the description changes dramatically (like the demolished house in <i>The Hitchhiker's Guide to the Galaxy</i>).<br>
+        Automapping also may not help much when it comes to mazes, where all their descriptions are identical or in cases where exits are chosen at random (<i>Adventure</i>/<i>Colossal Cave</i>).<br>
+        Some games don't follow the Infocom standard of labelling locations using a short capitalized description (for example, <i>FailSafe</i>). These games cannot be automapped.<br>
+        Finally, the layout algorithm used in the automapper is not exceptional and it can lead to maps with intercrossings or with rooms placed too far apart.<br>
+        Remember, though, that you can still help the automapper by manually moving or removing rooms at any time if you are interactively automapping a transcript.<br>
+        If for some reason the automapper does not detect a room automatically, you can also at any time create that room yourself and from then on, the automapper will be aware of it.<br>
+        <br>
+    </p>
+    <p id="ExportingToSVG" class="heading2">
+        Exporting Maps to Scalable Vector Graphics (SVG) Format
+        <img class="imagealignright" src="../images/svg_export.gif" width="334" height="598" alt="IFMapper Save Map as SVG dialog box">
+    </p>
+    <p>
+        New to v1.2 and improved in v2.1.0, a feature has been added to let
+        you export maps to a Scalable Vector Graphics (SVG) format that can
+        be printed and interacted with using a web browser.  When you have
+        completed a map, click <b>File-&gt;Export-&gt;Export as <u>S</u>VG...</b>
+        to open the Save Map as SVG dialog box.<br>
+        <br>
+        There are various options available to customise the output, each
+        with a tooltip that displays further detail when the mouse cursor
+        hovers over it.  The first set of checkboxes toggle whether various
+        parts of the map are included, such as the Location Text, Location
+        Numbers, Section Comments etc.<br>
+        <br>
+        The Compass Size slider allows you to modify the size of the
+        compass graphic included in the SVG, or disable it completely.  The
+        Location and Connection Thickness sliders change the width of the
+        lines used to draw the Location boxes and the Connection lines
+        between them, respectively, whilst the Colour Scheme option
+        modifies the colour used for a few of the optional items, including
+        the Interactive Location Information menu and Location Number.<br>
+        <br>
+        You can choose between the default option of exporting all of the
+        sections of the map to a single SVG file, exporting all the map
+        sections to individual SVG files or only exporting the current
+        section to an SVG file.<br>
+        <br>
+        The latter option enables two more checkboxes - if you also check
+        the Only Include Currently Selected Elements option, then the SVG
+        file will only contain those locations that have currently been
+        selected in the main window.  This allows you to create a partial
+        SVG map, which can be used as an aid for new players.<br>
+        <br>
+        The last option - Include All Locations, Only Show Location Text
+        For Currently Selected Locations - will output a complete map with
+        all locations shown, but only the currently selected locations will
+        have their Location Text included.  Similar to the previous option,
+        this allows the creation of customised partial maps which can be
+        used as a template by new players.  Only Connections that are
+        currently selected will be drawn.<br>
+        <br>
+        Note: no matter what options are selected, the starting location -
+        no. 1 - of a map will always be included.<br>
+        <br>
+        Once you have specified your preferred options, click the <b><u>O</u>K</b>
+        button and specify a filename for the SVG output.<br>
+        <br>
+    </p>
+    <p id="CreatingANewInform/TADS3Game" class="heading2">
+        Creating a new <i>Inform</i>/<i>TADS 3</i> game
+    </p>
+    <p>
+        IFMapper now allows you to also spit out <i>Inform</i> or <i>TADS 3</i> source code for a map.<br>
+        This means you can now use IFMapper to easily create the basic skeleton for a new game from scratch.<br>
+        With IFMapper, you can place your objects, your NPCs and locations with their doors/exits in your game. You can also type in your descriptions for each location.<br>
+        To do this, make sure to activate the display of room descriptions:<br>
+        <br>
+        <b>Map-&gt;Display-&gt;Location Description</b><br>
+        <br>
+        You can then type in all your room descriptions and objects manually and then, once your map is finished, use:<br>
+        <br>
+        <b>File-&gt;Export-&gt;Export to Inform</b><br>
+        <b>File-&gt;Export-&gt;Export to TADS3</b><br>
+        <br>
+        These option will create a set of <i>Inform</i> or <i>TADS 3</i> source files (one per map section), which you can then immediately compile and play with.<br>
+        Obviously, for a real game, the .inf or .t files you get out of IFMapper are just a skeleton, as you will still have to code manually all the logic in your game.
+    </p>
+
+    <p>&nbsp;</p>
+
+    <p id="Appendix" class="heading1">
+        Appendix
+    </p>
+    <p id="IAmNewToInteractiveFiction.WhatGamesWouldYouRecommend?" class="heading2">
+        I am new to Interactive Fiction. What games would you recommend?
+    </p>
+    <p>
+        If you can get a copy of it (search for <i>The Lost Treasures of Infocom II</i> collection or similar), I think <i>Wishbringer</i> from Infocom is probably one of the nicest introductory games.<br>
+        Its puzzles are not that tricky and are also pretty logical.<br>
+        Once you master it, you could then try <i>Planetfall</i>, which has one of the most lovable characters in any adventure game.<br>
+        If you cannot get hold of those Infocom games, Emily Short's <i>City of Secrets</i> is a very nice introductory game and probably one of the most polished adventures I have seen.<br>
+        Andrew Plotkin's <i>Dreamholder</i> is also somewhat a nice introductory game as the game will help you with your commands a little as you begin. Note, however, that the game's puzzles are anything but easy.<br>
+        <br>
+    </p>
+    <p id="ContactingTheAuthor" class="heading2">
+        Contacting the Author
+    </p>
+    <p>
+        Currently, I can be reached at:<br>
+        <br>
+        ggarra13 AT domain<br>
+        <br>
+        (Where &quot;domain&quot; is gmail.com )
+    </p>
 </body>
 
 </html>
