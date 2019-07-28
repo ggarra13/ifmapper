@@ -1065,7 +1065,7 @@ class FXMapperWindow < FXMainWindow
 
     cmd = FXMenuCommand.new(submenu, MENU_PRINT_LOCATIONS, nil)
     cmd.connect(SEL_COMMAND, method(:print_locations_cb))
-    FXMenuCascade.new(filemenu, MENU_PRINT, nil, submenu)
+    #FXMenuCascade.new(filemenu, MENU_PRINT, nil, submenu)
 
     cmd = FXMenuCommand.new(filemenu, MENU_QUIT, nil)
     cmd.connect( SEL_COMMAND, method(:close_cb) )
@@ -1435,8 +1435,10 @@ class FXMapperWindow < FXMainWindow
     status "#{MSG_OPENING_WEB_PAGE} #{address}..."
     ok = false
     browsers.each { |cmd|
-      if RUBY_PLATFORM =~ /mswin/
+      if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
 	ok = system("start #{cmd} #{address}")
+      elsif RUBY_PLATFORM =~ /darwin/
+        ok = system("open \"#{address}\"")
       else
 	ok = system("#{cmd} #{address} &")
       end
