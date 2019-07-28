@@ -14,8 +14,8 @@ ARGV.each_with_index { |item, index|
 }
 
 if mainfile == nil
-    $stderr.puts "--- #{basename $0} ---\n\n"
-    $stderr.puts "Usage: #{$0} <first map section file> [other map section files]"
+    $stderr.puts "--- #{File.basename($0)} ---\n\n"
+    $stderr.puts "Usage: #{$0} <first map section svg file> [other map section svg files] > outputfile.svg"
     $stderr.puts "If other map section files are omitted then the directory containing the first map section file is searched for suitable matching section files."
     exit(1)
 
@@ -57,6 +57,8 @@ if otherfiles.length == 0
             otherfiles.push(File.join(Dir.pwd, match))
         end
     }
+
+    otherfiles = otherfiles.sort
 
 else
     $stderr.puts "Info: other map section files specified as arguments: #{otherfiles}"
