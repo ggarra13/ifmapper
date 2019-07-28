@@ -1,5 +1,5 @@
 
-require 'date'
+
 
 class TADSWriter
 
@@ -43,18 +43,18 @@ class TADSWriter
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       tag = utf.iconv( tag )
     else
-      tag = tag.encode( 'utf-8', :invalid => :replace,
+      tag = tag.encode( 'utf-8', :invalid => :replace, 
                         :undef => :replace, :replace => '' )
     end
 
     # Invalid tag characters, replaced with _
     tag.gsub!(/[\s"'\/\\\-&#\,.:;!\?\n\(\)]/,'_')
-
+ 
     tag.gsub!(/__/, '')                  # remove reduntant __ repetitions
     tag.sub!(/^([\d]+)_?(.*)/, '\2\1')   # No numbers allowed at start of tag
    # tag.downcase!                        # All tags are lowercase
 
-
+    
 
     tag = tag[0..31]                     # Max. 32 chars. in tag
 
@@ -125,7 +125,7 @@ class TADSWriter
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       str = utf.iconv( str )
     else
-      str = str.encode( 'utf-8', :invalid => :replace,
+      str = str.encode( 'utf-8', :invalid => :replace, 
                         :undef => :replace, :replace => '' )
     end
 
@@ -153,7 +153,7 @@ class TADSWriter
 
       @f.print <<"EOF"
 
-#{tag} : #{classname} '#{name}' '#{name}'
+#{tag} : #{classname} '#{name}' '#{name}' 
       @#{room}
       "#{name} is UNDER CONSTRUCTION."
 ;
@@ -167,7 +167,7 @@ EOF
 
   def door(e)
     tag = get_door_tag(e)
-
+    
     b = nil
     destination = ''
     if e.dir == Connection::BOTH
@@ -291,8 +291,8 @@ EOF
     sect.rooms.each { |r|
       room(r)
     }
-
-    @f.puts
+    
+    @f.puts 
     @f.puts '//' + '-' * 78
     @f.puts '//  Doorways'
     @f.puts '//' + '-' * 78
