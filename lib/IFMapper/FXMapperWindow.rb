@@ -1430,21 +1430,15 @@ class FXMapperWindow < FXMainWindow
   end
 
   def docs(*opts)
-    browsers = [ 'chrome', 'chromium', 'firefox', 'opera', 'explorer' ]
     address  = 'docs/' + language + '/start.html'
     status "#{MSG_OPENING_WEB_PAGE} #{address}..."
-    ok = false
-    browsers.each { |cmd|
-      if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-	ok = system("start #{cmd} #{address}")
-      elsif RUBY_PLATFORM =~ /darwin/
-        ok = system("open \"#{address}\"")
-      else
-	ok = system("#{cmd} #{address} &")
-      end
-      break if ok
-    }
-    if not ok
+    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+      system("rundll32 url.dll,FileProtocolHandler \"#{address}\"")
+    elsif RUBY_PLATFORM =~ /darwin/
+      system("open \"#{address}\"")
+    elsif RUBY_PLATFORM =~ /linux|bsd/
+      system("xdg-open \"#{address}\"")
+    else
       status ERR_COULD_NOT_OPEN_WEB_BROWSER
     end
   end
