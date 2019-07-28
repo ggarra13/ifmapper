@@ -1,5 +1,5 @@
 
-
+require 'date'
 
 class InformWriter
 
@@ -35,22 +35,22 @@ class InformWriter
 
   def new_tag(elem, str)
     tag = str.dup
-    if RUBY_VERSION < 1.9
+    if RUBY_VERSION.to_f < 1.9
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       tag = utf.iconv( tag )
     else
-      tag = tag.encode( 'utf-8', :invalid => :replace, 
+      tag = tag.encode( 'utf-8', :invalid => :replace,
                         :undef => :replace, :replace => '' )
     end
 
     # Invalid tag characters, replaced with _
     tag.gsub!(/[\s"'\/\\\-&#\,.:;!\?\n\(\)]/,'_')
- 
+
     tag.gsub!(/__/, '')                  # remove reduntant __ repetitions
     tag.sub!(/^([\d]+)_?(.*)/, '\2\1')   # No numbers allowed at start of tag
     tag.downcase!                        # All tags are lowercase
 
-    
+
 
     tag = tag[0..31]                     # Max. 32 chars. in tag (inform limit)
 
@@ -112,11 +112,11 @@ class InformWriter
     str = text.dup
 
     # Take text from Unicode utf-8 to iso-8859-1
-    if RUBY_VERSION < 1.9
+    if RUBY_VERSION.to_f < 1.9
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       str = utf.iconv( str )
     else
-      str = str.encode( 'utf-8', :invalid => :replace, 
+      str = str.encode( 'utf-8', :invalid => :replace,
                         :undef => :replace, :replace => '' )
     end
 
@@ -223,7 +223,7 @@ EOF
       else
         if e.roomB == r
           next if e.dir == Connection::AtoB
-          text = e.exitBtext 
+          text = e.exitBtext
           b    = e.roomA
         else
           next if e.dir == Connection::BtoA
@@ -285,7 +285,7 @@ Constant Story "#{story}";
 Constant Headline
            "^A game map done with IFMapper
             ^by #{@map.creator}.^";
-Release 1; 
+Release 1;
 Serial "#{serial}"; ! #{Time.now}
 
 ! These constants are to make the game also potentially Glulx compatible

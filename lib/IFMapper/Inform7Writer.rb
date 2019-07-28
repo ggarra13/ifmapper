@@ -211,7 +211,7 @@ class Inform7Writer
     tag = str.dup
 
     # Take text from Unicode utf-8 to iso-8859-1
-    if RUBY_VERSION < 1.9
+    if RUBY_VERSION.to_f < 1.9
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       tag = utf.iconv( tag )
     else
@@ -322,7 +322,7 @@ class Inform7Writer
     str = text.dup
 
     # Take text from Unicode utf-8 to iso-8859-1859-1
-    if RUBY_VERSION < 1.9
+    if RUBY_VERSION.to_f < 1.9
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       str = utf.iconv( str )
     else
