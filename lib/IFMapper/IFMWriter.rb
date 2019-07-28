@@ -72,8 +72,7 @@ class IFMWriter
 
     tag = t.dup
 
-    version = RUBY_VERSION.split('.').map { |x| x.to_i }
-    if (version <=> [1,9,0]) < 0
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('1.9.0')
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       tag = utf.iconv( tag )
     else

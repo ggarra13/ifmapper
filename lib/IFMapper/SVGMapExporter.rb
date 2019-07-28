@@ -10,7 +10,15 @@ SVG_ROOM_WS     = WS * SVG_ZOOM
 SVG_ROOM_HS     = HS * SVG_ZOOM
 
 class SVGUtilities
-  
+
+  def self.should_draw_interactive(opts)
+    if opts['draw_tasks'] or opts['draw_objects'] or opts['draw_comments'] or opts['draw_description']
+      return true
+    else
+      return false
+    end
+  end
+
   def self.new_svg_doc ( width, height)
     svg = REXML::Document.new
     svg << REXML::XMLDecl.new
@@ -22,9 +30,9 @@ class SVGUtilities
         "xmlns"        => "http://www.w3.org/2000/svg",
         "xmlns:xlink" => "http://www.w3.org/1999/xlink"}
     return svg
-    
+
   end
-  
+
   def self.add_text( svg, x, y, font_size, text, opts, fill_colour )
     if DEBUG_OUTPUT; puts "svg::FXMap::svg_draw_name_text:" end
     y = y + font_size
@@ -37,8 +45,8 @@ class SVGUtilities
     t.text = text
 
     return [svg, x, y]
-  end  
-        
+  end
+
   def self.num_text_lines ( text, maxlinelength )
     if text and not text == ''
       return SVGUtilities::break_text_lines(text.chomp().strip(), maxlinelength).length
@@ -49,56 +57,63 @@ class SVGUtilities
 
   def self.break_text_lines( text, maxlinelength )
     if DEBUG_OUTPUT; printf("SVGUtilities::break_text_lines:text=%s\r\n", text) end
-    
+
     out = Array.new
 
     max_chars = maxlinelength
+    lines = text.split("\n")
+    if DEBUG_OUTPUT; printf("SVGUtilities::break_text_lines:lines=%s\r\n", lines) end
     words = text.split(" ")
+    if DEBUG_OUTPUT; printf("SVGUtilities::break_text_lines:words=%s\r\n", words) end
     cur_str = ""
 
-    words.each { |word|
-      new_len = cur_str.length + word.length
-      if DEBUG_OUTPUT; printf("SVGUtilities::break_text_lines:current word: %s :: new_len: %d\r\n", word, new_len) end
-      new_len = cur_str.length + word.length
-      if new_len <= max_chars
-        cur_str = cur_str + word + " "
-      else
+    lines.each { |line|
+        words = line.split(" ");
+        words.each { |word|
+          new_len = cur_str.length + word.length
+          if DEBUG_OUTPUT; printf("SVGUtilities::break_text_lines:current word: %s :: new_len: %d\r\n", word, new_len) end
+          new_len = cur_str.length + word.length
+          if new_len <= max_chars
+            cur_str = cur_str + word + " "
+          else
+            out << cur_str
+            cur_str = "" + word + " "
+          end
+        }
         out << cur_str
-        cur_str = "" + word + " "
-      end
+        cur_str = ""
     }
-    out << cur_str
 
     return out
   end
-  
+
   def self.get_compass_svg_group()
-    
+
     file = File.new( "icons/compass.svg" )
     doc = REXML::Document.new file
-    
+
     newgroup = REXML::Element.new "g"
     newgroup.attributes["id"] = "compass"
-    
+
     doc.root.elements.each {|elem|
-      newgroup.add_element(elem)  
+      newgroup.add_element(elem)
     }
-    
+
     return newgroup
-        
+
   end
-  
+
   def self.add_compass(svg)
     compassgroup = SVGUtilities::get_compass_svg_group()
-        
+
     defs = svg.root.add_element "defs"
-    
+
     defs.add_element compassgroup
-    
+
     return svg
   end
-  
-  
+
+
   def self.svg_add_script( svg, opts )
     svg.root.attributes["onload"] = "Init(evt)"
 
@@ -164,18 +179,18 @@ class SVGUtilities
         y = y + (opts['name_line_spacing'] * 4)
       end
     end
-    
+
     return [svg, x, y]
   end
-  
+
 end
 #
 # Open all the map class and add all SVG methods there
 # Gotta love Ruby's flexibility to just inject in new methods.
 #
 class FXConnection
-  def _cvt_pt(p, opts)
-    if DEBUG_OUTPUT; puts "svg::FXConnection::_cvt_pt" end
+  def _svg_cvt_pt(p, opts)
+    if DEBUG_OUTPUT; puts "svg::FXConnection::_svg_cvt_pt" end
     x = (p[0] - WW / 2.0) / WW.to_f
     y = (p[1] - HH / 2.0) / HH.to_f
     x = x * opts['ww'] + opts['margin'] + opts['w'] / 2.0
@@ -219,11 +234,11 @@ class FXConnection
   def svg_draw_complex_as_bspline( svg, opts )
     if DEBUG_OUTPUT; puts "svg::FXConnection::svg_draw_complex_as_bspline" end
     p = []
-    p << _cvt_pt(@pts[0], opts)
+    p << _svg_cvt_pt(@pts[0], opts)
     p << p[0]
     p << p[0]
     @pts.each { |pt|
-      p << _cvt_pt(pt, opts)
+      p << _svg_cvt_pt(pt, opts)
     }
     p << p[-1]
     p << p[-1]
@@ -235,7 +250,7 @@ class FXConnection
     if DEBUG_OUTPUT; puts "svg::FXConnection::svg_draw_complex_as_lines" end
     p = []
     @pts.each { |pt|
-      p << _cvt_pt(pt, opts)
+      p << _svg_cvt_pt(pt, opts)
     }
     return p
   end
@@ -401,7 +416,7 @@ class FXConnection
       if DEBUG_OUTPUT; puts "svg::FXConnection::svg_draw" end
 
       svg_draw_exit_text(svg, opts, x, y)
-    
+
       if @pts.size > 0
         svg_draw_complex(svg, opts, x, y)
       else
@@ -413,6 +428,23 @@ end
 
 
 class FXRoom
+
+  def hasTasks()
+    return (@tasks and not @tasks == '')
+  end
+
+  def hasObjects()
+    return (@objects and not @objects == '')
+  end
+
+  def hasComments()
+    return (@comment and not @comment == '')
+  end
+
+  def hasDescription()
+    return (@desc and not @desc == '')
+  end
+
   def svg_corner( opts, c, idx = nil )
     if DEBUG_OUTPUT; puts "svg::FXRoom::svg_corner" end
     x, y = _corner(c, idx)
@@ -544,21 +576,21 @@ class FXRoom
     return svg_draw_text( svg, opts, x, y, objs, font_size )
   end
 
-  def svg_draw_name(svg, opts, sx, sy)
-    if DEBUG_OUTPUT; printf("svg::FXRoom::svg_draw_name:name=%s\r\n", @name) end
+  def svg_draw_name(svg, opts, sx, sy, roomname)
+    if DEBUG_OUTPUT; printf("svg::FXRoom::svg_draw_name:name=%s\r\n", roomname) end
 
     x = sx + (@x * opts['ww']) + opts['margin'] + opts['text_margin']
     y = sy + (@y * opts['hh']) + opts['margin'] + opts['text_margin']
     font_size = 8
     y = y + font_size
 
-    return svg_draw_text( svg, opts, x, y, @name, font_size )
+    return svg_draw_text( svg, opts, x, y, roomname, font_size )
   end
 
   def svg_draw_interactive( svg, opts, idx, sx, sy, section_idx )
     if DEBUG_OUTPUT; puts "svg::FXRoom::svg_draw_interactive" end
 
-    if (@objects and not @objects == '') or (@tasks and not @tasks == '') or (@comment and not @comment == '')
+    if (hasObjects() and opts['draw_objects']) or (hasTasks() and opts['draw_tasks']) or (hasComments() and opts['draw_comments']) or (hasDescription() and opts['draw_description'])
 
       x = sx + (@x * opts['ww']) + opts['margin'] + opts['w']
       y = sy + (@y * opts['hh']) + opts['margin']
@@ -575,22 +607,27 @@ class FXRoom
       "onclick"        => "ToggleOpacity(evt, \"section"+section_idx.to_s()+"room"+idx.to_s()+"\")" }
 
       objs_font_size = opts['objects_font_size']
-      num_chars_per_line = opts['objects_width'] / (objs_font_size)
+      num_chars_per_line = (opts['objects_width'] / (objs_font_size)) * opts['font_width_fiddle']
 
       numObjsLines = 0
       numTaskLines = 0
       numCommLines = 0
+      numDescLines = 0
 
-      if(@objects)
+      if(hasObjects() and opts['draw_objects'])
         numObjsLines = SVGUtilities::num_text_lines(@objects, num_chars_per_line);
       end
 
-      if(@tasks)
+      if(hasTasks() and opts['draw_tasks'])
         numTaskLines = SVGUtilities::num_text_lines(@tasks, num_chars_per_line);
       end
 
-      if(@comment)
+      if(hasComments() and opts['draw_comments'])
         numCommLines = SVGUtilities::num_text_lines(@comment, num_chars_per_line);
+      end
+
+      if(hasDescription() and opts['draw_description'])
+        numDescLines = SVGUtilities::num_text_lines(@desc, num_chars_per_line);
       end
 
       if(numObjsLines > 0)
@@ -605,7 +642,11 @@ class FXRoom
         numCommLines = numCommLines + 2
       end
 
-      lines = numObjsLines + numTaskLines + numCommLines
+      if(numDescLines > 0)
+        numDescLines = numDescLines + 2
+      end
+
+      lines = numObjsLines + numTaskLines + numCommLines + numDescLines
 
       objs_height = (lines+1) * (objs_font_size + opts['text_line_spacing'])
 
@@ -627,7 +668,7 @@ class FXRoom
       text_x = rect_x + opts['text_margin']
       text_y = rect_y + opts['text_margin'] + objs_font_size
 
-      if @objects and not @objects == ''
+      if hasObjects() and opts['draw_objects']
         t1 = g.add_element "text", {
         "x"            => text_x,
         "y"            => text_y,
@@ -640,7 +681,7 @@ class FXRoom
         text_y = text_y + objs_font_size + opts['text_line_spacing']
       end
 
-      if @tasks and not @tasks == ''
+      if hasTasks() and opts['draw_tasks']
         t2 = g.add_element "text", {
         "x"            => text_x,
         "y"            => text_y,
@@ -653,7 +694,7 @@ class FXRoom
         text_y = text_y + objs_font_size + opts['text_line_spacing']
       end
 
-      if @comment and not @comment == ''
+      if hasComments() and opts['draw_comments']
         t2 = g.add_element "text", {
         "x"     => text_x,
         "y"     => text_y,
@@ -665,6 +706,20 @@ class FXRoom
         text_x, text_y = svg_draw_interactive_objects( g, opts, text_x, text_y, objs_font_size, comments_lines)
         text_y = text_y + objs_font_size + opts['text_line_spacing']
       end
+
+      if hasDescription() and opts['draw_description']
+        t2 = g.add_element "text", {
+        "x"     => text_x,
+        "y"     => text_y,
+        "style"   => "font-size:" + objs_font_size.to_s() + "pt;font-weight:bold" }
+        t2.text = "Description:"
+
+        text_y = text_y + objs_font_size + opts['text_line_spacing']
+        desc_lines = SVGUtilities::break_text_lines(@desc, num_chars_per_line)
+        text_x, text_y = svg_draw_interactive_objects( g, opts, text_x, text_y, objs_font_size, desc_lines)
+        text_y = text_y + objs_font_size + opts['text_line_spacing']
+      end
+
     end
   end
 
@@ -701,7 +756,10 @@ class FXRoom
     if (!((opts['draw_connections'] == false) && (@name =~ /Shortcut to.*/i)))
       svg_draw_box( svg, opts, idx, x, y )
 
-      if ((opts['draw_roomnames'] == true) || (@name =~ /Shortcut to.*/i) || (idx == 0))
+      if ((opts['draw_roomnames'] == true) ||
+        (opts['current_section_only'] && opts['text_for_selected_only'] && @selected == true) ||
+        (@name =~ /Shortcut to.*/i) ||
+        (idx == 0))
 
         # Even if we're not printing location names, print the "Shortcut to"
         # part of any locations which start with that text.  This convention of
@@ -710,11 +768,12 @@ class FXRoom
         # to the named location, because currently IFMapper can only provide
         # support for up to eight cardinal / ordinal directions which can be a
         # problem for large locations.
+        roomname = @name
         if ((opts['draw_roomnames'] == false) && (@name =~ /(Shortcut to).*/i))
-          @name = $1
+          roomname = $1
         end
 
-        x, y = svg_draw_name( svg, opts, x, y )
+        x, y = svg_draw_name( svg, opts, x, y, roomname )
       end
     end
   end
@@ -736,9 +795,9 @@ class FXSection
   end
 
 
-  def svg_draw_section_name( svg, opts, x, y )
+  def svg_draw_section_name( svg, opts, x, y, available_width )
     return [x,y] if not @name or @name == ''
-    
+
     font_size = opts['name_font_size']
 
     if opts['print_section_names'] == true
@@ -751,23 +810,23 @@ class FXSection
       if not @comments or @comments == ''
         if DEBUG_OUTPUT; puts "svg::FXSection::svg_draw_section_name:section comments is empty, not printing" end
       else
-        num_chars_per_line = svg.root.attributes["width"].to_i() / (font_size*0.75)
-        
+        num_chars_per_line = available_width.to_i() / (font_size*0.75)
+
         brokenlines = @comments.split(/\r?\n/);
-        
+
         brokenlines.each {|brokenline|
-          
+
           lines = SVGUtilities::break_text_lines(brokenline, num_chars_per_line);
           lines.each {|line|
             svg, x, y = SVGUtilities::add_text( svg, x, y, font_size*0.75, line, opts, '000000' )
             y = y + (opts['name_line_spacing'])
           }
-          
+
           y = y + (opts['name_line_spacing'])
         }
-  
+
       end
-      
+
     end
 
     y = y + (opts['name_line_spacing'] * 8)
@@ -782,19 +841,35 @@ class FXSection
     sect_width = (maxx+4) * opts['ww']
     return sect_width
   end
-  
+
   def svg_height( opts )
     minmaxxy = min_max_rooms
     maxy = minmaxxy[1][1]
-    
+
     sect_height = (maxy+2) * opts['hh']
     return sect_height
   end
 
   def svg_draw(svg, opts, x, y, mapname, section_idx )
     if DEBUG_OUTPUT; puts "svg::FXSection::svg_draw" end
+    if DEBUG_OUTPUT; printf("  current section: x=%f, y=%f\r\n", x, y) end
 
-    x, y = svg_draw_section_name( svg, opts, x, y )
+    sectionid = "section" + (section_idx + 1).to_s()
+
+    if svg.root.elements["defs"] == nil
+      svg.root.add_element "defs"
+    end
+
+    defs = svg.root.elements["defs"]
+    defs << REXML::Comment.new("MAP SECTION BEGINS (" + sectionid + ")")
+
+    sectiongroup = REXML::Element.new "g"
+    sectiongroup.attributes["id"] = sectionid
+
+    sectionx = x;
+    sectiony = y;
+
+    x, y = svg_draw_section_name( sectiongroup, opts, 0, 0, svg.root.attributes["width"] )
 
     origx = x
     origy = y
@@ -803,35 +878,47 @@ class FXSection
       a = c.roomA
       b = c.roomB
       next if a.y < 0 and b and b.y < 0
-      c.svg_draw( svg, opts, x, y )
+      if opts['current_section_only'] && (opts['selected_elements_only'] || opts['text_for_selected_only'])
+        if c.selected
+          c.svg_draw( sectiongroup, opts, x, y )
+        end
+      else
+        c.svg_draw( sectiongroup, opts, x, y )
+      end
     }
 
     @rooms.each_with_index { |r, idx|
       next if r.y < 0
-      r.svg_draw( svg, opts, idx, x, y)
+      if opts['current_section_only'] && opts['selected_elements_only']
+        if r.selected or idx == 0
+          r.svg_draw( sectiongroup, opts, idx, x, y)
+        end
+      else
+        r.svg_draw( sectiongroup, opts, idx, x, y)
+      end
     }
-    
-    
-    # Add the compass displaying code in here so that it 
+
+
+    # Add the compass displaying code in here so that it
     # is displayed beneath the interactive display items when
     # they are switched on.
-    
+
     compass_scale_factor = opts['compass_size'];
-      
+
     if(compass_scale_factor > 0)
 
       compassx = (x + opts['margin'] + (opts['w'] / 2))/compass_scale_factor
       compassy = ((y + svg_height(opts)) - opts['h'])/compass_scale_factor
-       
-      svg.root.add_element "use", {
+
+      sectiongroup.add_element "use", {
       "x"           => compassx,
       "y"           => compassy,
       "xlink:href"  => "#compass",
       "transform"   => "scale(" + compass_scale_factor.to_s() + ")"
       }
-      
-      y = y + (64 * compass_scale_factor)
-      
+
+      y = y + (72 * compass_scale_factor)
+
     end
 
     #
@@ -841,108 +928,139 @@ class FXSection
     # on top of the basic room objects.
     #
 
-    if opts['draw_interactive'] == true
+    if SVGUtilities::should_draw_interactive(opts) == true
       if DEBUG_OUTPUT; puts "svg::FXSection::svg_draw::draw_interactive == true" end
       @rooms.each_with_index { |r, idx|
       if (!((opts['draw_connections'] == false) && (r.name =~ /Shortcut to.*/i)))
-
-        r.svg_draw_interactive( svg, opts, idx, origx, origy, section_idx)
+        if opts['current_section_only'] && opts['selected_elements_only']
+          if r.selected
+            r.svg_draw_interactive( sectiongroup, opts, idx, origx, origy, section_idx)
+          end
+        else
+          r.svg_draw_interactive( sectiongroup, opts, idx, origx, origy, section_idx)
+        end
       end
     }
     end
-    
+
     y = y + svg_height( opts )
-    
+
+    svg.root.elements["defs"] << sectiongroup
+
+    defs << REXML::Comment.new("MAP SECTION ENDS (" + sectionid + ")")
+
+    svg.root.add_element "use", {
+    "x"           => sectionx,
+    "y"           => sectiony,
+    "xlink:href"  => "#section" + (section_idx + 1).to_s()
+    }
+
     return [x,y]
 
   end
-  
+
   def svg_draw_separate(opts, svgfile, section_idx, mapname, mapcreator)
     if DEBUG_OUTPUT; puts "svg::FXSection::svg_draw_separate" end
-        
+
     svg = SVGUtilities::new_svg_doc(svg_width(opts), svg_height(opts))
-    svg = SVGUtilities::add_compass(svg)
-    
+    if opts['compass_size'] > 0
+      svg = SVGUtilities::add_compass(svg)
+    end
+
     if DEBUG_OUTPUT; printf("svg_draw_separate: section_idx = %s\r\n", section_idx.to_s()) end
-    
-    if opts['draw_interactive'] == true
+
+    if SVGUtilities::should_draw_interactive(opts) == true
       svg = SVGUtilities::svg_add_script(svg, opts)
     end
-        
+
     x = opts['name_x'] + opts['margin']
     y = opts['name_y'] + opts['margin']
     font_size = opts['name_font_size']
-    
+
     svg, x, y = SVGUtilities::add_titles(svg, opts, x, y, font_size, mapname, mapcreator)
-    
+
     x, y = svg_draw(svg, opts, x, y, svgfile, section_idx)
-        
+
     svg.root.attributes["height"] = y
-    
+
     formatter = REXML::Formatters::Pretty.new(2)
     formatter.compact = true
 
     file = File.open(svgfile, "w")
-      file.puts formatter.write(svg, "") 
+      formatter.write(svg, file)
     file.close
 
     if DEBUG_OUTPUT; printf("\r\n") end
-    
+
   end
 end
 
 
 class FXMap
 
+  def svg_draw_section_separate( opts, idx, svgfile )
+
+    svgfilename = String::new(str=svgfile)
+
+    @section = idx
+    create_pathmap
+
+    if DEBUG_OUTPUT; printf("svg_draw_sections_separate: filename = %s\r\n", svgfilename.to_s()) end
+
+    # Remove .svg from end of filename if it is there.
+    if svgfilename =~ /\.svg$/
+      svgfilename = svgfilename[0..-5];
+    end
+
+    # Append the section number.
+    svgfilename << "-section" << (idx + 1).to_s()
+
+    if DEBUG_OUTPUT; printf("svg_draw_separate: filename = %s\r\n", svgfilename.to_s()) end
+
+    # Add .svg back onto the end of the filename.
+    svgfilename << ".svg"
+
+    if DEBUG_OUTPUT; printf("svg_draw_separate: filename = %s\r\n", svgfilename.to_s()) end
+
+    status "Exporting SVG file '#{svgfilename}'"
+
+    @sections[idx].svg_draw_separate( opts, svgfilename, idx, @name, @creator)
+
+  end
+
+  def svg_draw_current_section( opts, svgfile )
+
+    svg_draw_section_separate(opts, @section, svgfile)
+    status "Exporting SVG Completed"
+
+  end
+
   def svg_draw_sections_separate( opts, svgfile )
 
     @sections.each_with_index { |sect, idx|
-
-      svgfilename = String::new(str=svgfile)
-
-      @section = idx
-      create_pathmap
-      
-      if DEBUG_OUTPUT; printf("svg_draw_sections_separate: filename = %s\r\n", svgfilename.to_s()) end
-      
-      # Remove .svg from end of filename if it is there.
-      if svgfilename =~ /\.svg$/
-        svgfilename = svgfilename[0..-5];
-      end
-      
-      # Append the section number.
-      svgfilename << "-section" << (idx + 1).to_s()
-      
-      if DEBUG_OUTPUT; printf("svg_draw_separate: filename = %s\r\n", svgfilename.to_s()) end
-      
-      # Add .svg back onto the end of the filename.
-      svgfilename << ".svg"
-          
-      if DEBUG_OUTPUT; printf("svg_draw_separate: filename = %s\r\n", svgfilename.to_s()) end
-
-      status "Exporting SVG file '#{svgfilename}'"
-
-      sect.svg_draw_separate( opts, svgfilename, idx, @name, @creator)
+      svg_draw_section_separate(opts, idx, svgfile)
     }
-    
+
     status "Exporting SVG Completed"
   end
 
   def svg_draw_sections( opts, svgfile )
     if DEBUG_OUTPUT; puts "svg::FXMap::svg_draw_sections" end
     if DEBUG_OUTPUT; printf("svg::FXMap::svg_draw_sections:@section=%s\r\n", @section) end
-      
+
     x = opts['name_x'] + opts['margin']
     y = opts['name_y'] + opts['margin']
     font_size = opts['name_font_size']
-    
+
     svg = SVGUtilities::new_svg_doc(max_width(opts), total_height(opts))
-    svg = SVGUtilities::add_compass(svg)    
-    
-    if opts['draw_interactive'] == true
+    if opts['compass_size'] > 0
+      svg = SVGUtilities::add_compass(svg)
+    end
+
+    if SVGUtilities::should_draw_interactive(opts) == true
       svg = SVGUtilities::svg_add_script(svg, opts)
     end
-    
+
     svg, x, y = SVGUtilities::add_titles(svg, opts, x, y, font_size, @name, @creator)
 
     @sections.each_with_index { |sect, idx|
@@ -952,29 +1070,30 @@ class FXMap
       # paths will come out ok.
       create_pathmap
       # Now, we draw it
-      
-      x, y = sect.svg_draw(svg, opts, x, y, @name, idx)
-    
-      y = y + (opts['hh'] * 2)
+
+      outx, outy = sect.svg_draw(svg, opts, x, y, @name, idx)
+
+      y = y + outy + (opts['hh'] * 2)
 
     }
 
     create_pathmap
     svg.root.attributes["height"] = y
-    
+
     if svgfile !~ /\.svg$/
       svgfile << ".svg"
     end
-    
+
     status "Exporting SVG file '#{svgfile}'"
-    
+
     formatter = REXML::Formatters::Pretty.new(2)
     formatter.compact = true
-    
+    formatter.width = 99999999
+
     file = File.open(svgfile, "w")
-      file.puts formatter.write(svg, "") 
+      formatter.write(svg, file)
     file.close
-    
+
     status "Exporting SVG Completed"
 
   end
@@ -1005,7 +1124,7 @@ class FXMap
   end
 
   def svg_export(svgfile, printer = nil)
-    
+
     if DEBUG_OUTPUT; puts "svg::FXMap::svg_export" end
 
     map_options = @options.dup
@@ -1013,75 +1132,90 @@ class FXMap
     ww = SVG_ROOM_WIDTH  + SVG_ROOM_WS
     hh = SVG_ROOM_HEIGHT + SVG_ROOM_HS
 
-    svg_options = { 
-    'ww'                   => ww,
-    'hh'                   => hh,
-    'w'                    => SVG_ROOM_WIDTH,
-    'h'                    => SVG_ROOM_HEIGHT,
-    'ws'                   => SVG_ROOM_WS,
-    'hs'                   => SVG_ROOM_HS,
-    'ws_2'                 => SVG_ROOM_WS / 2.0,
-    'hs_2'                 => SVG_ROOM_HS / 2.0,
-    'margin'               => 10,
-    'margin_2'             => 5,
-#    'width'                => map_width,
-#    'height'               => map_height,
-    'text_max_chars'       => 20,
-    'text_line_spacing'    => 2,
-    'text_margin'          => 5,
-    'room_line_width'      => 2,
-    'room_line_colour'     => "black",
-    'room_font_size'       => 8,
-    'objects_font_size'    => 6,
-    'objects_width'        => 140,
-    'room_num_font_size'   => 6,
-    'print_room_nums'      => true,
-    'num_line_width'       => 1,
-    'num_line_colour'      => "black",
-    'num_fill_colour'      => "lightgreen",
-    'conn_line_width'      => 2,
-    'conn_line_colour'     => "black",
-    'door_line_width'      => 2,
-    'door_line_colour'     => "forestgreen",
-    'arrow_line_width'     => 1,
-    'arrow_line_colour'    => "black",
-    'arrow_fill_colour'    => "black",
-    'name_font_size'       => 18,
-    'name_x'               => 0,
-    'name_y'               => 0,
-    'name_line_spacing'    => 4,
-    'print_title'          => true,
-    'print_creator'        => true,
-    'print_date'           => true,
-    'creator_prefix'       => "Creator: ",
-    'date_prefix'          => "Date: ",
-    'draw_interactive'     => true,
-    'draw_roomnames'       => true,
-    'draw_connections'     => true,
-    'corner_size'          => 15,
-    'corner_line_colour'   => "black",
-    'corner_line_width'    => 1,
-    'corner_fill_colour'   => "lightgreen",
-    'objs_line_colour'     => "black",
-    'objs_line_width'      => 1,
-    'objs_fill_colour'     => "lightgreen",
-    'print_section_names'  => true,
-    'section_name_prefix'  => "Section: ",
-    'split_sections'       => false,
-    'draw_sectioncomments' => true,
-    'compass_size'         => 3
+    svg_options = {
+    'ww'                      => ww,
+    'hh'                      => hh,
+    'w'                       => SVG_ROOM_WIDTH,
+    'h'                       => SVG_ROOM_HEIGHT,
+    'ws'                      => SVG_ROOM_WS,
+    'hs'                      => SVG_ROOM_HS,
+    'ws_2'                    => SVG_ROOM_WS / 2.0,
+    'hs_2'                    => SVG_ROOM_HS / 2.0,
+    'margin'                  => 10,
+    'margin_2'                => 5,
+#    'width'                    => map_width,
+#    'height'                   => map_height,
+    'text_max_chars'          => 20,
+    'text_line_spacing'       => 2,
+    'text_margin'             => 5,
+    'room_line_width'         => 2,
+    'room_line_colour'        => "black",
+    'room_font_size'          => 8,
+    'objects_font_size'       => 6,
+    'objects_width'           => 140,
+    'room_num_font_size'      => 6,
+    'print_room_nums'         => true,
+    'num_line_width'          => 1,
+    'num_line_colour'         => "black",
+    'num_fill_colour'         => "lightgreen",
+    'conn_line_width'         => 2,
+    'conn_line_colour'        => "black",
+    'door_line_width'         => 2,
+    'door_line_colour'        => "forestgreen",
+    'arrow_line_width'        => 1,
+    'arrow_line_colour'       => "black",
+    'arrow_fill_colour'       => "black",
+    'name_font_size'          => 18,
+    'name_x'                  => 0,
+    'name_y'                  => 0,
+    'name_line_spacing'       => 4,
+    'print_title'             => true,
+    'print_creator'           => true,
+    'print_date'              => true,
+    'creator_prefix'          => "Creator: ",
+    'date_prefix'             => "Date: ",
+    # 'draw_interactive'        => true,
+    # NEW ITEMS - REPLACE draw_interactive:
+    'draw_objects'            => true,
+    'draw_tasks'              => true,
+    'draw_comments'           => true,
+    'draw_description'        => true,
+    # END NEW ITEMS
+    'draw_roomnames'          => true,
+    'draw_connections'        => true,
+    'corner_size'             => 15,
+    'corner_line_colour'      => "black",
+    'corner_line_width'       => 1,
+    'corner_fill_colour'      => "lightgreen",
+    'objs_line_colour'        => "black",
+    'objs_line_width'         => 1,
+    'objs_fill_colour'        => "lightgreen",
+    'print_section_names'     => true,
+    'section_name_prefix'     => "Section: ",
+    'split_sections'          => false,
+    'draw_sectioncomments'    => true,
+    'compass_size'            => 3,
+    'font_width_fiddle'       => 1.5,
+    'selected_elements_only'  => false,
+    'text_for_selected_only'  => false,
+    'current_section_only'    => false
     }
 
     svg_options.merge!(map_options)
 
     begin
-      
-      if svg_options['split_sections'] == false
-        svg_draw_sections(svg_options, svgfile)
+
+
+      if svg_options['current_section_only'] == true
+        svg_draw_current_section(svg_options, svgfile)
       else
-        svg_draw_sections_separate(svg_options, svgfile)
+        if svg_options['split_sections'] == false
+          svg_draw_sections(svg_options, svgfile)
+        else
+          svg_draw_sections_separate(svg_options, svgfile)
+        end
       end
-      
+
       rescue => e
       p e
       p e.backtrace

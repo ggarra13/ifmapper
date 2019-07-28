@@ -35,7 +35,7 @@ class InformWriter
 
   def new_tag(elem, str)
     tag = str.dup
-    if RUBY_VERSION.to_f < 1.9
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('1.9.0')
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       tag = utf.iconv( tag )
     else
@@ -112,7 +112,7 @@ class InformWriter
     str = text.dup
 
     # Take text from Unicode utf-8 to iso-8859-1
-    if RUBY_VERSION.to_f < 1.9
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('1.9.0')
       utf = Iconv.new( 'iso-8859-1', 'utf-8' )
       str = utf.iconv( str )
     else

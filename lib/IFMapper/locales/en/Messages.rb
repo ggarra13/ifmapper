@@ -433,19 +433,46 @@ BOX_PDF_PAGE_SIZE_TEXT = [
 ]
 BOX_PDF_LOCATIONNOS = 'Include Location Numbers'
 
-MSG_SAVE_MAP_AS_SVG    = 'Save Map as Structured Vector Graphic (SVG)'
-FMT_SVG                = 'Structured Vector Graphic (*.svg)'
-MENU_EXPORT_SVG        = "Export as &SVG...\t\tExport map as Structured Vector Graphics (SVG) document."
-BOX_SVG_LOCATIONNOS    = "Show Location Numbers"
-BOX_SVG_INTERACTIVE    = "Show Interactive Room Information"
-BOX_SVG_CONNECTIONS    = "Show Connections Between Locations"
-BOX_SVG_ROOMNAMES      = "Show Location Text"
-BOX_SVG_SECTIONCOMMENTS= "Show Section Comments"
-BOX_SVG_SPLITSECTIONS  = "Export Sections To Separate SVG Files"
-BOX_SVG_COMPASS_SIZE   = "Compass Size: "
-BOX_SVG_LINE_THICKNESS = "Line Thickness: "
-BOX_SVG_COLOUR_SCHEME  = "Colour Scheme: "
-BOX_SVG_COLOUR_SCHEME_TEXT = [
+MSG_SAVE_MAP_AS_SVG                 = 'Save Map as SVG'
+FMT_SVG                             = 'Structured Vector Graphic (*.svg)'
+MENU_EXPORT_SVG                     = "Export as &SVG...\t\tExport map as Structured Vector Graphics (SVG) document."
+BOX_SVG_SHOWLOCNUMS                 = "Show Location Numbers"
+BOX_SVG_SHOWLOCNUMS_TOOLTIP         = "Include each Room's Location Number in exported map"
+BOX_SVG_SHOWINTERTITLE              = "Show Interactive Location Information:"
+BOX_SVG_SHOWINTEROBJECTS            = "Objects"
+BOX_SVG_SHOWINTEROBJECTS_TOOLTIP    = "Include the Objects at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERTASKS              = "Tasks"
+BOX_SVG_SHOWINTERTASKS_TOOLTIP      = "Include the Tasks at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERCOMMENTS           = "Comments"
+BOX_SVG_SHOWINTERCOMMENTS_TOOLTIP   = "Include the Comments at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERDESCRIPTION        = "Description"
+BOX_SVG_SHOWINTERDESCRIPTION_TOOLTIP= "Include the Description at each Room's Location as drop-down in exported map"
+
+BOX_SVG_EXPORTALLCOMBINED           = "All Sections to Combined SVG file"
+BOX_SVG_EXPORTALLCOMBINED_TOOLTIP   = "All Sections exported to a single SVG file, in order"
+BOX_SVG_EXPORTALLINDIV              = "All Sections to Individual SVG files"
+BOX_SVG_EXPORTALLINDIV_TOOLTIP      = "All Sections exported to separate SVG files"
+BOX_SVG_EXPORTCURRENTINDIV          = "Current Section to Individual SVG file"
+BOX_SVG_EXPORTCURRENTINDIV_TOOLTIP  = "Current Section exported to a single SVG file"
+
+BOX_SVG_EXPORTSELONLY               = "Only Include Currently Selected Elements"
+BOX_SVG_EXPORTSELONLY_TOOLTIP       = "Select some Locations and/or Connections in the Current Section,\nthen use this option to ensure that only these elements, along\nwith Location no. 1 are included in the exported map"
+BOX_SVG_EXPORTALLLOCSSELTXT         = "Include All Locations, Only Show Location\nText For Currently Selected Locations"
+BOX_SVG_EXPORTALLLOCSSELTXT_TOOLTIP = "The exported map will contain all Locations in the Current Section.\nLocation no. 1 and any Locations currently selected will have their Location Text included.\nOnly Connections that are currently selected will be included in the map"
+
+BOX_SVG_SHOWLOCTEXT                 = "Show Location Text"
+BOX_SVG_SHOWLOCTEXT_TOOLTIP         = "Include each Room's Location text in exported map"
+BOX_SVG_SHOWSECTCOMMENTS            = "Show Section Comments"
+BOX_SVG_SHOWSECTCOMMENTS_TOOLTIP    = "Include each Section Comments under corresponding Section Name in exported map"
+BOX_SVG_COMPASSSIZE                 = "Compass Size: "
+BOX_SVG_COMPASSSIZE_TOOLTIP         = "Size of Compass graphic, from non-existent to huge, in exported map"
+BOX_SVG_CONNTHICKNESS               = "Connection Thickness:"
+BOX_SVG_CONNTHICKNESS_TOOLTIP       = "Thickness of Connection lines, from non-existent to heavy, in exported map"
+BOX_SVG_COLOURSCHEME                = "Colour Scheme:"
+BOX_SVG_COLOURSCHEME_TOOLTIP        = "A basic Colour Scheme used for the location number, interactive\nlocation information and doors in exported map"
+BOX_SVG_LOCTHICKNESS                = "Location Thickness:"
+BOX_SVG_LOCTHICKNESS_TOOLTIP        = "Thickness of Location lines, from thin to heavy, in exported map"
+BOX_SVG_COLOURSCHEME_OPTIONS = [
   'Red',
   'Green',
   'Yellow',
