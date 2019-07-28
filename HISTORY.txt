@@ -1,7 +1,7 @@
 v2.1.0  Overhauled SVG export support
         Updated English documentation to meet modern HTML5 standard
         Hide unimplemented Print menu option
-        BUGFIX: Instructions link succesfully opens browser in macOS
+        BUGFIX: Instructions link opens browser in macOS & Linux
         BUGFIX: Ruby version comparisons in IFM, Inform & TADS writers
         courtesy of PeteT & Samwiseuk
 
