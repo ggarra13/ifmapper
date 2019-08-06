@@ -185,7 +185,7 @@
         What is IFMapper?
     </p>
     <p>
-        IFMapper is a tool for easily mapping these interactive fiction games. As these games rely mainly on text descriptions and often use compass directions for navigation around the game world, it is relatively easy to get lost. In the old days, players would use grid paper to draw their maps, using boxes and lines to show each location and its exits. IFMapper is basically, the 21st century version of that old practice.<br> 
+        IFMapper is a tool for easily mapping these interactive fiction games. As these games rely mainly on text descriptions and often use compass directions for navigation around the game world, it is relatively easy to get lost. In the old days, players would use grid paper to draw their maps, using boxes and lines to show each location and its exits. IFMapper is basically, the 21st century version of that old practice.<br>
         Albeit IFMapper is mainly a mapping tool, it can also be used as a design tool in the early stages of development of new games (for either <i>Inform 6</i> or <i>TADS 3</i>).<br>
         <br>
     </p>
@@ -232,7 +232,7 @@
         Where to get the stuff
     </p>
     <p>
-        If your platform is Windows, your best bet is to download the RubyInstaller from:<br>        
+        If your platform is Windows, your best bet is to download the RubyInstaller from:<br>
         <a href="https://rubyinstaller.org">https://rubyinstaller.org</a><br>
         <br>
         This installer comes with the latest stable Ruby version and also with the latest FXRuby. It also comes with RubyGems (see RubyGems later).<br>
@@ -482,11 +482,11 @@
         How does the Automapper distinguish locations?
     </p>
     <p>
-        As we said before, the automapper will parse all the game text, looking for room descriptions. Not just the replies to moving commands.<br> 
-        This is done so that teleporting commands (such as magical words) or special events that take you other places will work.<br> 
-        Room locations are determined by finding the room's short name: a string of text where all of its words of 4 or more letters are capitalized (or where the string follows the format specified, in case of <i>Witness</i>/<i>Moonmist</i> format).<br> 
-        The paragraph following that is assumed to be a room description.<br> 
-        Depending on your automapper settings, the automapper will give preference to the room description or to the room's short name to determine whether a certain room has already been visited.<br> 
+        As we said before, the automapper will parse all the game text, looking for room descriptions. Not just the replies to moving commands.<br>
+        This is done so that teleporting commands (such as magical words) or special events that take you other places will work.<br>
+        Room locations are determined by finding the room's short name: a string of text where all of its words of 4 or more letters are capitalized (or where the string follows the format specified, in case of <i>Witness</i>/<i>Moonmist</i> format).<br>
+        The paragraph following that is assumed to be a room description.<br>
+        Depending on your automapper settings, the automapper will give preference to the room description or to the room's short name to determine whether a certain room has already been visited.<br>
         <br>
     </p>
     <p id="LimitationsOnAutomapping" class="heading2">
@@ -555,6 +555,22 @@
         Once you have specified your preferred options, click the <b><u>O</u>K</b>
         button and specify a filename for the SVG output.<br>
         <br>
+        If you open up the generated SVG file in a text editor and search
+        for the word UNCOMMENT, you will find a path element that can be
+        uncommented like this:<br>
+        <br>
+        <code>&lt;!--UNCOMMENT LINE BELOW TO ENABLE BACKGROUND IMAGE--&gt;<br></code>
+        <code>&lt;!--&lt;path d='M5,5 l0,<b>3570</b> l<b>2400</b>,0 l0,-3570 l-2400,0' fill='url(#backgroundimg)'/&gt;--&gt;</code><br>
+        <br>
+        If you uncomment this line (remove the <code>&lt;!--</code> and <code>--&gt;</code>
+        markers from the beginning and end of the path element), re-save
+        the SVG and place a graphic file with the name <code>svgpic.jpg</code>
+        in the same directory as the exported SVG file, it will be used as
+        a background image file. This enables significant customisation of
+        the interactive map.  The background image file should be of the
+        same dimensions as the SVG - use the values specified in the path
+        element.  height: <code>3570px</code> and width: <code>2400px</code>,
+        in this example.
     </p>
     <p id="CreatingANewInform/TADS3Game" class="heading2">
         Creating a new <i>Inform</i>/<i>TADS 3</i> game

@@ -103,12 +103,20 @@ otherfiles.each { |otherfile |
         maindocheight = maindocsvg.attributes["height"];
         maindocwidth = maindocsvg.attributes["width"];
 
-        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_f() + maindocsectionypos.to_f() }
-        maindocsvg.attributes["height"] = maindocheight.to_f() + otherfiledocheight.to_f();
+        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_i + maindocsectionypos.to_i }
+
+        maindocheight = maindocheight.to_i + otherfiledocheight.to_i;
+        maindocsvg.attributes["height"] = maindocheight;
+        maindocdefs.elements["pattern"].attributes["height"] = maindocheight;
+        maindocdefs.elements["pattern"].elements["image"].attributes["height"] = maindocheight;
+        maindocsvg.elements["path"].attributes["d"] = "'M5,5 l0," + maindocheight.to_s + " l" + maindocwidth + ",0 l0,-" + maindocheight.to_s + " l-" + maindocwidth + ",0'" unless maindocsvg.elements["path"].nil?;
         $stderr.puts "Info: -- updated document height: #{maindocsvg.attributes['height']}"
 
-        if otherfiledocwidth.to_f() > maindocwidth.to_f()
+        if otherfiledocwidth.to_i > maindocwidth.to_i
             maindocsvg.attributes["width"] = otherfiledocwidth;
+            maindocdefs.elements["pattern"].attributes["width"] = otherfiledocwidth;
+            maindocdefs.elements["pattern"].elements["image"].attributes["width"] = otherfiledocwidth;
+            maindocsvg.elements["path"].attributes["d"] = "M5,5 l0," + maindocheight.to_s + " l" + otherfiledocwidth + ",0 l0,-" + maindocheight.to_s + " l-" + otherfiledocwidth + ",0" unless maindocsvg.elements["path"].nil?;
             $stderr.puts "Info: -- updated document width: #{maindocsvg.attributes['width']}"
         end
 
@@ -119,5 +127,10 @@ otherfiles.each { |otherfile |
 }
 
 $stderr.puts "Info: outputting combined svg file..."
-puts maindoc;
+
+formatter = REXML::Formatters::Pretty.new(2)
+formatter.compact = true
+formatter.width = 99999999
+formatter.write(maindoc, $stdout)
+
 $stderr.puts "Info: done"
