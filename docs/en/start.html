@@ -555,17 +555,18 @@
         Once you have specified your preferred options, click the <b><u>O</u>K</b>
         button and specify a filename for the SVG output.<br>
         <br>
-        If you open up the generated SVG file in a text editor and search
-        for the word UNCOMMENT, you will find a path element that can be
-        uncommented like this:<br>
+        If you open up the generated SVG file(s) in a text editor and
+        search for the word UNCOMMENT, you will find a path element that
+        can be uncommented like this:<br>
         <br>
-        <code>&lt;!--UNCOMMENT LINE BELOW TO ENABLE BACKGROUND IMAGE--&gt;<br></code>
+        <code>&lt;!--UNCOMMENT LINE BELOW TO ENABLE mysvgmap.jpg BACKGROUND IMAGE--&gt;<br></code>
         <code>&lt;!--&lt;path d='M5,5 l0,<b>3570</b> l<b>2400</b>,0 l0,-3570 l-2400,0' fill='url(#backgroundimg)'/&gt;--&gt;</code><br>
         <br>
         If you uncomment this line (remove the <code>&lt;!--</code> and <code>--&gt;</code>
         markers from the beginning and end of the path element), re-save
-        the SVG and place a graphic file with the name <code>svgpic.jpg</code>
-        in the same directory as the exported SVG file, it will be used as
+        the SVG and place a JPEG graphic file with the filename listed in
+        the comment, e.g. <code>mysvgmap.jpg</code> in the extract above,
+        into the same directory as the exported SVG file, it will be used as
         a background image file. This enables significant customisation of
         the interactive map.  The background image file should be of the
         same dimensions as the SVG - use the values specified in the path
