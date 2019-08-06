@@ -183,6 +183,45 @@ class SVGUtilities
     return [svg, x, y]
   end
 
+  def self.add_background(svg, width, height)
+    if DEBUG_OUTPUT; puts "svg::SVGUtilities::add_background" end
+
+    if svg.root.elements["defs"] == nil
+      svg.root.add_element "defs"
+    end
+
+    defs = svg.root.elements["defs"]
+
+    defs[0,0] = REXML::Comment.new("BACKGROUND IMAGE SECTION BEGINS")
+
+    bgpattern = REXML::Element.new('pattern')
+    bgpattern.add_attributes({
+      'id'           => 'backgroundimg',
+      'patternUnits' => 'userSpaceOnUse',
+      'x'            => '0',
+      'y'            => '0',
+      'height'       => height,
+      'width'        => width
+    })
+    bgpattern.add_element 'image', {
+      'xlink:href'   => 'svgpic.jpg',
+      'height'       => height,
+      'width'        => width
+    }
+    defs[1,0] = bgpattern
+
+    defs[2,0] = REXML::Comment.new("BACKGROUND IMAGE SECTION ENDS")
+
+    bgpath = REXML::Comment.new("UNCOMMENT LINE BELOW TO ENABLE BACKGROUND IMAGE-->\n"\
+      "  <!--<path"\
+      " d='M5,5 l0," + height + " l" + width + ",0 l0,-" + height + " l-" + width + ",0" + "'"\
+      " fill='url(#backgroundimg)'/>"
+    )
+    svg.root.insert_after(svg.root.elements["defs"], bgpath)
+
+    return svg
+  end
+
 end
 #
 # Open all the map class and add all SVG methods there
@@ -983,6 +1022,8 @@ class FXSection
 
     svg.root.attributes["height"] = y
 
+    svg = SVGUtilities::add_background(svg, svg_width(opts).to_s, y.to_s)
+
     formatter = REXML::Formatters::Pretty.new(2)
     formatter.compact = true
 
@@ -1079,6 +1120,8 @@ class FXMap
 
     create_pathmap
     svg.root.attributes["height"] = y
+
+    svg = SVGUtilities::add_background(svg, max_width(opts).to_s, y.to_s)
 
     if svgfile !~ /\.svg$/
       svgfile << ".svg"
