@@ -166,7 +166,7 @@ class SVGUtilities
       if not mapname or mapname == ''
         if DEBUG_OUTPUT; puts "svg::SVGUtilities::add_titles:name is empty, not printing" end
       else
-        svg, x, y = SVGUtilities::add_text(svg, x, y, font_size*1.5, mapname, opts, '000000')
+        svg, x, y = SVGUtilities::add_text(svg, x, y, (font_size*1.5).to_i, mapname, opts, '000000')
         y = y + (opts['name_line_spacing'] * 4)
       end
     end
@@ -175,7 +175,7 @@ class SVGUtilities
       if not mapcreator or mapcreator == ''
         if DEBUG_OUTPUT; puts "svg::SVGUtilities::add_titles:creator is empty, not printing" end
       else
-        svg, x, y = SVGUtilities::add_text(svg, x, y, font_size*0.85, 'Map ' + opts['creator_prefix'] + mapcreator, opts, '000000')
+        svg, x, y = SVGUtilities::add_text(svg, x, y, (font_size*0.85).to_i, 'Map ' + opts['creator_prefix'] + mapcreator, opts, '000000')
         y = y + (opts['name_line_spacing'] * 4)
       end
     end
@@ -646,7 +646,7 @@ class FXRoom
       "onclick"        => "ToggleOpacity(evt, \"section"+section_idx.to_s()+"room"+idx.to_s()+"\")" }
 
       objs_font_size = opts['objects_font_size']
-      num_chars_per_line = (opts['objects_width'] / (objs_font_size)) * opts['font_width_fiddle']
+      num_chars_per_line = ((opts['objects_width'] / (objs_font_size)) * opts['font_width_fiddle']).floor
 
       numObjsLines = 0
       numTaskLines = 0
@@ -849,7 +849,7 @@ class FXSection
       if not @comments or @comments == ''
         if DEBUG_OUTPUT; puts "svg::FXSection::svg_draw_section_name:section comments is empty, not printing" end
       else
-        num_chars_per_line = available_width.to_i() / (font_size*0.75)
+        num_chars_per_line = (available_width.to_i / font_size*0.75).floor
 
         brokenlines = @comments.split(/\r?\n/);
 
@@ -857,7 +857,7 @@ class FXSection
 
           lines = SVGUtilities::break_text_lines(brokenline, num_chars_per_line);
           lines.each {|line|
-            svg, x, y = SVGUtilities::add_text( svg, x, y, font_size*0.75, line, opts, '000000' )
+            svg, x, y = SVGUtilities::add_text( svg, x, y, (font_size*0.75).to_i, line, opts, '000000' )
             y = y + (opts['name_line_spacing'])
           }
 
