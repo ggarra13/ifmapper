@@ -217,7 +217,7 @@ class SVGUtilities
       " d='M5,5 l0," + height + " l" + width + ",0 l0,-" + height + " l-" + width + ",0" + "'"\
       " fill='url(#backgroundimg)'/>"
     )
-    svg.root.insert_after(svg.root.elements["defs"], bgpath)
+    svg.root.insert_after(defs, bgpath)
 
     return svg
   end
