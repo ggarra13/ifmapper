@@ -21,13 +21,14 @@ class SVGUtilities
 
   def self.new_svg_doc ( width, height)
     svg = REXML::Document.new
-    svg << REXML::XMLDecl.new
+    svg << REXML::XMLDecl.new( version=1.1, encoding=REXML::XMLDecl::DEFAULT_ENCODING )
+    svg << REXML::DocType.new( 'svg', REXML::DocType::PUBLIC + ' "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"' )
 
     svg.add_element "svg", {
-        "width"        => width,
-        "height"    => height,
-        "version"    => "1.1",
-        "xmlns"        => "http://www.w3.org/2000/svg",
+        "width"       => width,
+        "height"      => height,
+        "version"     => "1.1",
+        "xmlns"       => "http://www.w3.org/2000/svg",
         "xmlns:xlink" => "http://www.w3.org/1999/xlink"}
     return svg
 
@@ -700,8 +701,7 @@ class FXRoom
       "x"                => rect_x,
       "y"                => rect_y,
       "width"            => opts['objects_width'],
-      "height"        => objs_height,
-      "z-index"        => "1",
+      "height"           => objs_height,
       "style"            => sprintf("stroke:%s;stroke-width:%s;fill:%s", opts['objs_line_colour'],opts['objs_line_width'],opts['objs_fill_colour']) }
 
       text_x = rect_x + opts['text_margin']
