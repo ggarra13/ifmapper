@@ -126,6 +126,14 @@ otherfiles.each { |otherfile |
     end
 }
 
+dattrstr = "'M5,5 l0," + maindocsvg.attributes["height"] + " l" + maindocsvg.attributes["width"] + ",0 l0,-" + maindocsvg.attributes["height"] + " l-" + maindocsvg.attributes["width"] + ",0'"
+REXML::XPath::each(maindocsvg, '//comment()') do |comment|
+  case comment.string
+  when /path/
+    comment.string = "<path d=" + dattrstr + " fill='url(#backgroundimg)'/>"
+  end
+end
+
 $stderr.puts "Info: outputting combined svg file..."
 
 formatter = REXML::Formatters::Pretty.new(2)
