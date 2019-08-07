@@ -21,7 +21,7 @@ class SVGUtilities
 
   def self.new_svg_doc ( width, height)
     svg = REXML::Document.new
-    svg << REXML::XMLDecl.new( version=1.1, encoding=REXML::XMLDecl::DEFAULT_ENCODING )
+    svg << REXML::XMLDecl.new( version=1.0, encoding=REXML::XMLDecl::DEFAULT_ENCODING )
     svg << REXML::DocType.new( 'svg', REXML::DocType::PUBLIC + ' "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"' )
 
     svg.add_element "svg", {
