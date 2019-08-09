@@ -2,6 +2,17 @@
 
 require "rexml/document"
 
+file="#{File.dirname($0)}/FXConnection.rb"
+File.readlines(file).each do |line|
+  case line
+  when /H  = /
+    H = line.delete("^0-9")
+  when /HS = /
+    HS = line.delete("^0-9")
+  end
+end
+sectiongap = (H.to_i + HS.to_i) * 2
+
 mainfile = nil
 otherfiles = []
 
@@ -103,9 +114,9 @@ otherfiles.each { |otherfile |
         maindocheight = maindocsvg.attributes["height"];
         maindocwidth = maindocsvg.attributes["width"];
 
-        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_i + maindocsectionypos.to_i }
+        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_i + maindocsectionypos.to_i + sectiongap }
 
-        maindocheight = maindocheight.to_i + otherfiledocheight.to_i;
+        maindocheight = maindocheight.to_i + otherfiledocheight.to_i + sectiongap;
         maindocsvg.attributes["height"] = maindocheight;
         maindocdefs.elements["pattern"].attributes["height"] = maindocheight;
         maindocdefs.elements["pattern"].elements["image"].attributes["height"] = maindocheight;
@@ -125,6 +136,7 @@ otherfiles.each { |otherfile |
         $stderr.puts "Warn: -- other map section file [#{otherfile}] does not exist or is not a file. Ignoring this file!"
     end
 }
+maindocsvg.attributes["height"] = maindocsvg.attributes["height"].to_i + sectiongap
 
 dattrstr = "'M5,5 l0," + maindocsvg.attributes["height"] + " l" + maindocsvg.attributes["width"] + ",0 l0,-" + maindocsvg.attributes["height"] + " l-" + maindocsvg.attributes["width"] + ",0'"
 REXML::XPath::each(maindocsvg, '//comment()') do |comment|
