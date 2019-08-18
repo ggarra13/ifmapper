@@ -118,16 +118,10 @@ otherfiles.each { |otherfile |
 
         maindocheight = maindocheight.to_i + otherfiledocheight.to_i + sectiongap;
         maindocsvg.attributes["height"] = maindocheight;
-        maindocdefs.elements["pattern"].attributes["height"] = maindocheight;
-        maindocdefs.elements["pattern"].elements["image"].attributes["height"] = maindocheight;
-        maindocsvg.elements["path"].attributes["d"] = "'M5,5 l0," + maindocheight.to_s + " l" + maindocwidth + ",0 l0,-" + maindocheight.to_s + " l-" + maindocwidth + ",0'" unless maindocsvg.elements["path"].nil?;
         $stderr.puts "Info: -- updated document height: #{maindocsvg.attributes['height']}"
 
         if otherfiledocwidth.to_i > maindocwidth.to_i
             maindocsvg.attributes["width"] = otherfiledocwidth;
-            maindocdefs.elements["pattern"].attributes["width"] = otherfiledocwidth;
-            maindocdefs.elements["pattern"].elements["image"].attributes["width"] = otherfiledocwidth;
-            maindocsvg.elements["path"].attributes["d"] = "M5,5 l0," + maindocheight.to_s + " l" + otherfiledocwidth + ",0 l0,-" + maindocheight.to_s + " l-" + otherfiledocwidth + ",0" unless maindocsvg.elements["path"].nil?;
             $stderr.puts "Info: -- updated document width: #{maindocsvg.attributes['width']}"
         end
 
@@ -137,8 +131,13 @@ otherfiles.each { |otherfile |
     end
 }
 maindocsvg.attributes["height"] = maindocsvg.attributes["height"].to_i + sectiongap
+maindocheight = maindocsvg.attributes["height"];
+maindocwidth = maindocsvg.attributes["width"];
+maindocdefs.elements["pattern"].attributes["height"] = maindocheight;
+maindocdefs.elements["pattern"].elements["image"].attributes["height"] = maindocheight;
+maindocsvg.elements["path"].attributes["d"] = "'M5,5 l0," + maindocheight.to_s + " l" + maindocwidth + ",0 l0,-" + maindocheight.to_s + " l-" + maindocwidth + ",0'" unless maindocsvg.elements["path"].nil?;
 
-dattrstr = "'M5,5 l0," + maindocsvg.attributes["height"] + " l" + maindocsvg.attributes["width"] + ",0 l0,-" + maindocsvg.attributes["height"] + " l-" + maindocsvg.attributes["width"] + ",0'"
+dattrstr = "'M5,5 l0," + maindocheight + " l" + maindocwidth + ",0 l0,-" + maindocheight + " l-" + maindocwidth + ",0'"
 REXML::XPath::each(maindocsvg, '//comment()') do |comment|
   case comment.string
   when /path/
