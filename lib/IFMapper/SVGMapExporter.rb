@@ -1000,10 +1000,15 @@ class FXSection
 
   end
 
-  def svg_draw_separate(opts, svgfile, section_idx, mapname, mapcreator)
+  def svg_draw_separate(opts, svgfile, section_idx, mapname, mapcreator, maxwidth)
+
+    # Called from both:
+    # Draw current section only to individual file
+    # Draw all sections into individual files
+
     if DEBUG_OUTPUT; puts "svg::FXSection::svg_draw_separate" end
 
-    svg = SVGUtilities::new_svg_doc(svg_width(opts), svg_height(opts))
+    svg = SVGUtilities::new_svg_doc(maxwidth, svg_height(opts))
     if opts['compass_size'] > 0
       svg = SVGUtilities::add_compass(svg)
     end
@@ -1043,6 +1048,10 @@ class FXMap
 
   def svg_draw_section_separate( opts, idx, svgfile )
 
+    # Called from both:
+    # Draw current section only to individual file
+    # Draw all sections into individual files
+
     svgfilename = String::new(str=svgfile)
 
     @section = idx
@@ -1067,11 +1076,13 @@ class FXMap
 
     status "Exporting SVG file '#{svgfilename}'"
 
-    @sections[idx].svg_draw_separate( opts, svgfilename, idx, @name, @creator)
+    @sections[idx].svg_draw_separate( opts, svgfilename, idx, @name, @creator, max_width(opts))
 
   end
 
   def svg_draw_current_section( opts, svgfile )
+
+    # Draw current section only to individual file
 
     svg_draw_section_separate(opts, @section, svgfile)
     status "Exporting SVG Completed"
@@ -1079,6 +1090,8 @@ class FXMap
   end
 
   def svg_draw_sections_separate( opts, svgfile )
+
+    # Draw all sections into individual files
 
     @sections.each_with_index { |sect, idx|
       svg_draw_section_separate(opts, idx, svgfile)
@@ -1088,6 +1101,9 @@ class FXMap
   end
 
   def svg_draw_sections( opts, svgfile )
+
+    # Draw all sections in one SVG file
+
     if DEBUG_OUTPUT; puts "svg::FXMap::svg_draw_sections" end
     if DEBUG_OUTPUT; printf("svg::FXMap::svg_draw_sections:@section=%s\r\n", @section) end
 
@@ -1252,11 +1268,14 @@ class FXMap
 
 
       if svg_options['current_section_only'] == true
+        # Draw current section only to individual file
         svg_draw_current_section(svg_options, svgfile)
       else
         if svg_options['split_sections'] == false
+          # Draw all sections in one SVG file
           svg_draw_sections(svg_options, svgfile)
         else
+          # Draw all sections into individual files
           svg_draw_sections_separate(svg_options, svgfile)
         end
       end

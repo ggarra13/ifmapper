@@ -85,6 +85,7 @@ maindoc = REXML::Document.new mainxml
 maindocsectionypos = maindoc.elements["svg/use"].attributes["y"];
 maindocdefs = maindoc.elements["svg/defs"];
 maindocsvg = maindoc.elements["svg"];
+maindocsvg.attributes["height"] = maindocsvg.attributes["height"].to_i + sectiongap;
 
 $stderr.puts "Info: extracted section vertical offset: #{maindocsectionypos}"
 
@@ -114,7 +115,7 @@ otherfiles.each { |otherfile |
         maindocheight = maindocsvg.attributes["height"];
         maindocwidth = maindocsvg.attributes["width"];
 
-        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_i + maindocsectionypos.to_i + sectiongap }
+        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_i + maindocsectionypos.to_i }
 
         maindocheight = maindocheight.to_i + otherfiledocheight.to_i + sectiongap;
         maindocsvg.attributes["height"] = maindocheight;
@@ -130,7 +131,6 @@ otherfiles.each { |otherfile |
         $stderr.puts "Warn: -- other map section file [#{otherfile}] does not exist or is not a file. Ignoring this file!"
     end
 }
-maindocsvg.attributes["height"] = maindocsvg.attributes["height"].to_i + sectiongap
 maindocheight = maindocsvg.attributes["height"];
 maindocwidth = maindocsvg.attributes["width"];
 maindocdefs.elements["pattern"].attributes["height"] = maindocheight;
