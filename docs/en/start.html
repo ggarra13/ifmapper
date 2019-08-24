@@ -79,13 +79,16 @@
                     <a href="#WhatYou'llNeed">What you'll need</a>
                 </li>
                 <li>
-                    <a href="#WhereToGetTheStuff">Where to get the stuff</a>
+                    <a href="#Windows">Microsoft Windows</a>
                 </li>
                 <li>
-                    <a href="#InstallingFromAZipFile">Installing from a zip file</a>
+                    <a href="#macOS">Apple macOS</a>
                 </li>
                 <li>
-                    <a href="#InstallingOrUpgradingUsingRubyGems">Installing or Upgrading using RubyGems</a><br>
+                    <a href="#LinuxOrUNIX">GNU/Linux / UNIX</a>
+                </li>
+                <li>
+                    <a href="#Upgrading">Upgrading</a><br>
                     &nbsp;
                 </li>
             </ul>
@@ -205,7 +208,7 @@
         <li>Ability to easily move rooms in map with arrow keys</li>
         <li>Written in a simple and great scripting language (Ruby)</li>
         <li>Adobe PDF output</li>
-        <li>W3C Scalable Vector Graphics (SVG) output</li>
+        <li>W3C Scalable Vector Graphics (SVG) v1.1 output</li>
         <li>Can read and save <i>IFM</i> files</li>
         <li>Can read and save <i>Trizbort</i> maps</li>
         <li>Can read and save <i>Inform/TADS 3</i> source code files</li>
@@ -224,66 +227,71 @@
         What you'll need
     </p>
     <p>
-        In order to use IFMapper, you need to have the Ruby scripting language installed and FXRuby. IFMapper was originally developed to run under Ruby 1.8 and FXRuby 1.2, but it will probably be compatible with later versions too.<br>
-        To print PDF documents, you will also need Austin Ziegler's PDF::Writer module.<br>
+        In order to use IFMapper, you need to have the <a href="https://www.ruby-lang.org">Ruby</a> (at least v2.0) scripting language installed and <a href="https://github.com/larskanis/fxruby">FXRuby</a> (at least v1.6).<br>
+        To export to a PDF document, you will also need Austin Ziegler's <a href="https://rubygems.org/gems/pdf-writer">PDF::Writer</a> (at least v1.1.1) module.<br>
         <br>
     </p>
-    <p id="WhereToGetTheStuff" class="heading2">
-        Where to get the stuff
-    </p>
-    <p>
-        If your platform is Windows, your best bet is to download the RubyInstaller from:<br>
-        <a href="https://rubyinstaller.org">https://rubyinstaller.org</a><br>
-        <br>
-        This installer comes with the latest stable Ruby version and also with the latest FXRuby. It also comes with RubyGems (see RubyGems later).<br>
-        <br>
-        If your platform is Linux or macOS, you may need to obtain Ruby from your repositories.<br>
-        <br>
-        For example on Ubuntu:<br>
-        <br>
-        $ sudo apt-get install ruby<br>
-        <br>
-        macOS currently comes with Ruby pre-installed, which although it is a tad old will work fine for IFMapper.<br>
-        <br>
-        After you have Ruby up and running, you should then proceed to install FOX and FXRuby. You can do this by either installing RubyGems (what I'd recommend) or installing them both manually. If you want to use RubyGems, proceed to the &quot;<a href="#InstallingOrUpgradingUsingRubyGems">Installing or Upgrading using RubyGems</a>&quot; section.<br>
-        <br>
-        FXRuby can be found at:<br>
-        <a href="http://www.fxruby.org">http://www.fxruby.org</a><br>
-        <br>
-        After you have FXRuby (which requires the FOX toolkit) installed, you should then be able to install IFMapper.<br>
-        <br>
-    </p>
-    <p id="InstallingFromAZipFile" class="heading2">
-        Installing from a zip file
+    <p id="Windows" class="heading2">
+        Microsoft Windows
     </p>
     <p>
-        After you have Ruby and FXRuby properly installed, download the IFMapper zip file from:<br>
+        Download and run the latest recommended 64-bit <a href="https://rubyinstaller.org">RubyInstaller</a> for Windows to install Ruby and MSYS2 Devkit, accepting all the default options, by following the instructions here:<br>
         <br>
-        <a href="https://github.com/ggarra13/ifmapper">https://github.com/ggarra13/ifmapper</a><br>
+        <a href="https://rubyinstaller.org/downloads/">https://rubyinstaller.org/downloads/</a><br>
         <br>
-        Use unzip, WinZip or some other zip decompression tool to open the archive. All files will be placed inside an ifmapper directory. You should be ready to start IFMapper.<br>
+        Once the installation has completed, click the new entry in the Start menu entitled <b>Start Command Prompt with Ruby</b>, and install IFMapper with RubyGems:<br>
         <br>
-        If you want to output PDF files from IFMapper, you will also need to install the PDF::Writer library. You can do so using RubyGems or by downloading the PDF::Writer library from:<br>
+        <code>gem install ifmapper</code><br>
         <br>
-        <a href="https://github.com/metaskills/pdf-writer">https://github.com/metaskills/pdf-writer</a><br>
+        This will download and install the latest release of IFMapper, along with all required dependencies, and install them as gems within the Ruby install directory, e.g:<br>
+        <br>
+        <code>C:\Ruby{RUBY_VERSION}-x64\lib\ruby\gems\{RUBY_VERSION}\gems\ifmapper-{VERSION}</code><br>
         <br>
     </p>
-    <p id="InstallingOrUpgradingUsingRubyGems" class="heading2">
-        Installing or Upgrading using RubyGems
+    <p id="macOS" class="heading2">
+        Apple macOS
     </p>
     <p>
-        RubyGems is a manager of Ruby libraries that should help with automatically installing any library dependencies that IFMapper may need. RubyGems comes pre-installed with the RubyInstaller for Windows. For other platforms, you can obtain it from:<br>
+        macOS includes Ruby by default but the required FXRuby gem and its FOX toolkit dependency, may not be straightforward to install.
+        Developer tools and libraries could be required and it may also be necessary to install <a href="https://brew.sh">Homebrew</a>, to build the FOX toolkit.
+        The <a href="https://www.xquartz.org">XQuartz</a> X window system will be required to display IFMapper.
+        Homebrew can also be used to install Ruby.  Once all the dependencies are satisfied, IFMapper should install with RubyGems:<br>
         <br>
-        <a href="https://rubygems.org">https://rubygems.org</a><br>
+        <code>sudo gem install ifmapper</code><br>
         <br>
-        Once RubyGems is installed, you can then open a Windows PowerShell or a shell window and do:<br>
+    </p>
+    <p id="LinuxOrUNIX" class="heading2">
+        GNU/Linux / UNIX
+    </p>
+    <p>
+        You will need to obtain Ruby from your operating system's package repositories.<br>
         <br>
-        <code>&gt; gem install -r ifmapper</code><br>
+        For example, using Snap:<br>
         <br>
-        This will download the latest version of IFMapper, as well as all the libraries needed for IFMapper to run (in case they are not installed on your system). If you don't have FXRuby installed, it will get installed for you. On Unix systems, you will probably still need to compile it yourself.<br>
-        IFMapper (and other libraries) will then be placed inside your Ruby install directory, like:<br>
+        <code>sudo snap install ruby --classic</code><br>
         <br>
-        <code>C:\ruby\lib\ruby\gems\1.8\gems\ifmapper-{VERSION}</code>
+        After you have Ruby up and running, install IFMapper and its dependencies with RubyGems:<br>
+        <br>
+        <code>sudo gem install ifmapper</code><br>
+        <br>
+        This will download and install the latest release of IFMapper, along with all required dependencies, and install them as gems, e.g:<br>
+        <br>
+        <code>/usr/local/lib/ruby/gems/{RUBY_VERSION}/gems/ifmapper-{VERSION}</code><br>
+        <br>
+    </p>
+    <p id="Upgrading" class="heading2">
+        Upgrading
+    </p>
+    <p>
+        Included with Ruby, <a href="https://rubygems.org">RubyGems</a> manages Ruby libraries - it can install and update any dependencies that IFMapper may need.<br>
+        <br>
+        Once IFMapper is installed by RubyGems, you can update it to the latest version by running this command:<br>
+        <br>
+        <code>gem update --conservative --minimal-deps ifmapper</code><br>
+        <br>
+        If a newer version of IFMapper exists, it will be updated along with any required libraries, which will result in the gem's version being updated in the gem's installation directory, like:<br>
+        <br>
+        <code>/usr/local/lib/ruby/gems/{RUBY_VERSION}/gems/ifmapper-{VERSION}</code>
     </p>
 
     <p>&nbsp;</p>
@@ -292,7 +300,9 @@
         Starting IFMapper
     </p>
     <p>
-        Once installed, you can then run IFMapper by either clicking on the IFMapper.rbw file inside the ifmapper directory or invoking IFMapper.rbw from any shell or console.<br>
+        Once installed, you can run IFMapper by either double clicking with the <b>Left Mouse Button</b> on the IFMapper.rbw file inside the ifmapper directory or invoking IFMapper.rbw from any shell or console:<br>
+        <br>
+        <code>/usr/local/lib/ruby/gems/{RUBY_VERSION}/gems/ifmapper-{VERSION}/IFMapper.rbw</code><br>
         <br>
         Assuming everything is installed properly, you should then see the IFMapper window popup with an empty map.
     </p>
@@ -506,7 +516,7 @@
         <br>
     </p>
     <p id="ExportingToSVG" class="heading2">
-        Exporting Maps to Scalable Vector Graphics (SVG) v1.1 Format
+        Exporting Maps to Scalable Vector Graphics (SVG) Format
         <img class="imagealignright" src="../images/svg_export.gif" width="338" height="603" alt="IFMapper Save Map as SVG dialog box">
     </p>
     <p>
