@@ -4,7 +4,7 @@ PROGRAM_NAME = "Interactive Fiction Mapper"
 TITLE        = '#{PROGRAM_NAME} v#{VERSION} - Written by #{AUTHOR}'
 
 ################ Errors
-ERR_NO_FOX   = 'Please install the FXRuby (FOX) library version 1.6 o later.'
+ERR_NO_FOX   = 'Please install the FXRuby (FOX) library version 1.6 or later.'
 ERR_HAS_GEMS = 'You can do it if you run \'gem install -r fxruby\''
 ERR_NO_YAML  =<<'EOF'
 Please install the 'yaml' library.  
@@ -435,8 +435,8 @@ BOX_PDF_PAGE_SIZE_TEXT = [
 BOX_PDF_LOCATIONNOS = 'Include Location Numbers'
 
 MSG_SAVE_MAP_AS_SVG                        = 'Save Map as SVG'
-FMT_SVG                                    = 'Structured Vector Graphic Files (*.svg)'
-MENU_EXPORT_SVG                            = "Export as &SVG...\t\tExport map as Structured Vector Graphics (SVG) document."
+FMT_SVG                                    = 'Scalable Vector Graphics Files (*.svg)'
+MENU_EXPORT_SVG                            = "Export as &SVG...\t\tExport map as Scalable Vector Graphics (SVG) document."
 MSG_SVG_EXPORTING                          = 'Exporting SVG file'
 MSG_SVG_GENERATOR                          = "Generator: #{PROGRAM_NAME} v#{VERSION} by #{AUTHOR}"
 MSG_SVG_CREATOR_PREFIX                     = 'Creator: '
