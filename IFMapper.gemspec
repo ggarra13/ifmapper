@@ -1,14 +1,17 @@
 require "rubygems"
 
 VERSION = '2.1.0'
+AUTHOR = "Gonzalo Garramuno"
+HOMEPAGE = 'http://ggarra13.github.io/ifmapper/en/start.html'
+EMAIL = 'ggarra13@gmail.com'
 
 gem = Gem::Specification.new do |s|
 	s.name = "ifmapper"
 	s.version = VERSION
-	s.author = "Gonzalo Garramuno" 
-	s.email = 'ggarra13@gmail.com'
+	s.author = AUTHOR
+	s.email = EMAIL
 	s.license = 'GPL-2.0'
-	s.homepage = 'http://ggarra13.github.io/ifmapper/en/start.html'
+	s.homepage = HOMEPAGE
 	s.summary = 'Interactive Fiction Mapping Tool.'
 	s.require_path = "lib"
 	s.executables = "IFMapper"

@@ -2,12 +2,13 @@ require 'IFMapper/MapPrinting'
 require 'rexml/document'
 require 'rexml/cdata'
 
-DEBUG_OUTPUT    = false
-SVG_ZOOM        = 1
-SVG_ROOM_WIDTH  = W  * SVG_ZOOM
-SVG_ROOM_HEIGHT = H  * SVG_ZOOM
-SVG_ROOM_WS     = WS * SVG_ZOOM
-SVG_ROOM_HS     = HS * SVG_ZOOM
+DEBUG_OUTPUT                 = false
+SVG_ZOOM                     = 1
+SVG_ROOM_WIDTH               = W  * SVG_ZOOM
+SVG_ROOM_HEIGHT              = H  * SVG_ZOOM
+SVG_ROOM_WS                  = WS * SVG_ZOOM
+SVG_ROOM_HS                  = HS * SVG_ZOOM
+DEFAULT_BGROUND_IMAGE_FORMAT = '.jpg'
 
 class SVGUtilities
 
@@ -23,8 +24,8 @@ class SVGUtilities
     svg = REXML::Document.new
     svg << REXML::XMLDecl.new( version=1.0, encoding=REXML::XMLDecl::DEFAULT_ENCODING )
     svg << REXML::DocType.new( 'svg', REXML::DocType::PUBLIC + ' "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"' )
-    svg << REXML::Comment.new(" Generator: IFMapper by Gonzalo Garramuño ")
-    svg << REXML::Comment.new(" http://ggarra13.github.io/ifmapper/en/ ")
+    svg << REXML::Comment.new(" #{MSG_SVG_GENERATOR} ")
+    svg << REXML::Comment.new(" #{HOMEPAGE} ")
 
     svg.add_element "svg", {
         "width"       => width,
@@ -189,13 +190,15 @@ class SVGUtilities
   def self.add_background(svg, width, height, svgfilename)
     if DEBUG_OUTPUT; puts "svg::SVGUtilities::add_background" end
 
+    svgbgroundimagefilename = "#{svgfilename}#{DEFAULT_BGROUND_IMAGE_FORMAT}"
+
     if svg.root.elements["defs"] == nil
       svg.root.add_element "defs"
     end
 
     defs = svg.root.elements["defs"]
 
-    defs[0,0] = REXML::Comment.new("BACKGROUND IMAGE SECTION BEGINS")
+    defs[0,0] = REXML::Comment.new(" #{MSG_SVG_BGROUND_IMAGE_SECT_BEGINS} ")
 
     bgpattern = REXML::Element.new('pattern')
     bgpattern.add_attributes({
@@ -207,15 +210,15 @@ class SVGUtilities
       'width'        => width
     })
     bgpattern.add_element 'image', {
-      'xlink:href'   => svgfilename + '.jpg',
+      'xlink:href'   => svgbgroundimagefilename,
       'height'       => height,
       'width'        => width
     }
     defs[1,0] = bgpattern
 
-    defs[2,0] = REXML::Comment.new("BACKGROUND IMAGE SECTION ENDS")
+    defs[2,0] = REXML::Comment.new(" #{MSG_SVG_BGROUND_IMAGE_SECT_ENDS} ")
 
-    bgpath = REXML::Comment.new("UNCOMMENT LINE BELOW TO ENABLE " + svgfilename + ".jpg BACKGROUND IMAGE-->\n"\
+    bgpath = REXML::Comment.new(" #{MSG_SVG_BGROUND_IMAGE_ENABLE_COMMENT_START} #{svgbgroundimagefilename} #{MSG_SVG_BGROUND_IMAGE_ENABLE_COMMENT_END} -->\n"\
       "  <!--<path"\
       " d='M5,5 l0," + height + " l" + width + ",0 l0,-" + height + " l-" + width + ",0" + "'"\
       " fill='url(#backgroundimg)'/>"
@@ -794,12 +797,12 @@ class FXRoom
   def svg_draw( svg, opts, idx, x, y )
     if DEBUG_OUTPUT; puts "svg::FXRoom::svg_draw" end
 
-    if (!((opts['draw_connections'] == false) && (@name =~ /Shortcut to.*/i)))
+    if (!((opts['draw_connections'] == false) && (@name =~ /#{MSG_SVG_SHORTCUT_TO}.*/i)))
       svg_draw_box( svg, opts, idx, x, y )
 
       if ((opts['draw_roomnames'] == true) ||
         (opts['current_section_only'] && opts['text_for_selected_only'] && @selected == true) ||
-        (@name =~ /Shortcut to.*/i) ||
+        (@name =~ /#{MSG_SVG_SHORTCUT_TO}.*/i) ||
         (idx == 0))
 
         # Even if we're not printing location names, print the "Shortcut to"
@@ -810,7 +813,7 @@ class FXRoom
         # support for up to eight cardinal / ordinal directions which can be a
         # problem for large locations.
         roomname = @name
-        if ((opts['draw_roomnames'] == false) && (@name =~ /(Shortcut to).*/i))
+        if ((opts['draw_roomnames'] == false) && (@name =~ /(#{MSG_SVG_SHORTCUT_TO}).*/i))
           roomname = $1
         end
 
@@ -902,7 +905,7 @@ class FXSection
     end
 
     defs = svg.root.elements["defs"]
-    defs << REXML::Comment.new("MAP SECTION BEGINS (" + sectionid + ")")
+    defs << REXML::Comment.new(" #{MSG_SVG_MAP_SECT_BEGINS} (#{sectionid}) ")
 
     sectiongroup = REXML::Element.new "g"
     sectiongroup.attributes["id"] = sectionid
@@ -972,7 +975,7 @@ class FXSection
     if SVGUtilities::should_draw_interactive(opts) == true
       if DEBUG_OUTPUT; puts "svg::FXSection::svg_draw::draw_interactive == true" end
       @rooms.each_with_index { |r, idx|
-      if (!((opts['draw_connections'] == false) && (r.name =~ /Shortcut to.*/i)))
+      if (!((opts['draw_connections'] == false) && (r.name =~ /#{MSG_SVG_SHORTCUT_TO}.*/i)))
         if opts['current_section_only'] && opts['selected_elements_only']
           if r.selected
             r.svg_draw_interactive( sectiongroup, opts, idx, origx, origy, section_idx)
@@ -988,7 +991,7 @@ class FXSection
 
     svg.root.elements["defs"] << sectiongroup
 
-    defs << REXML::Comment.new("MAP SECTION ENDS (" + sectionid + ")")
+    defs << REXML::Comment.new(" #{MSG_SVG_MAP_SECT_ENDS} (#{sectionid}) ")
 
     svg.root.add_element "use", {
     "x"           => sectionx,
@@ -1025,8 +1028,8 @@ class FXSection
 
     svg, x, y = SVGUtilities::add_titles(svg, opts, x, y, font_size, mapname, mapcreator)
 
-    x, y = svg_draw(svg, opts, x, y, svgfile, section_idx)
-
+    outx, outy = svg_draw(svg, opts, x, y, svgfile, section_idx)
+    y = y + outy;
     svg.root.attributes["height"] = y
 
     svg = SVGUtilities::add_background(svg, svg_width(opts).to_s, y.to_s, File.basename(svgfile, ".*"))
@@ -1074,7 +1077,7 @@ class FXMap
 
     if DEBUG_OUTPUT; printf("svg_draw_separate: filename = %s\r\n", svgfilename.to_s()) end
 
-    status "Exporting SVG file '#{svgfilename}'"
+    status "#{MSG_SVG_EXPORTING} '#{svgfilename}'"
 
     @sections[idx].svg_draw_separate( opts, svgfilename, idx, @name, @creator, max_width(opts))
 
@@ -1085,7 +1088,7 @@ class FXMap
     # Draw current section only to individual file
 
     svg_draw_section_separate(opts, @section, svgfile)
-    status "Exporting SVG Completed"
+    status MSG_SVG_EXPORT_COMPLETED
 
   end
 
@@ -1097,7 +1100,7 @@ class FXMap
       svg_draw_section_separate(opts, idx, svgfile)
     }
 
-    status "Exporting SVG Completed"
+    status MSG_SVG_EXPORT_COMPLETED
   end
 
   def svg_draw_sections( opts, svgfile )
@@ -1132,6 +1135,7 @@ class FXMap
 
       outx, outy = sect.svg_draw(svg, opts, x, y, @name, idx)
 
+      if DEBUG_OUTPUT; puts "svg_draw_sections: section gap (hh*2) = #{opts['hh'] * 2}" end
       y = y + outy + (opts['hh'] * 2)
 
     }
@@ -1145,7 +1149,7 @@ class FXMap
       svgfile << ".svg"
     end
 
-    status "Exporting SVG file '#{svgfile}'"
+    status "#{MSG_SVG_EXPORTING} '#{svgfile}'"
 
     formatter = REXML::Formatters::Pretty.new(2)
     formatter.compact = true
@@ -1155,7 +1159,7 @@ class FXMap
       formatter.write(svg, file)
     file.close
 
-    status "Exporting SVG Completed"
+    status MSG_SVG_EXPORT_COMPLETED
 
   end
 
@@ -1204,8 +1208,6 @@ class FXMap
     'hs_2'                    => SVG_ROOM_HS / 2.0,
     'margin'                  => 10,
     'margin_2'                => 5,
-#    'width'                    => map_width,
-#    'height'                   => map_height,
     'text_max_chars'          => 20,
     'text_line_spacing'       => 2,
     'text_margin'             => 5,
@@ -1233,15 +1235,11 @@ class FXMap
     'print_title'             => true,
     'print_creator'           => true,
     'print_date'              => true,
-    'creator_prefix'          => "Creator: ",
-    'date_prefix'             => "Date: ",
-    # 'draw_interactive'        => true,
-    # NEW ITEMS - REPLACE draw_interactive:
+    'creator_prefix'          => MSG_SVG_CREATOR_PREFIX,
     'draw_objects'            => true,
     'draw_tasks'              => true,
     'draw_comments'           => true,
     'draw_description'        => true,
-    # END NEW ITEMS
     'draw_roomnames'          => true,
     'draw_connections'        => true,
     'corner_size'             => 15,

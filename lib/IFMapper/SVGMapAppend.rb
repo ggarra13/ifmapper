@@ -115,9 +115,9 @@ otherfiles.each { |otherfile |
         maindocheight = maindocsvg.attributes["height"];
         maindocwidth = maindocsvg.attributes["width"];
 
-        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_i + maindocsectionypos.to_i }
+        maindocsvg.add_element "use", { "xlink:href" => otherfilesectionid, "x" => otherfilesectionx, "y" =>  maindocheight.to_i }
 
-        maindocheight = maindocheight.to_i + otherfiledocheight.to_i + sectiongap;
+        maindocheight = maindocheight.to_i + (otherfiledocheight.to_i - maindocsectionypos.to_i) + sectiongap;
         maindocsvg.attributes["height"] = maindocheight;
         $stderr.puts "Info: -- updated document height: #{maindocsvg.attributes['height']}"
 

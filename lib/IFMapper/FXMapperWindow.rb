@@ -58,9 +58,6 @@ end
 
 class FXMapperWindow < FXMainWindow
 
-  PROGRAM_NAME = "Interactive Fiction Mapper"
-  AUTHOR = "Gonzalo Garramuno"
-
   @@copy_buffer = nil
   @@default_options = FXMapperSettings.new
 
@@ -482,7 +479,7 @@ class FXMapperWindow < FXMainWindow
   end
 
   #
-  # Export current map as Structured Vector Graphics (SVG)
+  # Export current map as Scalable Vector Graphics (SVG)
   #
   def svg_export_cb(sender, sel, msg)
     map = current_map
