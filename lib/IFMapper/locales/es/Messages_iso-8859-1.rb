@@ -1,7 +1,7 @@
 # coding: iso-8859-1
 
 PROGRAM_NAME = "Interactive Fiction Mapper"
-TITLE  = '#{PROGRAM_NAME} v#{VERSION} - Programado por #{AUTHOR}'
+TITLE        = '#{PROGRAM_NAME} v#{VERSION} - Programado por #{AUTHOR}'
 
 ################ Errores
 ERR_NO_FOX   = 'Por favor instale la librería FXRuby (FOX) version 1.2 o posterior.'
