@@ -52,6 +52,8 @@ Escrito por #{AUTHOR}.
 
 Versión de FXRuby: #{Fox::fxrubyversion}
 
+Versión de Ruby: #{RUBY_VERSION}
+
 Una herramienta de mapeado para ficción interactiva.
 
 #{EMAIL}
@@ -219,6 +221,7 @@ TRANSCRIPT_SHORTNAME_TYPE = [
   'Moonmist',
   'Witness',
   'ADRIFT',
+  'ALL CAPS'
 ]
 
 ############ Títulos de Ventanas
@@ -276,6 +279,7 @@ MENU_EDIT  = '&Editar'
 MENU_COPY  = "&Copiar\tCtl-C\tCopiar Localidad"
 MENU_CUT   = "Cor&tar\tCtl-X\tCortar Localidad"
 MENU_PASTE = "&Pegar\tCtl-V\tPegar Localidad"
+MENU_UNDO  = "&Deshacer\tCtl-U\tDeshacer Última Eliminación"
 
 MENU_MAP   = '&Mapa'
 MENU_SELECT = 'Seleccionar'
@@ -469,7 +473,7 @@ BOX_SVG_SHOWLOCTEXT                        = "Mostrar el Texto del Lugar"
 BOX_SVG_SHOWLOCTEXT_TOOLTIP                = "Include each Room's Location text in exported map"
 BOX_SVG_SHOWSECTCOMMENTS                   = "Mostrar los Comentarios de la Sección"
 BOX_SVG_SHOWSECTCOMMENTS_TOOLTIP           = "Include each Section Comments under corresponding Section Name in exported map"
-BOX_SVG_COMPASS_SIZE                       = "Tamaño de Brújula: "
+BOX_SVG_COMPASSSIZE                        = "Tamaño de Brújula: "
 BOX_SVG_COMPASSSIZE_TOOLTIP                = "Size of Compass graphic, from non-existent to huge, in exported map"
 BOX_SVG_CONNTHICKNESS                      = "Grosor de las Líneas: "
 BOX_SVG_CONNTHICKNESS_TOOLTIP              = "Thickness of Connection lines, from non-existent to heavy, in exported map"
@@ -525,6 +529,16 @@ class Room
     'so',
     'o',
     'no',
+  ]
+  DIRECTIONS_ENGLISH = [
+    'n',
+    'ne',
+    'e',
+    'se',
+    's',
+    'sw',
+    'w',
+    'nw',
   ]
 end
 

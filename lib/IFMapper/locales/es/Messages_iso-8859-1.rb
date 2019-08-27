@@ -52,6 +52,8 @@ Escrito por #{AUTHOR}.
 
 Versión de FXRuby: #{Fox::fxrubyversion}
 
+Versión de Ruby: #{RUBY_VERSION}
+
 Una herramienta de mapeado para ficción interactiva.
 
 #{EMAIL}
@@ -219,6 +221,7 @@ TRANSCRIPT_SHORTNAME_TYPE = [
   'Moonmist',
   'Witness',
   'ADRIFT',
+  'ALL CAPS'
 ]
 
 ############ Títulos de Ventanas
@@ -276,6 +279,7 @@ MENU_EDIT  = '&Editar'
 MENU_COPY  = "&Copiar\tCtl-C\tCopiar Localidad"
 MENU_CUT   = "Cor&tar\tCtl-X\tCortar Localidad"
 MENU_PASTE = "&Pegar\tCtl-V\tPegar Localidad"
+MENU_UNDO  = "&Deshacer\tCtl-U\tDeshacer Última Eliminación"
 
 MENU_MAP   = '&Mapa'
 MENU_SELECT = 'Seleccionar'
@@ -525,6 +529,16 @@ class Room
     'so',
     'o',
     'no',
+  ]
+  DIRECTIONS_ENGLISH = [
+    'n',
+    'ne',
+    'e',
+    'se',
+    's',
+    'sw',
+    'w',
+    'nw',
   ]
 end
 

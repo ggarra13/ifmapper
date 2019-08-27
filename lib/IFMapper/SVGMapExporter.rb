@@ -101,6 +101,19 @@ class SVGUtilities
     newgroup.attributes["id"] = "compass"
 
     doc.root.elements.each {|elem|
+      if elem.elements['tspan'] != nil
+        if elem.elements['tspan'].text =~ /^N$/
+          elem.elements['tspan'].text = Room::DIRECTIONS[0].upcase
+        elsif elem.elements['tspan'].text =~ /^E$/
+          elem.elements['tspan'].text = Room::DIRECTIONS[2].upcase
+        elsif elem.elements['tspan'].text =~ /^S$/
+          elem.elements['tspan'].text = Room::DIRECTIONS[4].upcase
+        elsif elem.elements['tspan'].text =~ /^W$/
+          elem.elements['tspan'].text = Room::DIRECTIONS[6].upcase
+        end
+        if DEBUG_OUTPUT; puts "svg::SVGUtilities::get_compass_svg_group:translated_compass_dir:#{elem.elements['tspan'].text}" end
+      end
+
       newgroup.add_element(elem)
     }
 

@@ -428,9 +428,9 @@ BOX_BOX_NUMBER_COLOR = '&Box Number Color'
 
 BOX_PDF_PAGE_SIZE = 'Page Size: '
 BOX_PDF_PAGE_SIZE_TEXT = [
-  'LETTER',
   'A0',
   'A4',
+  'LETTER',
 ]
 BOX_PDF_LOCATIONNOS = 'Include Location Numbers'
 
