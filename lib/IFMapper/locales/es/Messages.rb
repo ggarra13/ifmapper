@@ -431,6 +431,7 @@ FMT_SVG                                    = 'Gráfico de Vector Estructurado (*
 MENU_EXPORT_SVG                            = "Exportar como &SVG...\t\tExportar mapa como documento de Gráfico de Vector Estructurado (SVG)."
 MSG_SVG_EXPORTING                          = 'Exporting SVG file'
 MSG_SVG_GENERATOR                          = "Generator: #{PROGRAM_NAME} v#{VERSION} by #{AUTHOR}"
+MSG_SVG_GENERATION_DATE                    = "Generation Date:"
 MSG_SVG_CREATOR_PREFIX                     = 'Creator: '
 MSG_SVG_SHORTCUT_TO                        = 'Shortcut to'
 MSG_SVG_BGROUND_IMAGE_SECT_BEGINS          = 'BACKGROUND IMAGE SECTION BEGINS'
