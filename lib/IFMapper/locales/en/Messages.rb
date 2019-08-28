@@ -1,9 +1,10 @@
 # coding: utf-8
 ################ 
-TITLE = '#{PROGRAM_NAME} v#{VERSION} - Written by #{AUTHOR}'
+PROGRAM_NAME = "Interactive Fiction Mapper"
+TITLE        = '#{PROGRAM_NAME} v#{VERSION} - Written by #{AUTHOR}'
 
 ################ Errors
-ERR_NO_FOX   = 'Please install the FXRuby (FOX) library version 1.6 o later.'
+ERR_NO_FOX   = 'Please install the FXRuby (FOX) library version 1.6 or later.'
 ERR_HAS_GEMS = 'You can do it if you run \'gem install -r fxruby\''
 ERR_NO_YAML  =<<'EOF'
 Please install the 'yaml' library.  
@@ -55,7 +56,7 @@ Ruby Version: #{RUBY_VERSION}
 
 A WYSIWYG mapping tool for interactive fiction.
 
-ggarra13@gmail.com
+#{EMAIL}
 EOF
 
 MSG_SAVE_MAP = 'Save Map'
@@ -63,21 +64,21 @@ MSG_WAS_MODIFIED = "was modified.\n"
 MSG_SHOULD_I_SAVE_CHANGES = 'Should I save the changes?'
 
 MSG_SAVE_MAP_AS_TRIZBORT = 'Save Map as Trizbort File'
-FMT_TRIZBORT             = 'Trizbort Map (*.trizbort)'
+FMT_TRIZBORT             = 'Trizbort Maps (*.trizbort)'
 
 MSG_SAVE_MAP_AS_IFM = 'Save Map as IFM File'
-FMT_IFM             = 'IFM Map (*.ifm)'
+FMT_IFM             = 'IFM Maps (*.ifm)'
 
 MSG_SAVE_MAP_AS_INFORM6 = 'Save Map as Inform 6 Files'
 MSG_SAVE_MAP_AS_INFORM7 = 'Save Map as Inform 7 Files'
-FMT_INFORM6            = 'Inform6 Source Code (*.inf)'
-FMT_INFORM7            = 'Inform7 Source Code (*.inform)'
+FMT_INFORM6            = 'Inform6 Source Code Files (*.inf)'
+FMT_INFORM7            = 'Inform7 Source Code Files (*.inform)'
 
 MSG_SAVE_MAP_AS_TADS   = 'Save Map as TADS Files'
-FMT_TADS               = 'TADS Source Code (*.t)'
+FMT_TADS               = 'TADS Source Code Files (*.t)'
 
 MSG_SAVE_MAP_AS_PDF    = 'Save Map as Acrobat PDF'
-FMT_PDF                = 'Acrobat PDF (*.pdf)'
+FMT_PDF                = 'Acrobat PDF Files (*.pdf)'
 
 MSG_HOTKEYS = <<'EOF'
 
@@ -238,9 +239,9 @@ TITLE_OF        = 'of'
 
 
 ############ Extensions
-EXT_TRANSCRIPT = 'Transcript File (*.log,*.scr,*.txt)'
+EXT_TRANSCRIPT = 'Transcript Files (*.log,*.scr,*.txt)'
 EXT_ALL_FILES  = 'All Files (*)'
-EXT_MAP_FILES  = 'Archivos de Mapas'
+EXT_MAP_FILES  = 'Map Files'
 
 
 
@@ -427,25 +428,64 @@ BOX_BOX_NUMBER_COLOR = '&Box Number Color'
 
 BOX_PDF_PAGE_SIZE = 'Page Size: '
 BOX_PDF_PAGE_SIZE_TEXT = [
-  'LETTER',
   'A0',
   'A4',
+  'LETTER',
 ]
 BOX_PDF_LOCATIONNOS = 'Include Location Numbers'
 
-MSG_SAVE_MAP_AS_SVG    = 'Save Map as Structured Vector Graphic (SVG)'
-FMT_SVG                = 'Structured Vector Graphic (*.svg)'
-MENU_EXPORT_SVG        = "Export as &SVG...\t\tExport map as Structured Vector Graphics (SVG) document."
-BOX_SVG_LOCATIONNOS    = "Show Location Numbers"
-BOX_SVG_INTERACTIVE    = "Show Interactive Room Information"
-BOX_SVG_CONNECTIONS    = "Show Connections Between Locations"
-BOX_SVG_ROOMNAMES      = "Show Location Text"
-BOX_SVG_SECTIONCOMMENTS= "Show Section Comments"
-BOX_SVG_SPLITSECTIONS  = "Export Sections To Separate SVG Files"
-BOX_SVG_COMPASS_SIZE   = "Compass Size: "
-BOX_SVG_LINE_THICKNESS = "Line Thickness: "
-BOX_SVG_COLOUR_SCHEME  = "Colour Scheme: "
-BOX_SVG_COLOUR_SCHEME_TEXT = [
+MSG_SAVE_MAP_AS_SVG                        = 'Save Map as SVG'
+FMT_SVG                                    = 'Scalable Vector Graphics Files (*.svg)'
+MENU_EXPORT_SVG                            = "Export as &SVG...\t\tExport map as Scalable Vector Graphics (SVG) document."
+MSG_SVG_EXPORTING                          = 'Exporting SVG file'
+MSG_SVG_GENERATOR                          = "Generator: #{PROGRAM_NAME} v#{VERSION} by #{AUTHOR}"
+MSG_SVG_GENERATION_DATE                    = "Generation Date:"
+MSG_SVG_CREATOR_PREFIX                     = 'Creator: '
+MSG_SVG_SHORTCUT_TO                        = 'Shortcut to'
+MSG_SVG_BGROUND_IMAGE_SECT_BEGINS          = 'BACKGROUND IMAGE SECTION BEGINS'
+MSG_SVG_BGROUND_IMAGE_SECT_ENDS            = 'BACKGROUND IMAGE SECTION ENDS'
+MSG_SVG_BGROUND_IMAGE_ENABLE_COMMENT_START = 'UNCOMMENT LINE BELOW TO ENABLE'
+MSG_SVG_BGROUND_IMAGE_ENABLE_COMMENT_END   = 'BACKGROUND IMAGE'
+MSG_SVG_MAP_SECT_BEGINS                    = 'MAP SECTION BEGINS'
+MSG_SVG_MAP_SECT_ENDS                      = 'MAP SECTION ENDS'
+MSG_SVG_EXPORT_COMPLETED                   = 'Exporting SVG Completed'
+BOX_SVG_SHOWLOCNUMS                        = "Show Location Numbers"
+BOX_SVG_SHOWLOCNUMS_TOOLTIP                = "Include each Room's Location Number in exported map"
+BOX_SVG_SHOWINTERTITLE                     = "Show Interactive Location Information:"
+BOX_SVG_SHOWINTEROBJECTS                   = "Objects"
+BOX_SVG_SHOWINTEROBJECTS_TOOLTIP           = "Include the Objects at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERTASKS                     = "Tasks"
+BOX_SVG_SHOWINTERTASKS_TOOLTIP             = "Include the Tasks at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERCOMMENTS                  = "Comments"
+BOX_SVG_SHOWINTERCOMMENTS_TOOLTIP          = "Include the Comments at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERDESCRIPTION               = "Description"
+BOX_SVG_SHOWINTERDESCRIPTION_TOOLTIP       = "Include the Description at each Room's Location as drop-down in exported map"
+
+BOX_SVG_EXPORTALLCOMBINED                  = "All Sections to Combined SVG file"
+BOX_SVG_EXPORTALLCOMBINED_TOOLTIP          = "All Sections exported to a single SVG file, in order"
+BOX_SVG_EXPORTALLINDIV                     = "All Sections to Individual SVG files"
+BOX_SVG_EXPORTALLINDIV_TOOLTIP             = "All Sections exported to separate SVG files"
+BOX_SVG_EXPORTCURRENTINDIV                 = "Current Section to Individual SVG file"
+BOX_SVG_EXPORTCURRENTINDIV_TOOLTIP         = "Current Section exported to a single SVG file"
+
+BOX_SVG_EXPORTSELONLY                      = "Only Include Currently Selected Elements"
+BOX_SVG_EXPORTSELONLY_TOOLTIP              = "Select some Locations and/or Connections in the Current Section,\nthen use this option to ensure that only these elements, along\nwith Location no. 1 are included in the exported map"
+BOX_SVG_EXPORTALLLOCSSELTXT                = "Include All Locations, Only Show Location\nText For Currently Selected Locations"
+BOX_SVG_EXPORTALLLOCSSELTXT_TOOLTIP        = "The exported map will contain all Locations in the Current Section.\nLocation no. 1 and any Locations currently selected will have their Location Text included.\nOnly Connections that are currently selected will be included in the map"
+
+BOX_SVG_SHOWLOCTEXT                        = "Show Location Text"
+BOX_SVG_SHOWLOCTEXT_TOOLTIP                = "Include each Room's Location text in exported map"
+BOX_SVG_SHOWSECTCOMMENTS                   = "Show Section Comments"
+BOX_SVG_SHOWSECTCOMMENTS_TOOLTIP           = "Include each Section Comments under corresponding Section Name in exported map"
+BOX_SVG_COMPASSSIZE                        = "Compass Size: "
+BOX_SVG_COMPASSSIZE_TOOLTIP                = "Size of Compass graphic, from non-existent to huge, in exported map"
+BOX_SVG_CONNTHICKNESS                      = "Connection Thickness:"
+BOX_SVG_CONNTHICKNESS_TOOLTIP              = "Thickness of Connection lines, from non-existent to heavy, in exported map"
+BOX_SVG_COLOURSCHEME                       = "Colour Scheme:"
+BOX_SVG_COLOURSCHEME_TOOLTIP               = "A basic Colour Scheme used for the location number, interactive\nlocation information and doors in exported map"
+BOX_SVG_LOCTHICKNESS                       = "Location Thickness:"
+BOX_SVG_LOCTHICKNESS_TOOLTIP               = "Thickness of Location lines, from thin to heavy, in exported map"
+BOX_SVG_COLOURSCHEME_OPTIONS = [
   'Red',
   'Green',
   'Yellow',

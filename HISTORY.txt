@@ -1,3 +1,14 @@
+v2.1.0  Overhauled SVG export support
+        Updated English documentation to meet modern HTML5 standard
+        Rewrote & simplified English installation instructions for clarity
+        Hide unimplemented Print menu option
+        BUGFIX: Instructions link opens browser in macOS & Linux
+        BUGFIX: Ruby version comparisons in IFM, Inform & TADS writers
+        courtesy of PeteT & Samwiseuk
+
+v2.0.9  Fix a few Ruby 2.5 issues when using Automapper
+        courtesy of Bill Lash/welash
+
 v2.0.8  Bug fixed PDF Writer as it was no longer working with v2.1+ Rubys.
 
 v2.0.5  Bug fixed Spanish locale crashing due to missing BOX_COMMENTS.

@@ -1,6 +1,6 @@
 
 begin
-  if RUBY_VERSION.to_f < 1.9
+  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('1.9.0')
     require 'iconv'
   end
 rescue LoadError
