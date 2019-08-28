@@ -58,9 +58,6 @@ end
 
 class FXMapperWindow < FXMainWindow
 
-  PROGRAM_NAME = "Interactive Fiction Mapper"
-  AUTHOR = "Gonzalo Garramuno"
-
   @@copy_buffer = nil
   @@default_options = FXMapperSettings.new
 
@@ -482,7 +479,7 @@ class FXMapperWindow < FXMainWindow
   end
 
   #
-  # Export current map as Structured Vector Graphics (SVG)
+  # Export current map as Scalable Vector Graphics (SVG)
   #
   def svg_export_cb(sender, sel, msg)
     map = current_map
@@ -1065,7 +1062,7 @@ class FXMapperWindow < FXMainWindow
 
     cmd = FXMenuCommand.new(submenu, MENU_PRINT_LOCATIONS, nil)
     cmd.connect(SEL_COMMAND, method(:print_locations_cb))
-    FXMenuCascade.new(filemenu, MENU_PRINT, nil, submenu)
+    #FXMenuCascade.new(filemenu, MENU_PRINT, nil, submenu)
 
     cmd = FXMenuCommand.new(filemenu, MENU_QUIT, nil)
     cmd.connect( SEL_COMMAND, method(:close_cb) )
@@ -1430,19 +1427,15 @@ class FXMapperWindow < FXMainWindow
   end
 
   def docs(*opts)
-    browsers = [ 'chrome', 'chromium', 'firefox', 'opera', 'explorer' ]
     address  = 'docs/' + language + '/start.html'
     status "#{MSG_OPENING_WEB_PAGE} #{address}..."
-    ok = false
-    browsers.each { |cmd|
-      if RUBY_PLATFORM =~ /mswin/
-	ok = system("start #{cmd} #{address}")
-      else
-	ok = system("#{cmd} #{address} &")
-      end
-      break if ok
-    }
-    if not ok
+    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+      system("rundll32 url.dll,FileProtocolHandler \"#{address}\"")
+    elsif RUBY_PLATFORM =~ /darwin/
+      system("open \"#{address}\"")
+    elsif RUBY_PLATFORM =~ /linux|bsd/
+      system("xdg-open \"#{address}\"")
+    else
       status ERR_COULD_NOT_OPEN_WEB_BROWSER
     end
   end

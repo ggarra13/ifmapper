@@ -1,6 +1,7 @@
 # coding: iso-8859-1
 
-TITLE  = '#{PROGRAM_NAME} v#{VERSION} - Programado por #{AUTHOR}'
+PROGRAM_NAME = "Interactive Fiction Mapper"
+TITLE        = '#{PROGRAM_NAME} v#{VERSION} - Programado por #{AUTHOR}'
 
 ################ Errores
 ERR_NO_FOX   = 'Por favor instale la librería FXRuby (FOX) version 1.2 o posterior.'
@@ -51,9 +52,11 @@ Escrito por #{AUTHOR}.
 
 Versión de FXRuby: #{Fox::fxrubyversion}
 
+Versión de Ruby: #{RUBY_VERSION}
+
 Una herramienta de mapeado para ficción interactiva.
 
-ggarra13@gmail.com
+#{EMAIL}
 EOF
 
 MSG_SAVE_MAP = 'Grabar Mapa'
@@ -218,6 +221,7 @@ TRANSCRIPT_SHORTNAME_TYPE = [
   'Moonmist',
   'Witness',
   'ADRIFT',
+  'ALL CAPS'
 ]
 
 ############ Títulos de Ventanas
@@ -275,6 +279,7 @@ MENU_EDIT  = '&Editar'
 MENU_COPY  = "&Copiar\tCtl-C\tCopiar Localidad"
 MENU_CUT   = "Cor&tar\tCtl-X\tCortar Localidad"
 MENU_PASTE = "&Pegar\tCtl-V\tPegar Localidad"
+MENU_UNDO  = "&Deshacer\tCtl-U\tDeshacer Última Eliminación"
 
 MENU_MAP   = '&Mapa'
 MENU_SELECT = 'Seleccionar'
@@ -425,19 +430,58 @@ BOX_PDF_PAGE_ORIENTATION_TEXT = [
 ]
 BOX_PDF_LOCATIONNOS = 'Incluya números de ubicación'
 
-MSG_SAVE_MAP_AS_SVG    = 'Grabar Mapa como Gráfico de Vector Estructurado (SVG)'
-FMT_SVG                = 'Gráfico de Vector Estructurado (*.svg)'
-MENU_EXPORT_SVG        = "Exportar como &SVG...\t\tExportar mapa como documento de Gráfico de Vector Estructurado (SVG)."
-BOX_SVG_LOCATIONNOS    = "Mostar números de ubicación"
-BOX_SVG_INTERACTIVE    = "Mostrar Información Interactiva del Lugar"
-BOX_SVG_CONNECTIONS    = "Mostrar Conexiones entre los Lugares"
-BOX_SVG_ROOMNAMES      = "Mostrar el Texto del Lugar"
-BOX_SVG_SECTIONCOMMENTS= "Mostrar los Comentarios de la Sección"
-BOX_SVG_SPLITSECTIONS  = "Exportar a Archivos Separados de SVG"
-BOX_SVG_COMPASS_SIZE   = "Tamaño de Brújula: "
-BOX_SVG_LINE_THICKNESS = "Grosor de las Líneas: "
-BOX_SVG_COLOUR_SCHEME  = "Esquema de Color: "
-BOX_SVG_COLOUR_SCHEME_TEXT = [
+MSG_SAVE_MAP_AS_SVG                        = 'Grabar Mapa como (SVG)'
+FMT_SVG                                    = 'Gráfico de Vector Estructurado (*.svg)'
+MENU_EXPORT_SVG                            = "Exportar como &SVG...\t\tExportar mapa como documento de Gráfico de Vector Estructurado (SVG)."
+MSG_SVG_EXPORTING                          = 'Exporting SVG file'
+MSG_SVG_GENERATOR                          = "Generator: #{PROGRAM_NAME} v#{VERSION} by #{AUTHOR}"
+MSG_SVG_GENERATION_DATE                    = "Generation Date:"
+MSG_SVG_CREATOR_PREFIX                     = 'Creator: '
+MSG_SVG_SHORTCUT_TO                        = 'Shortcut to'
+MSG_SVG_BGROUND_IMAGE_SECT_BEGINS          = 'BACKGROUND IMAGE SECTION BEGINS'
+MSG_SVG_BGROUND_IMAGE_SECT_ENDS            = 'BACKGROUND IMAGE SECTION ENDS'
+MSG_SVG_BGROUND_IMAGE_ENABLE_COMMENT_START = 'UNCOMMENT LINE BELOW TO ENABLE'
+MSG_SVG_BGROUND_IMAGE_ENABLE_COMMENT_END   = 'BACKGROUND IMAGE'
+MSG_SVG_MAP_SECT_BEGINS                    = 'MAP SECTION BEGINS'
+MSG_SVG_MAP_SECT_ENDS                      = 'MAP SECTION ENDS'
+MSG_SVG_EXPORT_COMPLETED                   = 'Exporting SVG Completed'
+BOX_SVG_SHOWLOCNUMS                        = "Mostar números de ubicación"
+BOX_SVG_SHOWLOCNUMS_TOOLTIP                = "Include each Room's Location Number in exported map"
+BOX_SVG_SHOWINTERTITLE                     = "Mostrar Información Interactiva del Lugar"
+BOX_SVG_SHOWINTEROBJECTS                   = "Objects"
+BOX_SVG_SHOWINTEROBJECTS_TOOLTIP           = "Include the Objects at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERTASKS                     = "Tasks"
+BOX_SVG_SHOWINTERTASKS_TOOLTIP             = "Include the Tasks at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERCOMMENTS                  = "Comments"
+BOX_SVG_SHOWINTERCOMMENTS_TOOLTIP          = "Include the Comments at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTERDESCRIPTION               = "Description"
+BOX_SVG_SHOWINTERDESCRIPTION_TOOLTIP       = "Include the Description at each Room's Location as drop-down in exported map"
+
+BOX_SVG_EXPORTALLCOMBINED                  = "All Sections to Combined SVG file"
+BOX_SVG_EXPORTALLCOMBINED_TOOLTIP          = "All Sections exported to a single SVG file, in order"
+BOX_SVG_EXPORTALLINDIV                     = "All Sections to Individual SVG files"
+BOX_SVG_EXPORTALLINDIV_TOOLTIP             = "All Sections exported to separate SVG files"
+BOX_SVG_EXPORTCURRENTINDIV                 = "Current Section to Individual SVG file"
+BOX_SVG_EXPORTCURRENTINDIV_TOOLTIP         = "Current Section exported to a single SVG file"
+
+BOX_SVG_EXPORTSELONLY                      = "Only Include Currently Selected Elements"
+BOX_SVG_EXPORTSELONLY_TOOLTIP              = "Select some Locations and/or Connections in the Current Section,\nthen use this option to ensure that only these elements, along\nwith Location no. 1 are included in the exported map"
+BOX_SVG_EXPORTALLLOCSSELTXT                = "Include All Locations, Only Show Location\nText For Currently Selected Locations"
+BOX_SVG_EXPORTALLLOCSSELTXT_TOOLTIP        = "The exported map will contain all Locations in the Current Section.\nLocation no. 1 and any Locations currently selected will have their Location Text included.\nOnly Connections that are currently selected will be included in the map"
+
+BOX_SVG_SHOWLOCTEXT                        = "Mostrar el Texto del Lugar"
+BOX_SVG_SHOWLOCTEXT_TOOLTIP                = "Include each Room's Location text in exported map"
+BOX_SVG_SHOWSECTCOMMENTS                   = "Mostrar los Comentarios de la Sección"
+BOX_SVG_SHOWSECTCOMMENTS_TOOLTIP           = "Include each Section Comments under corresponding Section Name in exported map"
+BOX_SVG_COMPASSSIZE                        = "Tamaño de Brújula: "
+BOX_SVG_COMPASSSIZE_TOOLTIP                = "Size of Compass graphic, from non-existent to huge, in exported map"
+BOX_SVG_CONNTHICKNESS                      = "Grosor de las Líneas: "
+BOX_SVG_CONNTHICKNESS_TOOLTIP              = "Thickness of Connection lines, from non-existent to heavy, in exported map"
+BOX_SVG_COLOURSCHEME                       = "Esquema de Color: "
+BOX_SVG_COLOURSCHEME_TOOLTIP               = "A basic Colour Scheme used for the location number, interactive\nlocation information and doors in exported map"
+BOX_SVG_LOCTHICKNESS                       = "Location Thickness:"
+BOX_SVG_LOCTHICKNESS_TOOLTIP               = "Thickness of Location lines, from thin to heavy, in exported map"
+BOX_SVG_COLOURSCHEME_OPTIONS = [
   'Red',
   'Green',
   'Yellow',
@@ -485,6 +529,16 @@ class Room
     'so',
     'o',
     'no',
+  ]
+  DIRECTIONS_ENGLISH = [
+    'n',
+    'ne',
+    'e',
+    'se',
+    's',
+    'sw',
+    'w',
+    'nw',
   ]
 end
 
