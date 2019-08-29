@@ -1,5 +1,5 @@
 # coding: utf-8
-################ 
+################
 PROGRAM_NAME = "Interactive Fiction Mapper"
 TITLE        = '#{PROGRAM_NAME} v#{VERSION} - Written by #{AUTHOR}'
 
@@ -7,7 +7,7 @@ TITLE        = '#{PROGRAM_NAME} v#{VERSION} - Written by #{AUTHOR}'
 ERR_NO_FOX   = 'Please install the FXRuby (FOX) library version 1.6 or later.'
 ERR_HAS_GEMS = 'You can do it if you run \'gem install -r fxruby\''
 ERR_NO_YAML  =<<'EOF'
-Please install the 'yaml' library.  
+Please install the 'yaml' library.
 Without it preferences cannot be loaded or saved.
 EOF
 ERR_COULD_NOT_SAVE = 'Could not save'
@@ -95,7 +95,7 @@ Click with LMB on any room or connection to select it.
 
 Double click on rooms or connections to access their properties.
 
-Click several times on an existing connecion to establish a one-way 
+Click several times on an existing connecion to establish a one-way
 connection.
 
 Drag with MMB or ALT + LMB to scroll around the page.
@@ -103,7 +103,7 @@ Drag with MMB or ALT + LMB to scroll around the page.
 Use mousewheel to zoom in and out.
 
 Use RMB after selecting a connection to bring a menu to allow you
-to flip its direction or to attach it to some other exit in one 
+to flip its direction or to attach it to some other exit in one
 of the rooms.
 
 Keyboard controls
@@ -114,10 +114,10 @@ rooms that are not neighbors), then click on each exit of each room.
 
 Use 'Delete' or 'Backspace' to remove any selected connection or room.
 
-Use arrow keys or numeric keypad to move selected rooms around 
+Use arrow keys or numeric keypad to move selected rooms around
 the page, one unit at a time.
 
-Use CTRL + LMB when adding a connection to create a dead-end 
+Use CTRL + LMB when adding a connection to create a dead-end
 connection (one that loops onto itself)
 
 EOF
@@ -129,17 +129,17 @@ MSG_OPENING_WEB_PAGE = 'Opening web page'
 TRANSCRIPT_EXPLANATION_TEXT = [
 "Classic Mode expects a short name description for all
 locations, where all words of 5 or more characters to are
-capitalized and where there is no period.  
+capitalized and where there is no period.
 Commands always begin with a > prompt.",
 "Capitalized Mode expects a short name description for all
 locations, where only the first word needs to be capitalized
-and there is no period.  
+and there is no period.
 Commands always begin with a > prompt.",
 "Moonmist mode describes locations in parenthesis, with 'You
 are...' prefixed and a period at the end, inside the parenthesis.
 Commands always begin with a > prompt.",
 "Witness mode expects locations described as normal prose, using
-'You are...' as an introductory paragraph.  When in brief mode, 
+'You are...' as an introductory paragraph.  When in brief mode,
 locations are expected to be in parenthesis.
 Commands always begin with a > prompt.",
 "ADRIFT mode expects locations to be like in Classic Mode (short
@@ -175,15 +175,15 @@ beating urgently against the rocks far below.
 > look
 You are now in the driveway entrance.
 You are standing at the foot of the driveway, the entrance to the
-Linder property. The entire lot is screened from the street and the 
-neighbors by a wooden fence, except on the east side, which fronts on 
+Linder property. The entire lot is screened from the street and the
+neighbors by a wooden fence, except on the east side, which fronts on
 dense bamboo woods.
 ",
 "
 look
 Front of Mall
-    Although four-wheeled vehicles do pass through, this autonomous 
-spot of pavement is too narrow a place for them to stall.  It is just 
+    Although four-wheeled vehicles do pass through, this autonomous
+spot of pavement is too narrow a place for them to stall.  It is just
 right for bicycles and motorbikes such as yours.
 ",
 "
@@ -393,7 +393,7 @@ BOX_DIR_TEXT = [
 ]
 BOX_EXIT_A_TEXT = 'Exit A Text:'
 BOX_EXIT_B_TEXT = 'Exit B Text:'
-BOX_EXIT_TEXT = [ 
+BOX_EXIT_TEXT = [
   'None',
   'Up',
   'Down',
@@ -431,6 +431,11 @@ BOX_PDF_PAGE_SIZE_TEXT = [
   'A0',
   'A4',
   'LETTER',
+]
+BOX_PDF_PAGE_ORIENTATION = 'Orientation of the Pages: '
+BOX_PDF_PAGE_ORIENTATION_TEXT = [
+  'Landscape',
+  'Portrait',
 ]
 BOX_PDF_LOCATIONNOS = 'Include Location Numbers'
 

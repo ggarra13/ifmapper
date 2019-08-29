@@ -1,4 +1,4 @@
-# coding: iso-8859-1
+# coding: utf-8
 
 PROGRAM_NAME = "Interactive Fiction Mapper"
 TITLE        = '#{PROGRAM_NAME} v#{VERSION} - Programado por #{AUTHOR}'
@@ -93,7 +93,7 @@ Use el BIR para agregar localidades o conexiones entre ellas.
 
 Cliquée con el BIR en una localidad o conexión para seleccionarla.
 
-Cliquée Dos Veces en una localidad o conexión para acceder a 
+Cliquée Dos Veces en una localidad o conexión para acceder a
 sus propiedades.
 
 Cliquée Varias Veces en una conexión existente para establecer una
@@ -115,10 +115,10 @@ Use 'x' para comenzar una conexión compleja (es decir, una conexión entre
 localidades que no son vecinas), luego cliquée en cada salida de cada
 localidad.
 
-Use 'Supr' (Delete) or '<-' (Backspace) para borrar una conexión 
+Use 'Supr' (Delete) or '<-' (Backspace) para borrar una conexión
 o localidad seleccionada.
 
-Use las teclas de flechas del cursor o el teclado numérico para mover 
+Use las teclas de flechas del cursor o el teclado numérico para mover
 las habitaciones seleccionadas alrededor de la página, una unidad a la vez.
 
 Use CTRL + BIR cuando agregue una conexión para crear una conexión
@@ -134,23 +134,25 @@ MSG_OPENING_WEB_PAGE = 'Abriendo página web'
 TRANSCRIPT_EXPLANATION_TEXT = [
 "Modo Clásico espera un encabezado para todas las localidades,
 donde todas las palabras de 5 o más letras aparecen en
-mayúsculas y donde no hay ningún punto.  
+mayúsculas y donde no hay ningún punto.
 Los comandos siempre comienzan tras un >.",
 "Modo Mayúsculas espera un encabezado para todas las localidades,
 donde sólo la primera palabra necesita estar en mayúsculas y
-donde no hay ningún punto.  
+donde no hay ningún punto.
 Los comandos siempre comienzan tras un >.",
 "Modo Moonmist describe las localidades en parentesis, con un 'You
 are...' como prefijo y un punto al final de la oración, dentro de
 los parentesis.
 Los comandos siempre comienzan tras un >.",
 "Modo Witness espera las localidades descriptas como prosa normal
-usando 'You are...' como párrafo introductorio.  En modo simple, 
+usando 'You are...' como párrafo introductorio.  En modo simple,
 las localidades se describen en paréntesis.
 Los comandos siempre comienzan tras un >.",
 "Modo ADRIFT espera las localidades como en el modo Clásico
 (encabezados de palabras de 5 o más letras en mayúsculas).
 Los comandos comienzan sólo con una palabra en minúscula sin margen.",
+"Modo Todo Mayúsculas es como el Clásico pero espera que todas las
+localidades esten en mayúsculas."
 ]
 
 
@@ -178,17 +180,23 @@ beating urgently against the rocks far below.
 > mira
 You are now in the driveway entrance.
 You are standing at the foot of the driveway, the entrance to the
-Linder property. The entire lot is screened from the street and the 
-neighbors by a wooden fence, except on the east side, which fronts on 
+Linder property. The entire lot is screened from the street and the
+neighbors by a wooden fence, except on the east side, which fronts on
 dense bamboo woods.
 ",
 "
 mira
 Entrada del Shopping
-    Aunque vehículos de cuatro ruedas pasan por aquí, este lugar autónomo 
-del pavimento es demasiado angosto para que estacionen.  Es apenas 
+    Aunque vehículos de cuatro ruedas pasan por aquí, este lugar autónomo
+del pavimento es demasiado angosto para que estacionen.  Es apenas
 apropiado para bicicletas y motocicletas como la tuya.
 ",
+"
+> mira
+AL OESTE DE LA CASA
+Estás parado en un campo abierto al oeste de una casa blanca, con una
+puerta clausurada.
+"
   ]
 
 TRANSCRIPT_LOCATION2_TEXT = [
@@ -207,6 +215,9 @@ Vestidor de mujeres
 "
 Entrada del Shopping
 ",
+"
+OESTE DEL HALL
+"
 ]
 
 
@@ -221,7 +232,7 @@ TRANSCRIPT_SHORTNAME_TYPE = [
   'Moonmist',
   'Witness',
   'ADRIFT',
-  'ALL CAPS'
+  'Todo Mayúsculas'
 ]
 
 ############ Títulos de Ventanas
@@ -384,7 +395,7 @@ BOX_DIR_TEXT = [
 ]
 BOX_EXIT_A_TEXT = 'Texto Salida A:'
 BOX_EXIT_B_TEXT = 'Texto Salida B:'
-BOX_EXIT_TEXT = [ 
+BOX_EXIT_TEXT = [
   'Ninguno',
   'Subir',
   'Bajar',
@@ -425,8 +436,8 @@ BOX_PDF_PAGE_SIZE_TEXT = [
 ]
 BOX_PDF_PAGE_ORIENTATION = 'Orientación de las Páginas: '
 BOX_PDF_PAGE_ORIENTATION_TEXT = [
-  'Landscape',
-  'Portrait',
+  'Paisaje',
+  'Portaretrato',
 ]
 BOX_PDF_LOCATIONNOS = 'Incluya números de ubicación'
 
@@ -435,9 +446,9 @@ FMT_SVG                                    = 'Gráfico de Vector Estructurado (*
 MENU_EXPORT_SVG                            = "Exportar como &SVG...\t\tExportar mapa como documento de Gráfico de Vector Estructurado (SVG)."
 MSG_SVG_EXPORTING                          = 'Exporting SVG file'
 MSG_SVG_GENERATOR                          = "Generator: #{PROGRAM_NAME} v#{VERSION} by #{AUTHOR}"
-MSG_SVG_GENERATION_DATE                    = "Generation Date:"
-MSG_SVG_CREATOR_PREFIX                     = 'Creator: '
-MSG_SVG_SHORTCUT_TO                        = 'Shortcut to'
+MSG_SVG_GENERATION_DATE                    = "Fecha de Generación:"
+MSG_SVG_CREATOR_PREFIX                     = 'Creador: '
+MSG_SVG_SHORTCUT_TO                        = 'Atajo a'
 MSG_SVG_BGROUND_IMAGE_SECT_BEGINS          = 'BACKGROUND IMAGE SECTION BEGINS'
 MSG_SVG_BGROUND_IMAGE_SECT_ENDS            = 'BACKGROUND IMAGE SECTION ENDS'
 MSG_SVG_BGROUND_IMAGE_ENABLE_COMMENT_START = 'UNCOMMENT LINE BELOW TO ENABLE'
@@ -448,39 +459,39 @@ MSG_SVG_EXPORT_COMPLETED                   = 'Exporting SVG Completed'
 BOX_SVG_SHOWLOCNUMS                        = "Mostar números de ubicación"
 BOX_SVG_SHOWLOCNUMS_TOOLTIP                = "Include each Room's Location Number in exported map"
 BOX_SVG_SHOWINTERTITLE                     = "Mostrar Información Interactiva del Lugar"
-BOX_SVG_SHOWINTEROBJECTS                   = "Objects"
-BOX_SVG_SHOWINTEROBJECTS_TOOLTIP           = "Include the Objects at each Room's Location as drop-down in exported map"
-BOX_SVG_SHOWINTERTASKS                     = "Tasks"
-BOX_SVG_SHOWINTERTASKS_TOOLTIP             = "Include the Tasks at each Room's Location as drop-down in exported map"
-BOX_SVG_SHOWINTERCOMMENTS                  = "Comments"
-BOX_SVG_SHOWINTERCOMMENTS_TOOLTIP          = "Include the Comments at each Room's Location as drop-down in exported map"
-BOX_SVG_SHOWINTERDESCRIPTION               = "Description"
-BOX_SVG_SHOWINTERDESCRIPTION_TOOLTIP       = "Include the Description at each Room's Location as drop-down in exported map"
+BOX_SVG_SHOWINTEROBJECTS                   = "Objetos"
+BOX_SVG_SHOWINTEROBJECTS_TOOLTIP           = "Incluye los Objects en cada Localidad como un drop-down en el mapa exportado"
+BOX_SVG_SHOWINTERTASKS                     = "Tareas"
+BOX_SVG_SHOWINTERTASKS_TOOLTIP             = "Incluye las Tareas en cada Localidad como un drop-down en el mapa exportado"
+BOX_SVG_SHOWINTERCOMMENTS                  = "Commentarios"
+BOX_SVG_SHOWINTERCOMMENTS_TOOLTIP          = "Incluye los Commentarios en cada Localidad como un drop-down en el mapa exportado"
+BOX_SVG_SHOWINTERDESCRIPTION               = "Descripción"
+BOX_SVG_SHOWINTERDESCRIPTION_TOOLTIP       = "Incluye la Descripción en cada Localidad como un drop-down en el mapa exportado"
 
-BOX_SVG_EXPORTALLCOMBINED                  = "All Sections to Combined SVG file"
-BOX_SVG_EXPORTALLCOMBINED_TOOLTIP          = "All Sections exported to a single SVG file, in order"
-BOX_SVG_EXPORTALLINDIV                     = "All Sections to Individual SVG files"
-BOX_SVG_EXPORTALLINDIV_TOOLTIP             = "All Sections exported to separate SVG files"
-BOX_SVG_EXPORTCURRENTINDIV                 = "Current Section to Individual SVG file"
-BOX_SVG_EXPORTCURRENTINDIV_TOOLTIP         = "Current Section exported to a single SVG file"
+BOX_SVG_EXPORTALLCOMBINED                  = "Todas las Seccioness en un archivo SVG Combinado"
+BOX_SVG_EXPORTALLCOMBINED_TOOLTIP          = "Todas las Secciones exportadas a un solo archivo SVG, en orden"
+BOX_SVG_EXPORTALLINDIV                     = "Todas las Secciones a archivos SVG individuales"
+BOX_SVG_EXPORTALLINDIV_TOOLTIP             = "Todas las Secciones exportadas como archivos SVG separados"
+BOX_SVG_EXPORTCURRENTINDIV                 = "Sección Actual a archivo SVG individual"
+BOX_SVG_EXPORTCURRENTINDIV_TOOLTIP         = "Sección Actual exportada a un solo archivo SVG"
 
-BOX_SVG_EXPORTSELONLY                      = "Only Include Currently Selected Elements"
-BOX_SVG_EXPORTSELONLY_TOOLTIP              = "Select some Locations and/or Connections in the Current Section,\nthen use this option to ensure that only these elements, along\nwith Location no. 1 are included in the exported map"
-BOX_SVG_EXPORTALLLOCSSELTXT                = "Include All Locations, Only Show Location\nText For Currently Selected Locations"
-BOX_SVG_EXPORTALLLOCSSELTXT_TOOLTIP        = "The exported map will contain all Locations in the Current Section.\nLocation no. 1 and any Locations currently selected will have their Location Text included.\nOnly Connections that are currently selected will be included in the map"
+BOX_SVG_EXPORTSELONLY                      = "Sólo Incluya los Elementos Seleccionados"
+BOX_SVG_EXPORTSELONLY_TOOLTIP              = "Seleccione algunas Localidades y/o Conexiones en la Sección Actual,\nluego use esta opción para asegurarse que solo estos elementos, junto\ncon el no. de Localidad serán incluídas en el mapa estportado"
+BOX_SVG_EXPORTALLLOCSSELTXT                = "Incluye Todas las Localidades, Solo Muestre el Texto\nde la Localidad para las Localidades Actualmente Seleccionadas"
+BOX_SVG_EXPORTALLLOCSSELTXT_TOOLTIP        = "El mapa exportado contendrá toas las Localidades en la Sección Actual.\Número de localidad y cualquier Localidad actualmente seleccionada tendran su Texto de Localidad incluído.\nSólo Conexiones que están actualmente seleccionadas serán incluídas en el mapa"
 
 BOX_SVG_SHOWLOCTEXT                        = "Mostrar el Texto del Lugar"
-BOX_SVG_SHOWLOCTEXT_TOOLTIP                = "Include each Room's Location text in exported map"
+BOX_SVG_SHOWLOCTEXT_TOOLTIP                = "Incluir el texto de cada Localidad en el mapa exportado"
 BOX_SVG_SHOWSECTCOMMENTS                   = "Mostrar los Comentarios de la Sección"
-BOX_SVG_SHOWSECTCOMMENTS_TOOLTIP           = "Include each Section Comments under corresponding Section Name in exported map"
+BOX_SVG_SHOWSECTCOMMENTS_TOOLTIP           = "Incluir los Comentarios de cada Sección bajo el Nombre de la Sección en el mapa exportado"
 BOX_SVG_COMPASSSIZE                        = "Tamaño de Brújula: "
-BOX_SVG_COMPASSSIZE_TOOLTIP                = "Size of Compass graphic, from non-existent to huge, in exported map"
+BOX_SVG_COMPASSSIZE_TOOLTIP                = "Tamaño del gráfico de la Brújula, desde no existente a gigante, en el mapa exportado"
 BOX_SVG_CONNTHICKNESS                      = "Grosor de las Líneas: "
-BOX_SVG_CONNTHICKNESS_TOOLTIP              = "Thickness of Connection lines, from non-existent to heavy, in exported map"
+BOX_SVG_CONNTHICKNESS_TOOLTIP              = "Grosor de las líneas de Conexión, desde no existentes a gruesas, en el mapa exportado"
 BOX_SVG_COLOURSCHEME                       = "Esquema de Color: "
-BOX_SVG_COLOURSCHEME_TOOLTIP               = "A basic Colour Scheme used for the location number, interactive\nlocation information and doors in exported map"
-BOX_SVG_LOCTHICKNESS                       = "Location Thickness:"
-BOX_SVG_LOCTHICKNESS_TOOLTIP               = "Thickness of Location lines, from thin to heavy, in exported map"
+BOX_SVG_COLOURSCHEME_TOOLTIP               = "Un Esquema Básico de Color usado para el número de localidad, información\nde localidad interactiva y puertas en el mapa exportado"
+BOX_SVG_LOCTHICKNESS                       = "Grosor de Localidad:"
+BOX_SVG_LOCTHICKNESS_TOOLTIP               = "Grosor de líneas de localidad, desde finas a gruesas en el mapa exportado"
 BOX_SVG_COLOURSCHEME_OPTIONS = [
   'Red',
   'Green',
