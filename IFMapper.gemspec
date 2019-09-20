@@ -1,6 +1,6 @@
 require "rubygems"
 
-VERSION = '2.1.0'
+VERSION = '2.2.0'
 AUTHOR = "Gonzalo Garramuno"
 HOMEPAGE = 'http://ggarra13.github.io/ifmapper/en/start.html'
 EMAIL = 'ggarra13@gmail.com'

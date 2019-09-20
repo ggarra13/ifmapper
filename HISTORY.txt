@@ -1,13 +1,15 @@
+v2.2.0  Updated Spanish documentation to be in sync with the English one.
+
 v2.1.0  Overhauled SVG export support
-        Updated English documentation to meet modern HTML5 standard
-        Rewrote & simplified English installation instructions for clarity
-        Hide unimplemented Print menu option
-        BUGFIX: Instructions link opens browser in macOS & Linux
-        BUGFIX: Ruby version comparisons in IFM, Inform & TADS writers
-        courtesy of PeteT & Samwiseuk
+	Updated English documentation to meet modern HTML5 standard
+	Rewrote & simplified English installation instructions for clarity
+	Hide unimplemented Print menu option
+	BUGFIX: Instructions link opens browser in macOS & Linux
+	BUGFIX: Ruby version comparisons in IFM, Inform & TADS writers
+	courtesy of PeteT & Samwiseuk
 
 v2.0.9  Fix a few Ruby 2.5 issues when using Automapper
-        courtesy of Bill Lash/welash
+	courtesy of Bill Lash/welash
 
 v2.0.8  Bug fixed PDF Writer as it was no longer working with v2.1+ Rubys.
 
@@ -37,9 +39,9 @@ v1.2.1  Removed SVG from TODO list
 
 v1.2.0  Improvements:
 	- Added support for exporting SVG files.
-	
+
 v1.1.4  Bug fixes:
-	- Fixed bug with use of &,",' and line endings in descriptions in 
+	- Fixed bug with use of &,",' and line endings in descriptions in
 	  trizbort format.
 	- Fixed potential crashes in Trizbort Reader.
 	- Fixed up/down/in/out exits in Trizbort Reader and Writer.
@@ -52,7 +54,7 @@ v1.1.3  Bug fixes:
 v1.1.2  Improvements:
 	- Made room box use tabs for comments, descriptions and objects.
 	- Made dark rooms select as orange.
-	- Added support for dark rooms and descriptions in 
+	- Added support for dark rooms and descriptions in
 	  TrizbortReader/Writer.
 
 v1.1.1  Improvements:
@@ -60,7 +62,7 @@ v1.1.1  Improvements:
 	- Made failed connections turn cyan upon selection.
 
 v1.1.0  - Bug fixed select all so it can be done with keyboard.
- 
+
 v1.0.9  - Bug fixed crash of cut selection when stubs were present.
 	- Added option to automap rooms with all caps.
 	- Bug fixed Select All/None rooms to show the selection.
@@ -69,8 +71,8 @@ v1.0.8  - Added option to load a map from command-line.
 	- Bug fixed pdf output of letters near exits.
 	- Added support for comments in each location.
 
-v1.0.7  - Bug fixed cutting and pasting of rooms, 
-	  which could overlap previous rooms in map and 
+v1.0.7  - Bug fixed cutting and pasting of rooms,
+	  which could overlap previous rooms in map and
 	  leave rooms without new connections.
 	- Added localization to link switching with RMB.
 	- Fixed drag selection of rooms.
@@ -115,15 +117,15 @@ v1.0.0  Bug fixes:
 	  also need ruby's iconv module (which should now be part of
 	  both the windows and unix distros)
 	  To add new languages, go to ifmapper-1.0.0/lib/IFMapper/locales
-	  and add one for your particular language.  
+	  and add one for your particular language.
 	  Then you need to create an UTF-8 Message.rb file.
 	  If your editor does not support writing out UTF-8 directly,
 	  you can create a file in another encoding and then convert
-	  it with an utility like iconv (see example in 
+	  it with an utility like iconv (see example in
 	  ifmapper-1.0.0/lib/IFMapper/locales/es)
 
 	- Inform7 writer is now better:
-	  * It now properly recognizes male/female people a 
+	  * It now properly recognizes male/female people a
 	    tad better.
 	  * It now tries to avoid tags as much as possible
 	    to keep Inform7's concept of natural language.
@@ -143,8 +145,8 @@ v0.9.8  Bug fixes:
 	  them as keywords and adding numbers to their tags.  Fixed.
 	  [Bug Report: Greg Boetcherr]
 	- When replacing dark rooms with lit rooms, the transcript
-	  automapper was discarding all other connections.  So, if two dark 
-	  rooms were connected, once one of the dark rooms became lit, the 
+	  automapper was discarding all other connections.  So, if two dark
+	  rooms were connected, once one of the dark rooms became lit, the
 	  connection to the other dark room was removed.  Fixed.
 	- Typo: 'interative' for 'interactive' fixed in TranscriptReader.rb
 	  [Bug Report: unknown]
@@ -153,7 +155,7 @@ v0.9.8  Bug fixes:
 	Improvements:
 	- Automapper now recognizes two new ways of describing exits as
 	  being blocked.
-	- Automapper was not dealing with Undo properly when mapping 
+	- Automapper was not dealing with Undo properly when mapping
 	  interactively, leading to the creation of wrong exits if user
 	  moved right after an undo.
 	- Automapper now tries to use the path map to determine if a location
@@ -202,14 +204,14 @@ v0.9.7  What's new:
 	- Rewrote a big chunk of the map readers (inform/tads).  Reason was
 	  two-fold:
 		* make the code smaller and simpler
-		* fix a logic problem in the layout algorithm which was 
-		  leading to maps being laid out much bigger when map had 
+		* fix a logic problem in the layout algorithm which was
+		  leading to maps being laid out much bigger when map had
 		  a lot of one way connections.  Now room layout is much, much
 		  improved.
 		    [Bug Report: Greg Boettcher]
 		* sped up the creation of map code a tad.
 
-        - Inform reader now understands most special international character
+	- Inform reader now understands most special international character
 	  sequences (@:a, etc).
 
 	- TADS reader was marking some one way door exits as normal exits.
@@ -236,21 +238,21 @@ v0.9.6  What's new:
 	  properly does toggle selecting of rooms/connections.
 
 	- Minor improvement to the automapper.  Now places that have Dr.,
-	  St., Ave. and Inc. in them will be recognized as locations.  
+	  St., Ave. and Inc. in them will be recognized as locations.
 	  Previously, they were ignored due to the period.
 
 	- The automapper will now correctly parse objects from take commands
 	  when the response is something like:
 	       You take the pencil from the bag.
 	  Previously, the object was considered to be 'pencil from the bag'
-	  instead of just 'pencil'. 
+	  instead of just 'pencil'.
 
-	- Slight improvement to the automapper room description		
+	- Slight improvement to the automapper room description
 	  identification.  When comparing descriptions and a perfect match
-	  or submatch of the description cannot be found against a room, all 
-	  words in that room description will be compared for a 
+	  or submatch of the description cannot be found against a room, all
+	  words in that room description will be compared for a
 	  potential match.  A room will be matched as already present if
-	  at least 20 words match (they also have to be in the same order).  
+	  at least 20 words match (they also have to be in the same order).
 	  However, if multiple rooms happen to match 20 words, then the room
 	  with more words matched will be considered as the correct match.
 	  This improvement helps with locations that have identical
@@ -276,18 +278,18 @@ v0.9.6  What's new:
 	  prompt.  Tested with The PK Girl mainly.
 
 	- TADS3 source code reader is now much improved.
-	  It recognizes PathPassages, TravelMessage and noTravel 
-	  exits properly. 
-	  It does not consider a missing room as a fatal error and 
-	  will properly find names of rooms when room line is split into 
+	  It recognizes PathPassages, TravelMessage and noTravel
+	  exits properly.
+	  It does not consider a missing room as a fatal error and
+	  will properly find names of rooms when room line is split into
 	  multiple lines.
 	  It will also display passage and stairway exits properly (previously,
 	  they were considered door exits).
 	  Also, TADS3 reader can now properly parse a t3m Makefile for
 	  sources.
-	  You should now be able to map the big TADS3 demo game 
-	  Return to Ditch Day from source, which previously would run 
-	  into some issues. 
+	  You should now be able to map the big TADS3 demo game
+	  Return to Ditch Day from source, which previously would run
+	  into some issues.
 
 	- TADS and Inform readers now use a slightly different algorithm for
 	  laying out rooms.  This new algorithm results in smaller maps and
@@ -298,8 +300,8 @@ v0.9.5  What's new:
 	- IFMapper now looks for Fox1.4 and 1.2, in that order.  Note that
 	  I still recommend Fox1.2, as it is more stable.
 
-	- Automapper now supports selecting how locations are identified 
-	  (either by comparing the room descriptions or just the short name) 
+	- Automapper now supports selecting how locations are identified
+	  (either by comparing the room descriptions or just the short name)
 	  as well as adds support for some unusual location short name
 	  formats used in some Infocom games (Moonmist, Witness).
 
@@ -330,10 +332,10 @@ v0.9.5  What's new:
 	- The automapper now also looks for transcripts with extensions
 	  .scr (Magnetic Scrolls/Glux) and .txt (Hugo) by default.
 	  Note that Hugo, Glux and Magnetic Scrolls transcripts do
-	  not append text to transcripts after each move, instead keeping a 
+	  not append text to transcripts after each move, instead keeping a
 	  buffer that gets spit out when filled.  Thus, automapping while
-	  playing a game with these interpreters game is not as interactive 
-	  as with winfrotz and similar.  This method can also lead to some 
+	  playing a game with these interpreters game is not as interactive
+	  as with winfrotz and similar.  This method can also lead to some
 	  rooms to be missed or some connections be mistaken, as sometimes
 	  room descriptions will be written out only partially.
 	  Finally, TADS interpreter is the worst, in that it will actually
@@ -380,7 +382,7 @@ v0.9.5  What's new:
 	  This helps, for example, with TADS transcripts, which are locked
 	  and cannot be opened while you are still on script mode (this
 	  absolutely blows in TADS!).
-	  Previously, opening a TADS transcript in progress would just 
+	  Previously, opening a TADS transcript in progress would just
 	  crash IFMapper.
 
 	- Fixed yet another problem with links among rooms in different
@@ -404,12 +406,12 @@ v0.9.5  What's new:
 	  usually after 1+ hour of use of the automapper.  This problem is not
 	  yet fixed (it is a Fox issue), but the work-around will try at
 	  least twice to make it work.
-	
+
 	- Switching from one map to another now immediately updates the
 	  section # in the toolbar.
 
 	- There's now a new option called Map->Room List which will
-	  list all the rooms in your map, allowing you to also select 
+	  list all the rooms in your map, allowing you to also select
 	  and sort rooms from that list.
 
 	- Added new full maps for Risorgimiento Represo, Christminster, a full
@@ -417,12 +419,12 @@ v0.9.5  What's new:
 	  All Roads, Trinity.
 	  Partial maps for Dreamhold, Savoir Fare, Heroine's Mantle, World's
 	  Apart, Metamorphoses, Pytho's Mask.
-	  All of these were created with the automapper, as I played those 
+	  All of these were created with the automapper, as I played those
 	  games.
 
 v0.9 - What's new:
 
-       - Fixed a very idiotic bug in Cut algorithm.  It was basically 
+       - Fixed a very idiotic bug in Cut algorithm.  It was basically
 	 destroying all cut connections right after they were cut.
 
        - Editing rooms' names or objects now results in a much, much
@@ -430,8 +432,8 @@ v0.9 - What's new:
 
        - You can now display and edit a location's description.  This
 	 description is often used by the the automapper during transcript
-	 mapping to determine the uniqueness of a room, albeit the main 
-	 use of editing a room description is to allow creation of 
+	 mapping to determine the uniqueness of a room, albeit the main
+	 use of editing a room description is to allow creation of
 	 new games (currently, Inform/TADS3).
 
        - You can now optionally avoid displaying the task or description
@@ -439,7 +441,7 @@ v0.9 - What's new:
 	 This is mainly to allow you to read maps that have walkthru tasks
 	 in them without giving away the game.
 
-       - IFMapper now supports the concept of closed but unlocked doors.  
+       - IFMapper now supports the concept of closed but unlocked doors.
 	 These will be displayed as a white square between connections.
 	 The main interest of placing these doors is for creation
 	 of new Inform games, not so much for solving games.
@@ -455,7 +457,7 @@ v0.9 - What's new:
 	 on something already selected, it is deselected.
 
        - Automapper improvements
-         * Automapper will now deal with complex commands involving 'then'
+	 * Automapper will now deal with complex commands involving 'then'
 	   a tad better.
 	 * An additional fix to dark rooms.  Looking in a dark room would
 	   result in the dark room being created, even if the room had
@@ -478,7 +480,7 @@ v0.9 - What's new:
 	   it did before.
 	 * Automapper is now a tad smarter in not considering words such
 	   as open/close in descriptions.  This helps the automapper not
-	   get confused if a door which is part of the room description 
+	   get confused if a door which is part of the room description
 	   changes state.
 
        - Inform support.
@@ -491,19 +493,19 @@ v0.9 - What's new:
 	   code will actually resolve issues of where doors lead to within,
 	   for example, the "Enter" or "Exit" command, making parsing .inf
 	   files impossible without writing a full inform compiler.
-	   A second limitation is that Inform allows doors that exist only 
+	   A second limitation is that Inform allows doors that exist only
 	   on one "side" of a room.  These exits will be ignored.
-	   The inform automapper should prove compatible with most door 
+	   The inform automapper should prove compatible with most door
 	   libraries, but will probably choke on a lot of hand-coded code.
 
 	 * You can now export a map as an Inform .inf (source code) file.
 	   This can be helpful at the beginning of designing a game to place
 	   all objects/characters, doors and room descriptions easily.
 	   Obviously, these source code files will later get hacked heavily
-	   manually to provide the real game functionality.  
+	   manually to provide the real game functionality.
 	   IFMapper just gives you a start, helping you design
 	   the landscape a tad more easily.
-	   Doors are created in Inform using Andrew MacKinnon's easydoors 
+	   Doors are created in Inform using Andrew MacKinnon's easydoors
 	   Inform extension.
 
 	   NOTE:  A word of warning about reading Inform or TADS maps.
@@ -513,7 +515,7 @@ v0.9 - What's new:
 	   into memory issues and currently make the path-finding algorithm
 	   work extremely slow.
 
-        - TADS 3 support
+	- TADS 3 support
 
 	  * NOTE:  TADS 2 is currently *NOT* supported.
 
@@ -522,8 +524,8 @@ v0.9 - What's new:
 	    Basically, TADS 3 templates are currently *NOT* supported.
 	    Instead, the standard library templates are kind of hard-coded
 	    in the reader.
-	    TADS 3's standard lib is more sensible than Inform when it 
-	    comes to doors, so it should hopefully lead to less 
+	    TADS 3's standard lib is more sensible than Inform when it
+	    comes to doors, so it should hopefully lead to less
 	    problems there.
 
 	  * You can now export a TADS 3 (.t) file.  Same concept as Inform,
@@ -532,7 +534,7 @@ v0.9 - What's new:
 
 
 v0.8.5 - This is mainly a bug fix release.
-	 
+
 	 - Improvements to the automapper:
 	 * Now it uses much, much less memory as the automapper database
 	   will now use the actual map database.  This is mainly a departure
@@ -550,13 +552,13 @@ v0.8.5 - This is mainly a bug fix release.
 	 * Now saving/loading a map that has been automapped will also save its
 	   descriptions.  This allows you to keep automapping a game easily
 	   in different sessions.
-	 * Restore/Restart/Unscript was not working appropiately.  
-	   It should have allowed you to "teleport" to any new location, yet 
+	 * Restore/Restart/Unscript was not working appropiately.
+	   It should have allowed you to "teleport" to any new location, yet
 	   it was creating incorrect links.
 	 * There's now better handling of rooms gone dark (previously, they
 	   were treated as a separate location and multiple dark rooms
 	   would create links to a single dark room)
-	 
+
 	 - .map save format now is smaller, as some useless data was getting
 	   saved, which we now skip.  Note, however, that when automapping
 	   .map size is bigger, as room descriptions get also stored now.
@@ -565,7 +567,7 @@ v0.8.5 - This is mainly a bug fix release.
 	   objects would not fit in box.
 
 	 - Added some new (possibly incomplete) maps, that I did while
-	   testing the stuff.  All done with automapper: 
+	   testing the stuff.  All done with automapper:
 	   Deadline, Dutch Dapper, Blue Doors, Inhumane, Not Just an
 	   Ordinary Ballerina.
 
@@ -576,7 +578,7 @@ v0.8.5 - This is mainly a bug fix release.
 	   an IFM file with no windows open.
 
 	 - Fixed a nasty crashing bug when pasting and then immediately
-	   selecting pasted rooms, as the rooms were not added to the 
+	   selecting pasted rooms, as the rooms were not added to the
 	   pathmap.
 
 	 - Complex doors that are locked are now drawn with a crossed line
@@ -585,21 +587,21 @@ v0.8.5 - This is mainly a bug fix release.
 	 - Complex paths drawn as bsplines are now drawn with a tad less
 	   quality to improve drawing speed.
 
-v0.8.1 - Just some fixes to the automapper, as it was failing on some 
+v0.8.1 - Just some fixes to the automapper, as it was failing on some
 	 relatively simple games.
 
 	 Automapper was not matching rooms with periods in them.  This was
-	 causing problems with games that had rooms like "Mr. Hellman's 
+	 causing problems with games that had rooms like "Mr. Hellman's
 	 Bedroom".
 
 	 Improved the handling of multiple directional commands.  A command
 	 like: 'n, e, w' is now handled properly.
 
-	 Moved 'fox' requires together so it is easy to upgrade to 
+	 Moved 'fox' requires together so it is easy to upgrade to
 	 upcoming fox14.
 
 v0.8 - Added the ability to create linked rooms using the Numeric Keypad.
-       Turn on NUM LOCK, select a single room and then use the numbers in 
+       Turn on NUM LOCK, select a single room and then use the numbers in
        the keypad to move thru an exit or add a room in a certain direction.
 
        Changed name of the main program from IFMapper.rb to IFMapper.rbw.
@@ -608,7 +610,7 @@ v0.8 - Added the ability to create linked rooms using the Numeric Keypad.
        Added Home/End/PageUp/PageDown to move nodes diagonally.  This
        helps with the Keypad, when not in NUM LOCK mode.
 
-       Fixed a bug that effected IFMReader that I inadvertedly 
+       Fixed a bug that effected IFMReader that I inadvertedly
        introduced in v0.7.
 
        Removed Postscript support.  I just realized that GSview also reads
@@ -633,20 +635,20 @@ v0.7 - Fix the issue of users trying to fire up the application from another
        directory, without cd'ing themselves to the IFMapper directory.
 
        Added IFM export.
-       Note that albeit you can load and save out an IFM map file, if you load 
-       and then save an ifm file, the integrity of the ifm file created by 
+       Note that albeit you can load and save out an IFM map file, if you load
+       and then save an ifm file, the integrity of the ifm file created by
        hand will not be kept.
        Things such as ifm variables, task and object dependencies will be
-       lost if you do that.  It is unlikely I will add full walkthru 
+       lost if you do that.  It is unlikely I will add full walkthru
        functionality to IFMapper.
        IFMapper's main format remains its propietary .map format (which is
        just marshalling of its internal ruby classes).
 
        Added a popup menu to the use of the right mouse button.  The main
        functionality of this is to allow you to easily shift or switch
-       a connection from one room exit to another.  
-       To use it, select a single connection among rooms, then press RMB 
-       and select the room and the exit you want to shift the connection to.  
+       a connection from one room exit to another.
+       To use it, select a single connection among rooms, then press RMB
+       and select the room and the exit you want to shift the connection to.
        Voila!  Much easier than having to delete and recreate the connection.
 
        Improved selection mechanism a tad to be more accurate.  Now you
@@ -661,7 +663,7 @@ v0.7 - Fix the issue of users trying to fire up the application from another
        near room transition areas.
 
        Fixed a startup crashing bug when HOME variable was not defined.
-       If it is, IFMapper will use the value of it.  If not, user preferences 
+       If it is, IFMapper will use the value of it.  If not, user preferences
        will get saved to %USERPROFILE% if defined or %HOMEDRIVE%/%HOMEPATH%.
        If all fails, prefs will get saved to the current directory.
 
@@ -671,14 +673,14 @@ v0.7 - Fix the issue of users trying to fire up the application from another
        until you move to that section using Next/Previous.
 
        There's now an additional search item to allow searching for keywords
-       in tasks. 
+       in tasks.
 
        You can now select all nodes or none of them from a menu option.
 
        Zooming with mousewheel is a tad faster.
 
        There's now some very bare bones Postscript exporting, albeit no
-       printing yet.  Printing is really a tough cookie to crack across 
+       printing yet.  Printing is really a tough cookie to crack across
        platforms.
 
        Fixed a minor bug regarding failed connections that could show with some
@@ -698,23 +700,23 @@ v0.7 - Fix the issue of users trying to fire up the application from another
 
 v0.6 - Fixed a crashing bug when nodes were moved too far to the right or
        to the bottom of the map area.
-       
+
        Recoded A* algorithm to fix some bugs and moved it away from FXMap
        class, into its separate class and file.
-       
+
        Added cursors for n/nw/w/sw/s/se/e/ne connections.  Note, however,
        that the hotspot for the cursors is not working properly (this seems
        an fxruby bug).
-       
+
        Added color preferences.
-       
+
        Some refactoring and documenting of code.
-       
+
        PDF Export is improved.  Now map sections will be packed into a
        page when possible.  A landscape page will be automatically chosen
        for each section, if it helps fit the map in the page.
        Also, pdf export will now show objects in rooms as well as 'U', 'D',
-       'I', 'O' text in exits. 
+       'I', 'O' text in exits.
 
        Added the ability to set the map width/height from the Map Information
        panel.

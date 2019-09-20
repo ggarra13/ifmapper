@@ -562,6 +562,8 @@ class FXRoom
       numtext_x = numbox_x + pad
       numtext_y = numbox_y + font_size + pad
 
+      idx += 1
+
       if idx < 100
         numtext_x += font_size
       end
@@ -573,9 +575,9 @@ class FXRoom
       numtext = svg.root.add_element "text", {
           "x"            => numtext_x,
           "y"            => numtext_y,
-          "style"         => "font-size:" + font_size.to_s() + "pt" }
+          "style"        => "font-size:" + font_size.to_s() + "pt" }
 
-      numtext.text = (idx+1).to_s()
+      numtext.text = idx.to_s()
 
     end
   end
