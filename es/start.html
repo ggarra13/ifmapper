@@ -284,6 +284,87 @@ cardinales para navegar por el juego, es relativamente f&aacute;cil perderse.&nb
 	<br>
 	<code>sudo gem install ifmapper</code><br>
 	<br>
+	<br> Here's a step by step from another user (untested): <br><br>
+	<code>
+	  Instalar Homebrew
+	  <br>
+	  -----------------
+	  <br>
+	  /usr/bin/ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install 1)”
+	  <br>
+	  <br>
+
+	  Update Caminos de B&uacute;squeda
+	  <br>
+	  --------------------------
+
+	  <br>
+	  pico .profile
+
+	  <br>
+	  if which ruby >/dev/null && which gem >/dev/null; then
+
+	  <br>
+	  PATH="$(ruby -r rubygems -e ‘puts Gem.user_dir’)/bin:$PATH"
+
+	  <br>
+	  fi
+
+	  <br>
+	  ctrl-x
+
+	  <br>
+	  y
+
+	  <br>
+	  close Terminal window
+	  <br>
+
+	  reopen Terminal window
+	  <br>
+	  <br>
+
+	  Instalar las biblitecas de soporte
+	  <br>
+	  ----------------------------------
+
+	  <br>
+	  brew cask install xquartz
+	  <br>
+
+	  brew install fox
+	  <br>
+	  <br>
+
+	  Instalar ruby gems
+	  <br>
+	  ------------------
+	  <br>
+
+	  gem install fxruby --user-install
+	  <br>
+
+	  gem install pdf-writer --user-install
+	  <br>
+
+	  gem install ifmapper --user-install
+	  <br>
+
+	  <br>
+	  Lanzar ifmapper
+	  <br>
+	  ---------------
+	  <br>
+	  /Applications/Utilities/XQuartz.app
+
+	  <br>
+	  Launch Terminal
+
+	  <br>
+	  ifmapper
+	  <br>
+	  <br>
+	</code>
     </p>
 
     <p id="LinuxOrUNIX" class="heading2">
