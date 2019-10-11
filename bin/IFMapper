@@ -2,8 +2,10 @@
 
 # cd to install path, so modules are found locally
 install_loc = __FILE__.sub(/\/?[^\/]*$/, '')
-install_loc = __FILE__.sub(/\/bin\/.*$/, '')
-install_loc = '..' if install_loc == '.' or install_loc == ''
+install_loc = install_loc.sub(/bin\/*$/, '')
+install_loc = install_loc.sub(/IFMapper$/, '')
+install_loc = '..' if install_loc == '.'
+install_loc = '.' if install_loc == ''
 
 Dir.chdir(install_loc)
 $LOAD_PATH << "./lib"
@@ -33,4 +35,3 @@ rescue => e
   $stderr.flush
   raise e
 end
-
