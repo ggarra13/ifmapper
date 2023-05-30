@@ -124,7 +124,7 @@ class TranscriptReader
   @@win = nil
 
   ## Change this to non-nil to print out debugging info
-  @@debug = nil
+  @@debug = 1
 
   def debug(*msg)
     if @@debug
@@ -572,7 +572,7 @@ class TranscriptReader
 	debug "CMD:     #{cmd}"
 	debug "ENDS AT: #{name}"
 
-	desc = room[:desc].to_s
+	desc = room[:desc].to_s.dup
 	desc.gsub!(/(\w)\s*\n/, '\1 ')
 
 	line = move[:line]

@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby 
+#!/usr/bin/env ruby
 
 
 # cd to install path, so modules are found locally
@@ -35,4 +35,3 @@ if __FILE__ == $0
     raise e
   end
 end
-

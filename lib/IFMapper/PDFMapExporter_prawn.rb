@@ -1,4 +1,3 @@
-
 require 'tmpdir'
 
 begin
@@ -16,11 +15,13 @@ end
 require 'IFMapper/MapPrinting'
 
 PDF_ZOOM        = 0.5
-PDF_ROOM_WIDTH  = W  * PDF_ZOOM 
-PDF_ROOM_HEIGHT = H  * PDF_ZOOM 
+PDF_ROOM_WIDTH  = W  * PDF_ZOOM
+PDF_ROOM_HEIGHT = H  * PDF_ZOOM
 PDF_ROOM_WS     = WS * PDF_ZOOM
 PDF_ROOM_HS     = HS * PDF_ZOOM
 PDF_MARGIN      = 20.0
+
+
 
 #
 # Open all the map class and add all pdf methods there
@@ -37,14 +38,14 @@ class FXConnection
 
   def pdf_draw_arrow(pdf, opts, x1, y1, x2, y2)
     return if @dir == BOTH
-    
+
     pt1, d = _arrow_info( x1, y1, x2, y2, 0.5 )
-      
+
     pdf.stroke_color  '000000'
     pdf.fill_color    '000000'
-    pdf.fill_polygon( [ pt1[0], pt1[1] ], 
-                      [ pt1[0] + d[0], pt1[1] - d[1] ], 
-                      [ pt1[0] + d[0], pt1[1] + d[1] ] )
+    pdf.fill_polygon( [ pt1[0], pt1[1] ],
+                      [ pt1[0] + d[0], pt1[1] - d[1] ],
+                      [ pt1[0] + d[1], pt1[1] + d[0] ] )
   end
 
   def pdf_draw_complex_as_bspline( pdf, opts )
@@ -61,11 +62,11 @@ class FXConnection
     return FXSpline::bspline(p)
   end
 
-  # PRE: If it's a loop exit that comes back to the same place, let's move 
+  # PRE: If it's a loop exit that comes back to the same place, let's move
   #      it up and right
   def pdf_draw_complex_as_lines( pdf, opts )
     p = []
-    maxy = opts['height'] * opts['hh'] + opts['hs_2'] + opts['margin_2'] 
+    maxy = opts['height'] * opts['hh'] + opts['hs_2'] + opts['margin_2']
     @pts.each { |pt|
       if loop? == true
         p << [ pt[0] * PDF_ZOOM + 10, maxy - pt[1] * PDF_ZOOM + 48 ]
@@ -88,6 +89,7 @@ class FXConnection
     if @type == LOCKED_DOOR
       pdf.move_to(x1, y1)
       pdf.line_to(x2, y2)
+      pdf.stroke
     else
       pdf.cap_style = :butt
       pdf.join_style = :miter
@@ -99,6 +101,7 @@ class FXConnection
       pdf.line_to(x2 + v[0], y2 + v[1])
       pdf.line_to(x2 - v[0], y2 - v[1])
       pdf.line_to(x1 - v[0], y1 - v[1])
+      pdf.stroke
 
       pdf.cap_style = :butt
       pdf.join_style = :miter
@@ -107,27 +110,24 @@ class FXConnection
   end
 
   def pdf_draw_complex( pdf, opts )
-    pdf.stroke_color  '000000'
-    pdf.fill_color    '000000'
     if opts['Paths as Curves']
       if @room[0] == @room[1]
-	dirA, dirB = dirs
-	if dirA == dirB
-	  p = pdf_draw_complex_as_lines( pdf, opts )
-	else
-	  p = pdf_draw_complex_as_bspline( pdf, opts )
-	end
+        dirA, dirB = dirs
+        if dirA == dirB
+          p = pdf_draw_complex_as_lines( pdf, opts )
+        else
+          p = pdf_draw_complex_as_bspline( pdf, opts )
+        end
       else
-	p = pdf_draw_complex_as_bspline( pdf, opts )
+        p = pdf_draw_complex_as_bspline( pdf, opts )
       end
     else
       p = pdf_draw_complex_as_lines( pdf, opts )
     end
-    
-    pdf.stroke_color  '000000'
-    pdf.fill_color    '000000'
+
     pdf.move_to( p[0][0], p[0][1] )
     p.each { |pt| pdf.line_to( pt[0], pt[1] ) }
+    pdf.stroke
 
     x1, y1 = [p[0][0], p[0][1]]
     x2, y2 = [p[-1][0], p[-1][1]]
@@ -147,10 +147,9 @@ class FXConnection
     dir    = @room[0].exits.index(self)
     x1, y1 = @room[0].pdf_corner(opts, self, dir)
     x2, y2 = @room[1].pdf_corner(opts, self)
-    pdf.stroke_color  '000000'
-    pdf.fill_color    '000000'
     pdf.move_to(x1, y1)
     pdf.line_to(x2, y2)
+    pdf.stroke
     pdf_draw_arrow(pdf, opts, x1, y1, x2, y2)
     if @type == LOCKED_DOOR or @type == CLOSED_DOOR
       pdf_draw_door(pdf, x1, y1, x2, y2)
@@ -163,22 +162,22 @@ class FXConnection
   def pdf_draw_text(pdf, x, y, dir, text, arrow)
     if dir == 7 or dir < 6 and dir != 1
       if arrow and (dir == 0 or dir == 4)
-	x += 5
+        x += 5
       end
       x += 2.5
     elsif dir == 6 or dir == 1
       x -= 7.5
     end
-    
+
     if dir > 5 or dir < 4
       if arrow and (dir == 6 or dir == 2)
-	y += 5
+        y += 5
       end
       y += 2.5
     elsif dir == 4 or dir == 5
       y -= 7.5
     end
-    
+
     font_size = 8
     pdf.text_box text, :at => [x, y], :size => font_size
   end
@@ -189,20 +188,24 @@ class FXConnection
       dir  = @room[0].exits.index(self)
       x, y = @room[0].pdf_corner(opts, self, dir)
       pdf.move_to(x, y)
-      pdf_draw_text( pdf, x, y+4, dir, 
+      # WAS: y+4 below
+      pdf_draw_text( pdf, x, y, dir,
                      EXIT_TEXT[@exitText[0]], @dir == BtoA)
     end
 
     if @exitText[1] != 0
       dir  = @room[1].exits.rindex(self)
       x, y = @room[1].pdf_corner(opts, self, dir)
-      pdf_draw_text( pdf, x, y+4, dir, 
-		    EXIT_TEXT[@exitText[1]], @dir == AtoB)
+      # WAS: y+4 below
+      pdf_draw_text( pdf, x, y, dir,
+                    EXIT_TEXT[@exitText[1]], @dir == AtoB)
     end
   end
 
   def pdf_draw(pdf, opts)
     pdf_draw_exit_text(pdf, opts)
+    pdf.stroke_color  '000000'
+    pdf.fill_color    '000000'
     if @type == SPECIAL
       pdf.dash 4
     else
@@ -210,8 +213,6 @@ class FXConnection
       pdf.join_style = :miter
       pdf.undash
     end
-    pdf.stroke_color  '000000'
-    pdf.fill_color    '000000'
     if @pts.size > 0
       pdf_draw_complex(pdf, opts)
     else
@@ -245,10 +246,12 @@ class FXRoom
     pdf.cap_style = :butt
     pdf.join_style = :miter
     pdf.line_width 1
+    pdf.undash
 
     if @darkness
       pdf.fill_color '808080'
       pdf.stroke_color '000000'
+      pdf.fill_rectangle [x, y], opts['w'], -opts['h']
     else
       pdf.fill_color 'ffffff'
       pdf.stroke_color '000000'
@@ -256,11 +259,12 @@ class FXRoom
 
     pdf.stroke_rectangle [x, y], opts['w'], -opts['h']
 
+
     if pdflocationnos == 1
       # PRE: Draw a rectangle for the location number
-      pdf.stroke_rectangle( [x+opts['w']-opts['w']/4, y], 
+      pdf.stroke_rectangle( [x+opts['w']-opts['w']/4, y],
                             opts['w']/4, -opts['h']/4 )
-    
+
       # PRE: Pad out the number so it is three chars long
       locationno = (idx+1).to_s
       if (idx+1) < 10
@@ -273,18 +277,31 @@ class FXRoom
       pdf.stroke_color '000000'
       pdf.fill_color   '000000'
 
-      pdf.text_box locationno, 
-      :at => [(x+((opts['w']/4)*3)+2), y+7], :size => 8
+      # WAS: y+7
+      pdf.text_box locationno,
+      :at => [(x+((opts['w']/4)*3)+2), y+2], :size => 8
     end
-    
+
   end
 
   def pdf_draw_text( pdf, opts, x, y, text, font_size, pdflocationnos )
-    miny  = (opts['height'] - @y) * opts['hh'] + opts['hs_2'] + 
-      opts['margin_2']
-    pdf.text_box text, :at => [x, y+6], :size => font_size, 
-    :width => opts['w'], :height => opts['h'], :valign => :top,
-    :align => :left, :overflow => :shrink_to_fit
+    miny  = (opts['height'] - @y) * opts['hh'] + opts['hs_2'] +
+            opts['margin_2']
+    while text != ''
+      # PRE: Wrap the text to avoid the location number box
+      if (y >= miny) and (y <= (miny+font_size)) and (pdflocationnos == 1)
+        wrapwidthmodifier = 15
+      else
+        wrapwidthmodifier = 2
+      end
+      text = pdf.text_box text, :at => [x, y+6], :size => font_size,
+                          :width => opts['w'] - wrapwidthmodifier,
+                          :height => opts['h'], :valign => :top,
+                          :align => :left, :overflow => :shrink_to_fit
+      y -= font_size
+      break if y <= miny
+    end
+    
     return [x, y]
   end
 
@@ -292,7 +309,7 @@ class FXRoom
     font_size = 6
     objs = @objects.split("\n")
     objs = objs.join(', ')
-    return pdf_draw_text( pdf, opts, x, y-font_size, 
+    return pdf_draw_text( pdf, opts, x, y,
                           objs, font_size, pdflocationnos )
   end
 
@@ -301,7 +318,7 @@ class FXRoom
     x = @x * opts['ww'] + opts['margin_2'] + opts['ws_2'] + 2
     y = opts['height'] - @y
     font_size = 8
-    y = y * opts['hh'] + opts['margin_2'] + opts['hs_2'] + opts['h'] - 
+    y = y * opts['hh'] + opts['margin_2'] + opts['hs_2'] + opts['h'] -
       (font_size + 2)
     pdf.stroke_color '000000'
     pdf.fill_color   '000000'
@@ -324,9 +341,9 @@ class FXSection
   def pdf_draw_grid(pdf, opts, w, h )
     (0...w).each { |xx|
       (0...h).each { |yy|
-	x = xx * opts['ww'] + opts['ws_2'] + opts['margin_2']
-	y = yy * opts['hh'] + opts['hs_2'] + opts['margin_2']
-	pdf.rectangle([x, y],  opts['w'], opts['h'])
+        x = xx * opts['ww'] + opts['ws_2'] + opts['margin_2']
+        y = yy * opts['hh'] + opts['hs_2'] + opts['margin_2']
+        pdf.rectangle([x, y],  opts['w'], opts['h'])
       }
     }
   end
@@ -357,8 +374,8 @@ class FXSection
       pdf.save_graphics_state
 
       if rotate
-	pdf.rotate 90.0
-	pdf.translate( 0, -pdf.margin_box.height )
+        pdf.rotate 90.0
+        pdf.translate( 0, -pdf.margin_box.height )
       end
 
       # Move section to its position in page
@@ -377,42 +394,42 @@ class FXSection
       tx2 = -(xymin[0]) * opts['ww'] - x * opts['ww']
       ty2 =  (xymin[1]) * opts['hh'] - 60 + (y - (y > 0? 1 : 0)) * opts['hh']
       pdf.translate( tx2, ty2 )
-      
-      
+
+
       # For testing purposes only, draw grid of boxes
       # pdf_draw_grid( pdf, opts, w, h )
-      @connections.each { |c| 
-	a = c.roomA
-	b = c.roomB
-	next if a.y < y and b and b.y < y
-	c.pdf_draw( pdf, opts )
+      @connections.each { |c|
+        a = c.roomA
+        b = c.roomB
+        next if a.y < y and b and b.y < y
+        c.pdf_draw( pdf, opts )
       }
-      @rooms.each_with_index { |r, idx| 
-	next if r.y < y
-	r.pdf_draw( pdf, opts, idx, pdflocationnos)
+      @rooms.each_with_index { |r, idx|
+        next if r.y < y
+        r.pdf_draw( pdf, opts, idx, pdflocationnos)
       }
-      
+
       # Reset axis
       pdf.translate(-tx2, -ty2)
       pdf.translate(-tx1, -ty1)
-      
+
       xi = opts['width']
       yi = opts['height']
       if rotate
-	xi = (pdf.margin_box.height / opts['ww']).to_i - 1
-	yi = (pdf.margin_box.width  / opts['hh']).to_i - 1
+        xi = (pdf.margin_box.height / opts['ww']).to_i - 1
+        yi = (pdf.margin_box.width  / opts['hh']).to_i - 1
       end
 
       x += xi
       if x >= w
-	x = 0
-	y += yi
-	break if y >= h
+        x = 0
+        y += yi
+        break if y >= h
       end
 
       if rotate
-	pdf.rotate(-90.0)
-	pdf.translate( 0, pdf.page_height )
+        pdf.rotate(-90.0)
+        pdf.translate( 0, pdf.page_height )
       end
 
       pdf.restore_graphics_state
@@ -429,13 +446,13 @@ class FXMap
   attr_accessor :pdfpapersize
   # boolean value indicating whether the user wants to see location nos
   attr_accessor :pdflocationnos
-  
+
   def pdf_draw_mapname( pdf, opts )
     return if not @name or @name == ''
     pdf.text( @name,
-	     :font_size => 24,
-	     :justification => :center
-	     )
+             :font_size => 24,
+             :justification => :center
+             )
   end
 
   def pdf_draw_sections( pdf, opts )
@@ -443,9 +460,9 @@ class FXMap
     page        = -1
     @sections.each_with_index { |sect, idx|
       if page != sect.page
-	page = sect.page
-	pdf.start_new_page if page > 1
-	pdf_draw_mapname( pdf, opts )
+        page = sect.page
+        pdf.start_new_page if page > 1
+        pdf_draw_mapname( pdf, opts )
       end
       @section = idx
       # For each page, we need to regenerate the pathmap so that complex
@@ -462,27 +479,26 @@ class FXMap
 
 
   def pdf_export(pdffile = Dir::tmpdir + "/ifmap.pdf", printer = nil)
-    
+
     # PRE: Let's set the PDF paper size to user's choice
     paper = BOX_PDF_PAGE_SIZE_TEXT[pdfpapersize]
     if printer
       case printer.mediasize
       when FXPrinter::MEDIA_LETTER
-	paper = 'LETTER'
+        paper = 'LETTER'
       when FXPrinter::MEDIA_LEGAL
-	paper = 'LEGAL'
+        paper = 'LEGAL'
       when FXPrinter::MEDIA_A4
-	paper = 'A4'
+        paper = 'A4'
       when FXPrinter::MEDIA_ENVELOPE
-	paper = 'ENVELOPE'
+        paper = 'ENVELOPE'
       when FXPrinter::MEDIA_CUSTOM
-	raise "Sorry, custom paper not supported"
+        raise "Sorry, custom paper not supported"
       end
     end
 
     # Open a new PDF writer with paper selected
-    # PRE: Let's also set the paper orientation based on user selection
-    
+
     pdf = Prawn::Document.new :page_size => paper
 
     pdf_options = @options.dup
@@ -490,32 +506,45 @@ class FXMap
     ww = PDF_ROOM_WIDTH  + PDF_ROOM_WS
     hh = PDF_ROOM_HEIGHT + PDF_ROOM_HS
 
-    pdf_options.merge!( 
-		       { 
-			 'ww'       => ww,
-			 'hh'       => hh,
-			 'w'        => PDF_ROOM_WIDTH,
-			 'h'        => PDF_ROOM_HEIGHT,
-			 'ws'       => PDF_ROOM_WS,
-			 'hs'       => PDF_ROOM_HS,
-			 'ws_2'     => PDF_ROOM_WS / 2.0,
-			 'hs_2'     => PDF_ROOM_HS / 2.0,
-			 'margin'   => PDF_MARGIN,
-			 'margin_2' => PDF_MARGIN / 2.0,
-			 'width'    => (pdf.margin_box.width / ww).to_i  - 1,
-			 'height'   => (pdf.margin_box.height / hh).to_i - 1,
-		       }
-		       )
+    pdf_options.merge!(
+                       {
+                         'ww'       => ww,
+                         'hh'       => hh,
+                         'w'        => PDF_ROOM_WIDTH,
+                         'h'        => PDF_ROOM_HEIGHT,
+                         'ws'       => PDF_ROOM_WS,
+                         'hs'       => PDF_ROOM_HS,
+                         'ws_2'     => PDF_ROOM_WS / 2.0,
+                         'hs_2'     => PDF_ROOM_HS / 2.0,
+                         'margin'   => PDF_MARGIN,
+                         'margin_2' => PDF_MARGIN / 2.0,
+                         'width'    => (pdf.margin_box.width / ww).to_i  - 1,
+                         'height'   => (pdf.margin_box.height / hh).to_i - 1,
+                       }
+                       )
 
 
     begin
+      ratio = pdf.margin_box.height / pdf.margin_box.width.to_f;
       # See if it is possible to pack several map sections (sections) into
       # a single print page.
-      num = pack_sections( pdf_options['width'] + 2, 
-                           pdf_options['height'] + 2 )
+      loop do
+
+        num = pack_sections( pdf_options['width'],
+                             pdf_options['height'] )
+
+        if num > 0
+          break
+        end
+
+        width += 1
+        height = (width * ratio).to_i + 1;
+      end
+
+
       pdf_draw_sections(pdf, pdf_options)
       if pdffile !~ /\.pdf$/
-	pdffile << ".pdf"
+        pdffile << ".pdf"
       end
       status "Exporting PDF file '#{pdffile}'"
       pdf.render_file pdffile

@@ -1,3 +1,5 @@
+v2.2.6  Fixed a problem with TADS' 1893 and Ruby3.0 using frozen strings.
+
 v2.2.0  Updated Spanish documentation to be in sync with the English one.
 
 v2.1.0  Overhauled SVG export support

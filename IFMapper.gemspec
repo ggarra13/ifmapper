@@ -1,7 +1,8 @@
+# coding: utf-8
 require "rubygems"
 
-VERSION = '2.2.2'
-AUTHOR = "Gonzalo Garramuno"
+VERSION = '2.2.6'
+AUTHOR = "Gonzalo Garramuño"
 HOMEPAGE = 'http://ggarra13.github.io/ifmapper/en/start.html'
 EMAIL = 'ggarra13@gmail.com'
 
@@ -28,10 +29,9 @@ gem = Gem::Specification.new do |s|
 EOF
         s.add_runtime_dependency("rake-compiler", "~> 0.7.1", ">= 0.7.1" )
         s.add_runtime_dependency("fxruby", "~> 1.6.0", ">= 1.6.0")
-        s.add_runtime_dependency("pdf-writer", "~> 1.1.1", ">= 1.1.1")
+        s.add_runtime_dependency("prawn", "~> 1.0.0", ">= 1.0.0")
         s.extra_rdoc_files = ["HISTORY.txt", "TODO.txt"] +
                                 Dir.glob("docs/*/*")
-        s.has_rdoc = true
-        s.rubyforge_project = 'ifmapper'
+        # s.rubyforge_project = 'ifmapper'
         s.required_ruby_version = '>= 2.0.0'
 end

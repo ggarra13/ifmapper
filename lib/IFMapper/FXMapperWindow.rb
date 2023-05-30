@@ -8,6 +8,8 @@ begin
 rescue LoadError
 end
 
+load "IFMapper.gemspec"
+
 def no_fox
   require "IFMapper/locales/en/Messages.rb"
   $stderr.puts ERR_NO_FOX
@@ -20,7 +22,7 @@ end
 def get_fox
   ##### ARRRGH!!!! Why does Lyle keep changing the fxruby name on each
   ##### release!
-  foxes = [ 'fox16', 'fox14', 'fox12', 'fox' ]
+  foxes = [ 'fox18', 'fox17', 'fox16', 'fox14', 'fox12', 'fox' ]
   foxes.each { |fox|
     begin
       require "#{fox}"
@@ -30,7 +32,7 @@ def get_fox
       no_fox if fox == foxes[-1]
     end
   }
-  
+
   # verify fxruby version
   ver, rev, = Fox::fxrubyversion().split('.')
   no_fox if ver.to_i < 1 or rev.to_i < 2
@@ -40,7 +42,6 @@ end
 get_fox
 include Fox
 
-load "IFMapper.gemspec"
 require 'IFMapper/FXMap'
 require 'IFMapper/FXMapperSettings'
 require 'IFMapper/FXWarningBox'
@@ -185,8 +186,8 @@ class FXMapperWindow < FXMainWindow
     # First, make sure we don't have it loaded already...
     @maps.each { |m|
       if m.filename == file
-	@mdiclient.setActiveChild(m.window)
-	return
+        @mdiclient.setActiveChild(m.window)
+        return
       end
     }
 
@@ -196,10 +197,10 @@ class FXMapperWindow < FXMainWindow
     make_new_map = false
     if @maps.size == 1
       @maps[0].sections.each { |p|
-	if p.rooms.size != 0
-	  make_new_map = true
-	  break
-	end
+        if p.rooms.size != 0
+          make_new_map = true
+          break
+        end
       }
     else
       make_new_map = true
@@ -229,20 +230,20 @@ class FXMapperWindow < FXMainWindow
 
     if not tmp.kind_of?(Map) and not tmp.kind_of?(FXMap)
       $stderr.puts tmp
-      w = FXWarningBox.new( self, 
-			   "#{tmp}")
+      w = FXWarningBox.new( self,
+                           "#{tmp}")
       w.execute
-      status "#{ERR_COULD_NOT_LOAD} '#{file}'." 
+      status "#{ERR_COULD_NOT_LOAD} '#{file}'."
       if make_new_map
-	if map.close_cb
-	  @maps.delete(map)
-	  GC.start
-	end
+        if map.close_cb
+          @maps.delete(map)
+          GC.start
+        end
       end
       sleep 2
       return
     end
-    
+
     copy_map(map, tmp, file)
   end
 
@@ -308,7 +309,7 @@ class FXMapperWindow < FXMainWindow
   #
   def language_cb(sender, msg, opts)
     @@default_options['Language'] = LANGUAGES[sender.text]
-    
+
     require "IFMapper/locales/#{language}/Messages.rb"
     recreate
   end
@@ -319,19 +320,19 @@ class FXMapperWindow < FXMainWindow
   def new_map
     mapname  = "#{MSG_EMPTY_MAP} \##{@maps.size+1}"
     @maps.push( FXMap.new(mapname, @mdiclient, @@default_options.dup,
-			  @mdiicon, @mdimenu, MDI_NORMAL, 0, 0, 790, 500) )
+                          @mdiicon, @mdimenu, MDI_NORMAL, 0, 0, 790, 500) )
     map = @maps[-1]
     map.window.connect(SEL_PAINT) {
       map.draw
     }
     map.window.connect(SEL_CLOSE) {
       if map.close_cb
-	@maps.delete(map)
+        @maps.delete(map)
       end
       if @maps[-1]
-	@maps[-1].update_roomlist
+        @maps[-1].update_roomlist
       else
-	FXMap::no_maps
+        FXMap::no_maps
       end
     }
 
@@ -381,7 +382,7 @@ class FXMapperWindow < FXMainWindow
   def printer_dialog(title = MSG_PRINT_MAP)
     map = current_map
     dlg = FXPrintDialog.new(self, title + " for #{map.name}")
-    dlg.printer.flags |= PRINT_DEST_PAPER 
+    dlg.printer.flags |= PRINT_DEST_PAPER
     return dlg.printer if dlg.execute != 0
     return false
   end
@@ -409,10 +410,10 @@ class FXMapperWindow < FXMainWindow
     return unless map
 
     require 'IFMapper/FXMapFileDialog'
-    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_IFM, 
-			    [
-			      FMT_IFM
-			    ])
+    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_IFM,
+                            [
+                              FMT_IFM
+                            ])
     map.export_ifm(d.filename) if d.filename != ''
   end
 
@@ -424,10 +425,10 @@ class FXMapperWindow < FXMainWindow
     return unless map
 
     require 'IFMapper/FXMapFileDialog'
-    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_TRIZBORT, 
-			    [
-			      FMT_TRIZBORT
-			    ])
+    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_TRIZBORT,
+                            [
+                              FMT_TRIZBORT
+                            ])
     map.export_trizbort(d.filename) if d.filename != ''
   end
 
@@ -439,10 +440,10 @@ class FXMapperWindow < FXMainWindow
     return unless map
 
     require 'IFMapper/FXMapFileDialog'
-    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_INFORM6, 
-			    [
-			      FMT_INFORM6,
-			    ])
+    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_INFORM6,
+                            [
+                              FMT_INFORM6,
+                            ])
     map.export_inform( d.filename ) if d.filename != ''
   end
 
@@ -454,10 +455,10 @@ class FXMapperWindow < FXMainWindow
     return unless map
 
     require 'IFMapper/FXMapFileDialog'
-    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_INFORM7, 
-			    [
-			      FMT_INFORM7,
-			    ])
+    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_INFORM7,
+                            [
+                              FMT_INFORM7,
+                            ])
     map.export_inform7( d.filename ) if d.filename != ''
   end
 
@@ -471,10 +472,10 @@ class FXMapperWindow < FXMainWindow
 
     require 'IFMapper/TADSWriter'
     require 'IFMapper/FXMapFileDialog'
-    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_TADS, 
-			    [
-			      FMT_TADS
-			    ])
+    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_TADS,
+                            [
+                              FMT_TADS
+                            ])
     map.export_tads( d.filename ) if d.filename != ''
   end
 
@@ -492,15 +493,15 @@ class FXMapperWindow < FXMainWindow
       w.execute
       return
     end
-    
+
     require 'IFMapper/FXSVGMapExporterOptionsDialogBox'
-    cmd = FXSVGMapExporterOptionsDialogBox.new(self, MSG_SAVE_MAP_AS_SVG, 
+    cmd = FXSVGMapExporterOptionsDialogBox.new(self, MSG_SAVE_MAP_AS_SVG,
                                                map).execute
 
     return if cmd == 0
 
     require 'IFMapper/FXMapFileDialog'
-    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_SVG, 
+    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_SVG,
           [
             FMT_SVG
           ])
@@ -524,22 +525,22 @@ class FXMapperWindow < FXMainWindow
       w.execute
       return
     end
-    
+
     # PRE: Let's ask for a page size and orientation for the PDF
     #      and whether the user wants to include location numbers
     map.pdfpapersize = 0
     map.pdflocationnos = 1
     require 'IFMapper/FXPDFMapExporterOptionsDialogBox'
-    cmd = FXPDFMapExporterOptionsDialogBox.new(self, MSG_SAVE_MAP_AS_PDF, 
+    cmd = FXPDFMapExporterOptionsDialogBox.new(self, MSG_SAVE_MAP_AS_PDF,
                                                map).execute
 
     return if cmd == 0
 
     require 'IFMapper/FXMapFileDialog'
-    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_PDF, 
-			    [
-			      FMT_PDF
-			    ])
+    d = FXMapFileDialog.new(self, MSG_SAVE_MAP_AS_PDF,
+                            [
+                              FMT_PDF
+                            ])
     if d.filename != ''
       map.pdf_export(d.filename)
     end
@@ -576,7 +577,7 @@ class FXMapperWindow < FXMainWindow
     @maps = []
 
     @mdiclient = FXMDIClient.new(self, LAYOUT_FILL_X|LAYOUT_FILL_Y)
-    @mdiclient.connect(SEL_CHANGED) { 
+    @mdiclient.connect(SEL_CHANGED) {
       update_map
     }
 
@@ -601,7 +602,7 @@ class FXMapperWindow < FXMainWindow
   end
 
   #
-  # Return the copied elements 
+  # Return the copied elements
   #
   def self.copy_buffer
     return @@copy_buffer
@@ -624,9 +625,9 @@ class FXMapperWindow < FXMainWindow
     # those rooms we selected
     delete = []
     links.each { |c|
-      if not rooms.include?(c.roomA) or 
-	  (c.roomB and not rooms.include?(c.roomB))
-	delete << c
+      if not rooms.include?(c.roomA) or
+          (c.roomB and not rooms.include?(c.roomB))
+        delete << c
       end
     }
     links -= delete
@@ -665,52 +666,52 @@ class FXMapperWindow < FXMainWindow
       r_to_nr = {}  # orig room to new room hash
       rooms = sel[0]
       rooms.each { |r|
-	nr = map.new_room(r.x + pos[0], r.y + pos[1])
-	nr.selected = true
-	nr.copy(r) # copy the room data
-	r_to_nr[r] = nr
+        nr = map.new_room(r.x + pos[0], r.y + pos[1])
+        nr.selected = true
+        nr.copy(r) # copy the room data
+        r_to_nr[r] = nr
       }
 
       if rooms.empty?
-	# Add connections only (no rooms copied)
-	sel[1].each { |c|
-	  exitA, exitB = c.dirs
-	  roomA = c.roomA
-	  roomB = c.roomB
-	  sect  = map.sections[map.section]
-	  if not sect.rooms.include?(roomA) or 
-	      (roomB and not sect.rooms.include?(roomB))
-	    next
-	  end
-	  begin
-	    nc = map.new_connection(roomA, exitA, roomB, exitB)
-	    nc.selected = true
-	    nc.dir = c.dir
-	    nc.type = c.type
-	  rescue
-	  end
-	}
+        # Add connections only (no rooms copied)
+        sel[1].each { |c|
+          exitA, exitB = c.dirs
+          roomA = c.roomA
+          roomB = c.roomB
+          sect  = map.sections[map.section]
+          if not sect.rooms.include?(roomA) or
+              (roomB and not sect.rooms.include?(roomB))
+            next
+          end
+          begin
+            nc = map.new_connection(roomA, exitA, roomB, exitB)
+            nc.selected = true
+            nc.dir = c.dir
+            nc.type = c.type
+          rescue
+          end
+        }
       else
-	# Add connections
-	sel[1].each { |c|
-	  exitA, exitB = c.dirs
-	  roomA = r_to_nr[c.roomA]
-	  if c.roomB
-	    roomB = r_to_nr[c.roomB]
-	  else
-	    roomB = nil
-	  end
-	  next if not roomA
-	  begin
-	    nc = map.new_connection(roomA, exitA, roomB, exitB)
-	    nc.selected = true
-	    nc.dir  = c.dir
-	    nc.type = c.type
-	  rescue Section::ConnectionError => e
-	    puts c
-	    puts e
-	  end
-	}
+        # Add connections
+        sel[1].each { |c|
+          exitA, exitB = c.dirs
+          roomA = r_to_nr[c.roomA]
+          if c.roomB
+            roomB = r_to_nr[c.roomB]
+          else
+            roomB = nil
+          end
+          next if not roomA
+          begin
+            nc = map.new_connection(roomA, exitA, roomB, exitB)
+            nc.selected = true
+            nc.dir  = c.dir
+            nc.type = c.type
+          rescue Section::ConnectionError => e
+            puts c
+            puts e
+          end
+        }
       end
 
       map.create_pathmap
@@ -756,7 +757,7 @@ class FXMapperWindow < FXMainWindow
       s.rooms.each { |r| r.selected = false }
     }
 
-    matches.each { |p, r| 
+    matches.each { |p, r|
       next if p != map.section
       r.selected = true
     }
@@ -781,8 +782,8 @@ class FXMapperWindow < FXMainWindow
     matches = []
     (0...map.sections.size).each { |p|
       map.sections[p].rooms.each { |r|
-	next unless r.name =~ re
-	matches.push( [p, r] )
+        next unless r.name =~ re
+        matches.push( [p, r] )
       }
     }
     idx = @search.index
@@ -850,8 +851,8 @@ class FXMapperWindow < FXMainWindow
     matches = []
     (0...map.sections.size).each { |p|
       map.sections[p].rooms.each { |r|
-	next unless r.objects =~ re
-	matches.push( [p, r] )
+        next unless r.objects =~ re
+        matches.push( [p, r] )
       }
     }
     idx = @search.index
@@ -870,8 +871,8 @@ class FXMapperWindow < FXMainWindow
     matches = []
     (0...map.sections.size).each { |p|
       map.sections[p].rooms.each { |r|
-	next unless r.tasks =~ re
-	matches.push( [p, r] )
+        next unless r.tasks =~ re
+        matches.push( [p, r] )
       }
     }
     idx = @search.index
@@ -926,8 +927,8 @@ class FXMapperWindow < FXMainWindow
     matches = []
     (0...map.sections.size).each { |p|
       map.sections[p].rooms.each { |r|
-	next unless r.desc =~ re
-	matches.push( [p, r] )
+        next unless r.desc =~ re
+        matches.push( [p, r] )
       }
     }
     idx = @search.index
@@ -1003,8 +1004,8 @@ class FXMapperWindow < FXMainWindow
 
   def about_cb(sender, id, event )
     require 'IFMapper/FXAboutDialogBox'
-    FXAboutDialogBox.new(self, MSG_ABOUT_SOFTWARE, 
-			 eval("\"#{MSG_ABOUT}\"")).execute
+    FXAboutDialogBox.new(self, MSG_ABOUT_SOFTWARE,
+                         eval("\"#{MSG_ABOUT}\"")).execute
   end
 
 
@@ -1026,7 +1027,7 @@ class FXMapperWindow < FXMainWindow
     cmd = FXMenuCommand.new(filemenu, MENU_SAVE, savedoc)
     cmd.connect(SEL_COMMAND, method(:save_cb))
     cmd = FXMenuCommand.new(filemenu, MENU_SAVE_AS,
-			    saveasdoc)
+                            saveasdoc)
     cmd.connect(SEL_COMMAND, method(:save_as_cb))
 
     # Export submenu
@@ -1034,7 +1035,7 @@ class FXMapperWindow < FXMainWindow
 
     cmd = FXMenuCommand.new(submenu, MENU_EXPORT_PDF, nil)
     cmd.connect(SEL_COMMAND, method(:pdf_export_cb))
-    
+
     cmd = FXMenuCommand.new(submenu, MENU_EXPORT_SVG, nil)
     cmd.connect(SEL_COMMAND, method(:svg_export_cb))
 
@@ -1074,9 +1075,9 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND, method(:copy_selected_cb))
     cmd = FXMenuCommand.new(editmenu, MENU_CUT, nil)
     cmd.connect(SEL_COMMAND, method(:cut_selected_cb))
-    cmd = FXMenuCommand.new(editmenu, MENU_PASTE, nil) 
+    cmd = FXMenuCommand.new(editmenu, MENU_PASTE, nil)
     cmd.connect(SEL_COMMAND, method(:paste_selected_cb))
-    #cmd = FXMenuCommand.new(editmenu, MENU_UNDO, nil) 
+    #cmd = FXMenuCommand.new(editmenu, MENU_UNDO, nil)
     #cmd.connect(SEL_COMMAND, method(:undo_cb))
 
     # Select submenu
@@ -1139,55 +1140,55 @@ class FXMapperWindow < FXMainWindow
     # Sections submenu
     submenu = FXMenuPane.new(self)
     cmd = FXMenuCommand.new(submenu, MENU_NEXT_SECTION)
-    cmd.connect(SEL_COMMAND) { 
+    cmd.connect(SEL_COMMAND) {
       next_section
     }
     cmd = FXMenuCommand.new(submenu, MENU_PREVIOUS_SECTION)
-    cmd.connect(SEL_COMMAND) { 
+    cmd.connect(SEL_COMMAND) {
       previous_section
     }
     FXMenuSeparator.new(submenu)
     cmd = FXMenuCommand.new(submenu, MENU_ADD_SECTION)
-    cmd.connect(SEL_COMMAND) { 
+    cmd.connect(SEL_COMMAND) {
       map = current_map
       if map
-	map.new_section
-	map.modified = true
-	update_section
+        map.new_section
+        map.modified = true
+        update_section
       end
     }
     cmd = FXMenuCommand.new(submenu, MENU_SECTION_INFO)
-    cmd.connect(SEL_COMMAND) { 
+    cmd.connect(SEL_COMMAND) {
       map = current_map
       if map
-	map.rename_section
-	map.modified = true
+        map.rename_section
+        map.modified = true
       end
     }
     FXMenuSeparator.new(submenu)
     cmd = FXMenuCommand.new(submenu, MENU_DELETE_SECTION)
-    cmd.connect(SEL_COMMAND) { 
+    cmd.connect(SEL_COMMAND) {
       map = current_map
       if map
-	map.delete_section
-	map.modified = true
-	update_section
+        map.delete_section
+        map.modified = true
+        update_section
       end
     }
     FXMenuCascade.new(mapmenu, MENU_SECTIONS, nil, submenu)
-    
+
     #
     # Zoom submenu
     #
     submenu = FXMenuPane.new(self)
-    [25, 50, 75, 100, 125].each { |v| 
+    [25, 50, 75, 100, 125].each { |v|
       cmd = FXMenuCommand.new(submenu, eval("\"#{MENU_ZOOM_PERCENT}\""))
-      cmd.connect(SEL_COMMAND) { 
-	map = current_map
-	if map
-	  map.zoom = v / 100.0
-	  map.draw
-	end
+      cmd.connect(SEL_COMMAND) {
+        map = current_map
+        if map
+          map.zoom = v / 100.0
+          map.draw
+        end
       }
     }
     FXMenuCascade.new(mapmenu, MENU_ZOOM, nil, submenu)
@@ -1199,7 +1200,7 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Edit on Creation'] = (s.check == true)
+        map.options['Edit on Creation'] = (s.check == true)
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1212,7 +1213,7 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Automatic Connection'] = (s.check == true)
+        map.options['Automatic Connection'] = (s.check == true)
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1242,8 +1243,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Use Room Cursor'] = (s.check == true)
-	map.draw
+        map.options['Use Room Cursor'] = (s.check == true)
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1256,8 +1257,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Paths as Curves'] = (s.check == true)
-	map.draw
+        map.options['Paths as Curves'] = (s.check == true)
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1269,8 +1270,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Location Numbers'] = (s.check == true)
-	map.draw
+        map.options['Location Numbers'] = (s.check == true)
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1283,8 +1284,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Location Tasks'] = (s.check == true)
-	map.draw
+        map.options['Location Tasks'] = (s.check == true)
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1297,8 +1298,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Location Description'] = (s.check == true)
-	map.draw
+        map.options['Location Description'] = (s.check == true)
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1311,8 +1312,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Grid Boxes'] = (s.check == true)
-	map.draw
+        map.options['Grid Boxes'] = (s.check == true)
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1325,8 +1326,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Grid Straight Connections'] = (s.check == true)
-	map.draw
+        map.options['Grid Straight Connections'] = (s.check == true)
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1339,8 +1340,8 @@ class FXMapperWindow < FXMainWindow
     cmd.connect(SEL_COMMAND) { |s, m, e|
       map = current_map
       if map
-	map.options['Grid Diagonal Connections'] = s.check
-	map.draw
+        map.options['Grid Diagonal Connections'] = s.check
+        map.draw
       end
     }
     cmd.connect(SEL_UPDATE) { |s, m, e|
@@ -1363,11 +1364,11 @@ class FXMapperWindow < FXMainWindow
 #     }
 
 #     FXMenuCascade.new(mapmenu, MENU_LANGUAGE, nil, langmenu)
-    
+
 
     FXMenuSeparator.new(submenu)
     cmd = FXMenuCommand.new(submenu, MENU_SAVE_PREFS)
-    cmd.connect(SEL_COMMAND) { 
+    cmd.connect(SEL_COMMAND) {
       map = current_map
       map.options.write if map
     }
@@ -1392,8 +1393,8 @@ class FXMapperWindow < FXMainWindow
     FXMenuCommand.new(windowmenu, nil, nil, @mdiclient, FXMDIClient::ID_MDI_2)
     FXMenuCommand.new(windowmenu, nil, nil, @mdiclient, FXMDIClient::ID_MDI_3)
     FXMenuCommand.new(windowmenu, nil, nil, @mdiclient, FXMDIClient::ID_MDI_4)
-    FXMenuCommand.new(windowmenu, MENU_OTHERS, nil, @mdiclient, 
-		      FXMDIClient::ID_MDI_OVER_5)
+    FXMenuCommand.new(windowmenu, MENU_OTHERS, nil, @mdiclient,
+                      FXMDIClient::ID_MDI_OVER_5)
     FXMenuTitle.new(@menubar, MENU_WINDOW, nil, windowmenu)
 
     # Help menu
@@ -1409,14 +1410,14 @@ class FXMapperWindow < FXMainWindow
     cmd = FXMenuCommand.new(helpmenu, MENU_RESOURCE, nil)
     cmd.connect(SEL_COMMAND) {
       require 'IFMapper/FXMapFileDialog'
-      file = FXMapFileDialog.new(self, "Resource a Ruby File", 
-				 ['Ruby File (*.rb)']).filename
+      file = FXMapFileDialog.new(self, "Resource a Ruby File",
+                                 ['Ruby File (*.rb)']).filename
       if file != ''
-	begin
-	  Kernel.load file
-	rescue => e
-	  p e
-	end
+        begin
+          Kernel.load file
+        rescue => e
+          p e
+        end
       end
     }
     FXMenuTitle.new(@menubar, MENU_HELP, nil, helpmenu)
@@ -1456,7 +1457,7 @@ class FXMapperWindow < FXMainWindow
 
     # File manipulation
     cmd = FXButton.new(toolbar, ICON_NEW, newdoc, nil, 0,
-		       FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
+                       FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
     cmd.connect(SEL_COMMAND, method(:new_map_cb))
 
     cmd = FXButton.new(toolbar, ICON_OPEN, opendoc, nil, 0,
@@ -1484,15 +1485,15 @@ class FXMapperWindow < FXMainWindow
     FXFrame.new(toolbar,
       LAYOUT_TOP|LAYOUT_LEFT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 4, 20)
     cmd = FXButton.new(toolbar, ICON_PRINT,
-		       load_icon("printicon"), @mdiclient, FXGLViewer::ID_PRINT_IMAGE,
-		       BUTTON_AUTOGRAY|FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
+                       load_icon("printicon"), @mdiclient, FXGLViewer::ID_PRINT_IMAGE,
+                       BUTTON_AUTOGRAY|FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
     cmd.connect(SEL_COMMAND, method(:print_cb))
     cmd.connect(SEL_UPDATE) { |sender, sel, ptr|
       map = current_map
       message = map ? FXWindow::ID_ENABLE : FXWindow::ID_DISABLE
       sender.handle(self, MKUINT(message, SEL_COMMAND), nil)
     }
-  
+
     # Editing
     FXFrame.new(toolbar,
       LAYOUT_TOP|LAYOUT_LEFT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 4, 20)
@@ -1528,43 +1529,43 @@ class FXMapperWindow < FXMainWindow
     FXFrame.new(toolbar,
       LAYOUT_TOP|LAYOUT_LEFT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 4, 20)
     cmd = FXButton.new(toolbar, ICON_ZOOM_IN, load_icon("zoom"), @mdiclient,
-		       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
+                       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
     cmd.connect(SEL_COMMAND) { zoom_in }
 
-    cmd = FXButton.new(toolbar, ICON_ZOOM_OUT, load_icon("zoom"), @mdiclient, 
-		       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
+    cmd = FXButton.new(toolbar, ICON_ZOOM_OUT, load_icon("zoom"), @mdiclient,
+                       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
     cmd.connect(SEL_COMMAND) { zoom_out }
 
 
     # Section travel
     frame = FXHorizontalFrame.new(toolbar,
-				  LAYOUT_RIGHT|FRAME_THICK|FRAME_RAISED)
-    cmd = FXButton.new(frame, ICON_PREV_SECTION, load_icon("prevpage"), 
-		       @mdiclient,
-		       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
+                                  LAYOUT_RIGHT|FRAME_THICK|FRAME_RAISED)
+    cmd = FXButton.new(frame, ICON_PREV_SECTION, load_icon("prevpage"),
+                       @mdiclient,
+                       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
     cmd.connect(SEL_COMMAND) { previous_section }
 
-    @section = FXTextField.new(frame, 5, nil, 0, 
-			    TEXTFIELD_INTEGER|LAYOUT_FILL_ROW)
+    @section = FXTextField.new(frame, 5, nil, 0,
+                            TEXTFIELD_INTEGER|LAYOUT_FILL_ROW)
     @section.text = '1'
-    @section.connect(SEL_COMMAND) { |s,m,e| 
+    @section.connect(SEL_COMMAND) { |s,m,e|
       v = s.text.to_i
       map = current_map
       if map
-	map.section = v - 1
-	map.draw
-	update_section
+        map.section = v - 1
+        map.draw
+        update_section
       end
     }
-    @section.connect(SEL_UPDATE) {  |s,m,e| 
+    @section.connect(SEL_UPDATE) {  |s,m,e|
       map = current_map
       update_section if map
     }
 
-    cmd = FXButton.new(frame, ICON_NEXT_SECTION, load_icon("nextpage"), 
-		       @mdiclient,
-		       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
-    cmd.connect(SEL_COMMAND) { next_section }    
+    cmd = FXButton.new(frame, ICON_NEXT_SECTION, load_icon("nextpage"),
+                       @mdiclient,
+                       0, FRAME_THICK|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT)
+    cmd.connect(SEL_COMMAND) { next_section }
   end
 
   #
@@ -1588,7 +1589,7 @@ class FXMapperWindow < FXMainWindow
   #
   # Go to previous section in current map
   #
-  def previous_section 
+  def previous_section
     map = current_map
     map.previous_section if map
     update_section
@@ -1640,20 +1641,20 @@ class FXMapperWindow < FXMainWindow
     @menubar = FXMenuBar.new(self, LAYOUT_SIDE_TOP|LAYOUT_FILL_X)
 
     FXHorizontalSeparator.new(self,
-			      LAYOUT_SIDE_TOP|SEPARATOR_GROOVE|LAYOUT_FILL_X)
+                              LAYOUT_SIDE_TOP|SEPARATOR_GROOVE|LAYOUT_FILL_X)
     toolbar = FXToolBar.new(self, LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
       0, 0, 0, 0, 4, 4, 0, 0, 0, 0)
-  
+
     # Status bar
     @statusbar = FXStatusBar.new(self,
-				 LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X|
-				 STATUSBAR_WITH_DRAGCORNER)
+                                 LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X|
+                                 STATUSBAR_WITH_DRAGCORNER)
 
 
     create_mdiclient
     create_menus
     create_toolbar(toolbar)
-    
+
 
     self.connect(SEL_CLOSE, method(:close_cb))
     show
@@ -1663,13 +1664,13 @@ class FXMapperWindow < FXMainWindow
 
   def initialize(app)
     super(app, eval("\"#{TITLE}\""), nil, nil, DECOR_ALL, 0, 0, 800, 600)
-  
+
     @colors = nil
     @mdimenu = nil
     @search = nil
 
     create_widgets
-  
+
 
     # Trap CTRL-C signals and exit nicely
     trap('SIGINT') {
@@ -1680,13 +1681,13 @@ class FXMapperWindow < FXMainWindow
 
   def close_cb(*args)
       exit = true
-      @maps.each { |m| 
-	if not m.close_cb
-	  exit = false
-	  break
-	else
-	  @maps.delete(m)
-	end
+      @maps.each { |m|
+        if not m.close_cb
+          exit = false
+          break
+        else
+          @maps.delete(m)
+        end
       }
       self.close if exit
   end
