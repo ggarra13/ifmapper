@@ -124,7 +124,7 @@ class TranscriptReader
   @@win = nil
 
   ## Change this to non-nil to print out debugging info
-  @@debug = 1
+  @@debug = nil
 
   def debug(*msg)
     if @@debug
