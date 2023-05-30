@@ -1,7 +1,7 @@
 # coding: utf-8
 require "rubygems"
 
-VERSION = '2.2.6'
+VERSION = '2.2.7'
 AUTHOR = "Gonzalo Garramuño"
 HOMEPAGE = 'http://ggarra13.github.io/ifmapper/en/start.html'
 EMAIL = 'ggarra13@gmail.com'
