@@ -41,12 +41,10 @@ class FXSpline
   end
 end
 
-class FXDC
-  # Draw a bspline curve of any number of segments
-  def drawBSpline(p)
-    tmp = FXSpline::bspline(p)
-    pts = tmp.collect { |x| FXPoint.new( x[0].to_i, x[1].to_i) }
-    drawLines(pts)
-    return pts
-  end
+# Draw a bspline curve of any number of segments
+def drawBSpline(dc, p)
+  tmp = FXSpline::bspline(p)
+  pts = tmp.collect { |x| FXPoint.new( x[0].to_i, x[1].to_i) }
+  dc.drawLines(pts)
+  return pts
 end

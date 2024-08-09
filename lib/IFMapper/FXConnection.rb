@@ -216,7 +216,7 @@ class FXConnection < Connection
     p << p[-1]
     p << p[-1]
     p << p[-1]
-    return dc.drawBSpline( p )
+    return drawBSpline( dc, p )
   end
 
   #
