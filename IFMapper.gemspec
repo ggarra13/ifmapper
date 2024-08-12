@@ -1,7 +1,7 @@
 # coding: utf-8
 require "rubygems"
 
-VERSION = '2.2.8'
+VERSION = '2.2.9'
 AUTHOR = "Gonzalo Garramuño"
 HOMEPAGE = 'http://ggarra13.github.io/ifmapper/en/start.html'
 EMAIL = 'ggarra13@gmail.com'
@@ -33,5 +33,5 @@ EOF
         s.extra_rdoc_files = ["HISTORY.txt", "TODO.txt"] +
                                 Dir.glob("docs/*/*")
         # s.rubyforge_project = 'ifmapper'
-        s.required_ruby_version = '>= 2.0.0'
+        s.required_ruby_version = '>= 3.0.0'
 end
