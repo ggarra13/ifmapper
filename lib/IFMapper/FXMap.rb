@@ -2162,7 +2162,7 @@ class FXMap < Map
     file = FXMapFileDialog.new(@window, "#{MSG_SAVE_MAP} #{@name}",
 			       FXMapFileDialog::KNOWN_SAVE_EXTENSIONS).filename
     if file != ''
-      if File.exists?(file)
+      if File.exist?(file)
 	dlg = FXWarningBox.new(@window, "#{file}\n#{WARN_OVERWRITE_MAP}")
 	return if dlg.execute == 0
       end
