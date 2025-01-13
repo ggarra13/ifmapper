@@ -179,7 +179,7 @@ class FXConnection
     end
 
     font_size = 8
-    pdf.text_box text, :at => [x, y], :size => font_size
+    pdf.draw_text text, :at => [x, y], :size => font_size
   end
 
   def pdf_draw_exit_text(pdf, opts)
@@ -277,9 +277,12 @@ class FXRoom
       pdf.stroke_color '000000'
       pdf.fill_color   '000000'
 
-      # WAS: y+7
+      # WAS: y+2
       pdf.text_box locationno,
-      :at => [(x+((opts['w']/4)*3)+2), y+2], :size => 8
+                   :at => [(x+((opts['w']/4)*3)+2), y+7], :size => 8,
+                   :width => opts['w']/4,
+                   :height => opts['h']/4,
+                   :overflow => :shrink_to_fit
     end
 
   end
@@ -359,7 +362,7 @@ class FXSection
     w = opts['width'] if w > opts['width']
     x = (w + 2) * opts['ww'] / 2 - text.size / 2 * 16
     x = 0 if x < 0
-    pdf.text_box( text, :at => [x,y], :font_size => 16 )
+    pdf.draw_text text, :at => [x,y], :font_size => 16
   end
 
 
@@ -489,7 +492,7 @@ class FXMap
       when FXPrinter::MEDIA_LEGAL
         paper = 'LEGAL'
       when FXPrinter::MEDIA_A4
-        paper = 'A4'
+        paper = 'A4'           # Valid
       when FXPrinter::MEDIA_ENVELOPE
         paper = 'ENVELOPE'
       when FXPrinter::MEDIA_CUSTOM
